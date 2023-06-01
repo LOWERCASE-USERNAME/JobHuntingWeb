@@ -1,0 +1,42 @@
+form{
+    margin-top: 20px;
+}
+.form-row{
+    margin-left: 40px;
+}
+
+.form-group{
+    display: flex;
+}
+
+.form-group i{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#submit-button{
+    width: 60%;
+    margin-left: auto;
+    height: 100%;
+    border-radius: 20px;
+}
+
+#filter{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+#filter select{
+    width: fit-content;
+    border-radius: 20px;
+    /* margin-right: 1%; */
+    appearance: none;
+}
+
+#all-filter, #reset{
+    padding: 0 20px;
+    width: fit-content;
+    border-radius: 20px;
+}

@@ -3,14 +3,15 @@
 }
 
 .header{
-    background-color: #0b2239;
+    /* background-color: #0b2239; */
     color: white;
     justify-content: left;
     align-items: center;
     position: sticky;
-    height: 50px;
+    height: 70px;
     display: flex;
     width: 100%;
+    border-bottom: 1px solid gray;
 }
 
 .header-logo a{
@@ -54,4 +55,33 @@
     border: none;
     border-radius: 10px;
 }
-
+.navbar-nav{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.nav-item a{
+    color: black;
+    padding-top: 0;
+}
+.nav-item.active a{
+    color: blue;
+    transition: 500ms;
+}
+.nav-item{
+    text-align: center;
+}
+.nav-item i{
+    color: black;
+    opacity: 0.6;
+    font-size: 130%;
+    margin: auto;
+    transition: 400ms ease;
+}
+.nav-item:hover i, .active i{
+    opacity: 1;
+    font-size: 140%;
+}
+.nav-item:hover a{
+    color: blue;
+}
