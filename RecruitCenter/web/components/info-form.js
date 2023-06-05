@@ -10,7 +10,7 @@ function InvalidFeedback({ labelValue, requirement }) {
 }
 
 function EmailInput() {
-    const [email, setEmail] = useState('');
+    // const [email, setEmail] = useState('');
 
     const validateEmail = (value) => {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -28,7 +28,7 @@ function EmailInput() {
             className: 'form-control',
             onChange: function (e) {
                 const input = e.target;
-                setEmail(e.target.value);
+                // setEmail(e.target.value);
                 if (input.value == '') {
                     e.target.classList.remove('is-valid');
                     e.target.classList.remove('is-invalid');
@@ -48,7 +48,7 @@ function EmailInput() {
 }
 
 function PasswordInput() {
-    const [pw, setPw] = useState('');
+    // const [pw, setPw] = useState('');
 
     const validatePw = (value) => {
         const pwPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
@@ -63,10 +63,11 @@ function PasswordInput() {
         React.createElement('input', {
             id: 'pw',
             type: 'password',
+            name: 'password',
             className: 'form-control',
             onChange: function (e) {
                 const input = e.target;
-                setPw(input.value);
+                // setPw(input.value);
                 if (input.value == '') {
                     e.target.classList.remove('is-valid');
                     e.target.classList.remove('is-invalid');
@@ -98,7 +99,7 @@ function LoginButton() {
 function LoginForm() {
     return React.createElement('form',
         {
-            method: 'GET',
+            method: 'POST',
             action: '', //servlet
             className: '',
             onSubmit: function (e) {

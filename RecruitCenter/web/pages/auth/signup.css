@@ -1,0 +1,42 @@
+/* body{
+    background-color: whitesmoke;
+} */
+header{
+    height: 100px;
+}
+.CTA-title{
+    font-size: 150%;
+}
+
+#login-form{
+    width: 30%;
+    margin: 30px auto 0;
+    box-shadow: 0 0 10px gray;
+    padding: 30px 20px;
+    
+}
+
+#login-form input[type="submit"]{
+    width: 80%;
+    height: 50px;
+    border-radius: 30px;
+    font-size: 120%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#img-bg-1{
+    position: absolute;
+    bottom: -20px;
+    left: 60%;
+    z-index: -100;
+}
+
+#img-bg-2{
+    position: absolute;
+    top: -100px;
+    left: 8%;
+    z-index: -100;
+    transform: rotateX(180deg);
+}
