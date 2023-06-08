@@ -7,9 +7,13 @@ import model.Account;
 import DAL.AccountDAO;
 import java.util.ArrayList;
 
-public class AuthServlet {
+public class Authentication {
+    private static AccountDAO accountDB = new AccountDAO();
     public static void main(String[] args) {
-        AccountDAO ac = new AccountDAO();
-        ArrayList<Account> accList = ac.getListAccount();
+//        ArrayList<Account> accList = ac.getListAccount();
     }
+//    public static boolean signUpNewAccount(String email, String password){
+//        
+//        
+//    }
 }

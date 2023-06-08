@@ -10,28 +10,21 @@
     <link rel="stylesheet" href="css/styleheader.css">
     <link rel="stylesheet" href="css/stylesearch.css">
     <link rel="stylesheet" href="css/styleresult.css">
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script> 
-      <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> 
-      <script language="JavaScript"> 
-//         element = React.createElement('h1', {}, 'Hello React!');
-//         document.addEventListener("DOMContentLoaded", ()=>{
-//             alert("hi");
-//             ReactDOM.render(element, document.getElementById('root')); 
-//         });
-      </script> 
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 </head>
 
 <body>
     <header class="container-fluid">
-        <nav class="header navbar navbar-expand-lg">
-            <div class="header-logo">
+        <nav class="header navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <div class="header-logo order-1 order-lg-0">
                 <a href="pages/login/login.html" class="navbar-brand">recruitCenter...</a>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                 aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="header-collapse collapse navbar-collapse" id="navigation">
+            <div class="header-collapse collapse navbar-collapse order-3 order-lg-0" id="navigation">
                 <ul class="navbar-nav">
                     <li class="nav-item active"><i class="fa-solid fa-house"></i><a class="nav-link" href="">Home</a>
                     </li>
@@ -42,7 +35,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="header-account">
+            <div class="header-account order-1 order-lg-1">
                 <div id="account-thumb" class="dropdown">
                     <div class="dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown">
                         H
@@ -55,25 +48,25 @@
                     </div>
                 </div>
             </div>
-            <div class="header-CTA">
-                <button>Sign In</button>
+            <div class="header-CTA order-2 order-lg-2">
+                <button><a href="./pages/auth/signup.html">Sign Up</a></button>
             </div>
         </nav>
 
-        <form>
+        <form action="">
             <div class="form-row">
                 <div class="form-group col-md-5">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="job-search">What</label>
                     </div>
                     <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                    <input id="job-search" class="form-control" type="saerch" placeholder="Search...">
+                    <input id="job-search" class="form-control" type="search" placeholder="Search...">
                 </div>
-    
+
                 <div class="form-group col-md-5">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="location-search">Where</label>
-                      </div>
+                    </div>
                     <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
                     <input id="location-search" class="form-control" type="search" placeholder="Search...">
                 </div>
@@ -148,14 +141,14 @@
     <main class="container-fluid">
         <div class="col-md-5">
             <div class="header-search-result">
-                
+
             </div>
         </div>
         <div class="col-md-7">
 
         </div>
     </main>
-    
+
     <div id="root"></div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

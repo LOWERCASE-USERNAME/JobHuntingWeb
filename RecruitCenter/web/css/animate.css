@@ -1,0 +1,23 @@
+@keyframes flyRight {
+    0%{
+        transform: translateX(0px);
+    }
+    100%{
+        transform: translate(1000px);
+    }
+}
+@keyframes fromLeft {
+    0%{
+        transform: translateX(-1000px);
+    }
+    100%{
+        transform: translate(0px);
+    }
+}
+.fly-horizontal-to-right{
+    animation: flyRight 1500ms ease forwards;
+}
+.fly-horizontal-from-left{
+    animation: fromLeft 1500ms ease forwards;
+}
+

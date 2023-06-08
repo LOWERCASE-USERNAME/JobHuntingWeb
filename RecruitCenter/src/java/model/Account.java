@@ -9,11 +9,23 @@ package model;
  * @author dell
  */
 public class Account {
-    private String username, password;
+    private String id, username, email, password;
 
-    public Account(String username, String password) {
+    public Account(String id, String username, String email, String password) {
+        this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
+    }
+
+    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -22,6 +34,14 @@ public class Account {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -34,7 +54,9 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "username=" + username + ", password=" + password + '}';
+        return "Account{" + "id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + '}';
     }
+
+    
     
 }

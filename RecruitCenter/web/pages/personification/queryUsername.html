@@ -1,0 +1,19 @@
+<div class="CTA-title text-center">You need this for the next time you visit</div>
+<div id="form">
+    <form method="POST" action="../../SignUpServlet" novalidate>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" autocomplete="nope" type="text" class="form-control" name="username" placeholder="John123456" required>
+        </div>
+        <input type="submit" class="btn-primary" value="This is me">
+        <input type="hidden" name="page" value="queryusername">
+    </form>
+    <div class="progress" data-next-page="4">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 5%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 15%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 20%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 20%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 20%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" style="width: 0%" data-width="20%"></div>
+    </div>
+</div>

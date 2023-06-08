@@ -1,0 +1,30 @@
+<div class="CTA-title text-center">Knowing about your location would help us to refine our search...</div>
+<div id="form">
+    <form method="POST" novalidate>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input id="country" type="text" class="form-control" name="country">
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input id="city" autocomplete="nope" type="text" name="city" class="form-control" placeholder="City A" required>
+        </div>
+        <div class="form-group">
+            <label for="district">District/Province</label>
+            <input id="district" autocomplete="nope" type="text" name="district" class="form-control" placeholder="District B" required>
+        </div>
+        <div class="form-group">
+            <label for="sub-district">Sub-district/Village</label>
+            <input id="sub-district" autocomplete="nope" type="text" name="sub-district" class="form-control" placeholder="Village C">
+        </div>
+        <input type="submit" class="btn-primary" value="You can find me at this address">
+        <input type="hidden" name="page" value="querylocation">
+    </form>
+    <div class="progress" data-next-page="2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 5%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 15%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 20%"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 0%" data-width="20%"></div>
+    </div>
+</div>
+
