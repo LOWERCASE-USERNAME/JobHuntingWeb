@@ -4,9 +4,17 @@
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>controller.SignUpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchJobTerm</servlet-name>
+        <servlet-class>controller.SearchJobTerm</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchJobTerm</servlet-name>
+        <url-pattern>/SearchJobTerm</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

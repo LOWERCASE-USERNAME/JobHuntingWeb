@@ -70,7 +70,7 @@ $(document).on("submit", 'form', function (e) {
                         $('input[type="submit"').val(`Yes I am a ${btnlabel.text().toLowerCase()}`)
                     })
                 }
-            }, 0)
+            }, 1000)
         });
     }
 

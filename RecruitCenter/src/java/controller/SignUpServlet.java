@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -35,22 +36,34 @@ public class SignUpServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
+        AccountDAO accDAO = new AccountDAO();
+        //get data from cookies
         String cookies = request.getParameter("Cookie");
-        String[] cookieArray = cookies.split("%3B%20");
-        for(String cookie:cookieArray){
-            out.println(cookie);
-        }
+        String decodedCookie = URLDecoder.decode(cookies, "UTF-8");
+        String[] cookieArray = decodedCookie.split(";");
         Arrays.sort(cookieArray);
+        for (int i = 0; i < cookieArray.length; i++) {
+            String[] temp = cookieArray[i].split("=");
+            cookieArray[i] = temp[1];
+        }
         out.println(Arrays.toString(cookieArray));
-        //signup
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
-        String id = signUpWithEmail(email);
-        //queryname
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
-        //querylocation
-//        String country = requ
+
+        //get value of parameter
+        String city = cookieArray[0];
+        String company = cookieArray[1];
+        String country = cookieArray[2];
+        String district = cookieArray[3];
+        String email = cookieArray[4];
+        String fname = cookieArray[5];
+        String lname = cookieArray[6];
+        String pass = cookieArray[7];
+        String subdistrict = cookieArray[8];
+        String username = cookieArray[9];
+        String typeacc = cookieArray[10];
+        String id = signUpWithEmail(email); //get userID
+        Account acc = new Account(id, username, pass);
+        accDAO.insertAccount(acc); //update all of the column with the same ID
+        
     }
 
     @Override
