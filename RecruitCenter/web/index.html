@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>TODO supply a title</title>
+    <title>RecruitCenter</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
@@ -55,26 +55,47 @@
 
         <form>
             <div class="form-row">
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-4">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="job-search">What</label>
                     </div>
                     <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                    <input id="job-search" name="job-search" class="form-control" type="text" placeholder="Search..." list="jobsList" autocomplete="nope">
+                    <input id="job-search" name="job-search" class="form-control" type="text" placeholder="Search..."
+                        list="jobsList" autocomplete="nope">
                     <datalist id="jobsList">
                     </datalist>
                 </div>
 
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-2">
                     <div class="input-group-prepend">
-                        <label class="input-group-text" for="location-search">Where</label>
+                        <label class="input-group-text" for="city-search">City</label>
                     </div>
                     <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                    <input id="location-search" name="location-search" class="form-control" type="search" placeholder="Search...">
-                    <datalist id="locationsList">
+                    <input list="cityList" id="city-search" name="city-search" class="form-control location-search"
+                        type="text" placeholder="City..." autocomplete="nope" data-type="p">
+                    <datalist id="cityList">
                     </datalist>
                 </div>
-
+                <div class="form-group col-md-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="dist-search">District</label>
+                    </div>
+                    <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                    <input list="distList" id="dist-search" name="dist-search" class="form-control location-search"
+                        type="text" placeholder="District..." autocomplete="nope" data-type="d">
+                    <datalist id="distList">
+                    </datalist>
+                </div>
+                <div class="form-group col-md-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="ward-search">Wards</label>
+                    </div>
+                    <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                    <input list="wardList" id="ward-search" name="ward-search" class="form-control location-search"
+                        type="text" placeholder="Wards..." autocomplete="nope" data-type="w">
+                    <datalist id="wardList">
+                    </datalist>
+                </div>
                 <div class="form-group col-md-2">
                     <input id="submit-button" class="btn-primary" type="submit" value="Find">
                 </div>
@@ -163,6 +184,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/1d7268affb.js" crossorigin="anonymous"></script>
     <script src="./index.js" type="module" defer></script>
 </body>

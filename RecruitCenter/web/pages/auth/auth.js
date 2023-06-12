@@ -2,7 +2,7 @@
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 const personification = ['queryName', 'queryLocation', 'queryTypeAccount', 'queryUsername'];
-// axios.defaults.withCredentials = true;
+
 
 $(document).ready(function () {
     //validation for email on password
@@ -20,8 +20,8 @@ $(document).on("submit", 'form', function (e) {
     //animation for the progress bar
     $('.progress .progress-bar:last-child').css('width', $('.progress .progress-bar:last-child').attr('data-width'));
     //shove everything into cookies
-    $('input').not('input[type="submit"],input[type="hidden"]').each(function(){
-        if($(this).attr('name') === 'typeaccount'){
+    $('input').not('input[type="submit"],input[type="hidden"]').each(function () {
+        if ($(this).attr('name') === 'typeaccount') {
             document.cookie = `${$(this).attr('name')}=${$('input[name="typeaccount"]').val()}`
         } else {
             document.cookie = `${$(this).attr('name')}=${$(this).val()}`;
@@ -29,7 +29,7 @@ $(document).on("submit", 'form', function (e) {
     })
 
     //last page -> submit with cookie using Jquery
-    if(URL === undefined){
+    if (URL === undefined) {
         const form = document.querySelector('form');
         const encodedCookie = encodeURIComponent(document.cookie);
         $.ajax({
@@ -41,11 +41,11 @@ $(document).on("submit", 'form', function (e) {
             data: {
                 "Cookie": encodedCookie
             },
-            success: function(response) {
+            success: function (response) {
                 // Handle the successful response
                 console.log(response);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // Handle errors
                 console.error("Request failed with status: " + error);
             },
@@ -57,7 +57,7 @@ $(document).on("submit", 'form', function (e) {
             setTimeout(function () {
                 //load the next page
                 $('main').html(data);
-                
+
                 //special page action
                 if (URL === 'queryLocation') {
                     //api to autocomplete user location
