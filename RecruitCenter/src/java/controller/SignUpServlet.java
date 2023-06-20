@@ -6,6 +6,7 @@ package controller;
 
 import DAL.AccountDAO;
 import DAL.UserDAO;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -49,7 +50,7 @@ public class SignUpServlet extends HttpServlet {
             String[] temp = cookieArray[i].split("=");
             cookieArray[i] = temp[1];
         }
-        out.println(Arrays.toString(cookieArray));
+//        out.println(Arrays.toString(cookieArray));
 
         //get value of parameter
         String city = cookieArray[0];
@@ -74,13 +75,19 @@ public class SignUpServlet extends HttpServlet {
         //add to users table
         User user = new User(id, fname, lname, email, address, typeAccount);
         uDAO.updateUser(user);
-        
-        response.sendRedirect("welcome.html");
+        ServletContext sc = request.getServletContext();
+        sc.setAttribute("userid", user.getUserID());
+        sc.setAttribute("user", user);
+        sc.setAttribute("account", acc);
+//        response.sendRedirect();
+        response.getWriter().println("../welcome/welcome.html");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+//        out.println("Hello");
         processRequest(request, response);
     }
 

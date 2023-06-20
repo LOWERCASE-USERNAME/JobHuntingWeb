@@ -44,10 +44,11 @@ $(document).on("submit", 'form', function (e) {
             success: function (response) {
                 // Handle the successful response
                 console.log(response);
+                window.location.href = response;
             },
             error: function (xhr, status, error) {
                 // Handle errors
-                console.error("Request failed with status: " + error);
+                console.error("Request failed with status: " + xhr);
             },
         });
         console.log(document.cookie);
@@ -70,7 +71,7 @@ $(document).on("submit", 'form', function (e) {
                         $('input[type="submit"').val(`Yes I am a ${btnlabel.text().toLowerCase()}`)
                     })
                 }
-            }, 1000)
+            }, 0)
         });
     }
 
@@ -106,6 +107,7 @@ function getLocation() {
 }
 
 function showPosition(position) {
+    console.log()
     axios.get('https://api.bigdatacloud.net/data/reverse-geocode-client', {
         params: {
             latitude: position.coords.latitude,
@@ -122,6 +124,9 @@ function showPosition(position) {
             $("#city").addClass("is-valid");
             $("#district").val(data.locality);
             $("#district").addClass("is-valid");
+        })
+        .catch(function (error) {
+            console.log(error);
         })
 }
 
