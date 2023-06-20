@@ -16,15 +16,14 @@ import model.Account;
  * @author dell
  */
 public class AccountDAO {
-
     Connection conn = null;
     public ArrayList<Account> getListAccount() {
+        ArrayList<Account> list = new ArrayList<>();
         try {
             String query = "SELECT * FROM Accounts";
             conn = new DBContext().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            ArrayList<Account> list = new ArrayList<>();
             while (rs.next()) {
                 Account a = new Account(rs.getString(1), rs.getString(2), rs.getString(3));
                 list.add(a);
@@ -33,11 +32,9 @@ public class AccountDAO {
             rs.close();
             ps.close();
             conn.close();
-            return list;
-
         } catch (Exception e) {
         }
-        return null;
+        return list;
     }
     
     public boolean initUserWithEmail(String email) {

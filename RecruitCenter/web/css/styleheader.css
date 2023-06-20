@@ -3,7 +3,6 @@
 }
 
 .header{
-    /* background-color: #0b2239; */
     color: white;
     justify-content: left;
     align-items: center;
@@ -24,12 +23,20 @@
     margin-left: 5%;
     display: flex;  
     margin-right: 0;
+    align-items: center;
 }
-
-.header-navigation ul li a{
+.header-collapse ul{
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+.header-collapse ul li{
+    width: fit-content;
+}
+.header-collapse ul li a{
     text-decoration: none;
     color: white;
-    width: 60px;
+    padding: 0;
 }
 .header-account{
     margin-left: auto;
@@ -84,7 +91,7 @@
     opacity: 0.6;
     font-size: 130%;
     margin: auto;
-    transition: 400ms ease;
+    transition: opacity 400ms ease;
 }
 .nav-item:hover i, .active i{
     opacity: 1;

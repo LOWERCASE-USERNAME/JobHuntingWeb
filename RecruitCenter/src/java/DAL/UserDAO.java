@@ -4,32 +4,58 @@
  */
 package DAL;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import model.Account;
+import model.User;
 
 /**
  *
  * @author dell
  */
 public class UserDAO {
-//    public ArrayList<Account> getListAccount() {
-//        try {
-//            String query = "SELECT * FROM Accounts";
-//            conn = new DBContext().getConnection();
-//            PreparedStatement ps = conn.prepareStatement(query);
-//            ResultSet rs = ps.executeQuery();
-//            ArrayList<Account> list = new ArrayList<>();
-//            while (rs.next()) {
-//                Account a = new Account(rs.getString(1), rs.getString(2), rs.getString(3));
-//                list.add(a);
-//                System.out.println(a);
-//            }
-//            return list;
-//
-//        } catch (Exception e) {
-//        }
-//        return null;
-//    }
+
+    Connection conn = null;
+
+    public User getUser(String ID) {
+        User user = null;
+        try {
+            String query = "SELECT * FROM Users WHERE ID = ?";
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, ID);
+            ResultSet rs = ps.executeQuery();
+            if (rs != null) {
+                user = new User(rs.getString("ID"), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"));
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+        }
+        return user;
+    }
+
+    public boolean updateUser(User user) {
+        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, Phone = ?, Address = ?, AccountType = ? WHERE ID = ?";
+        int line = 0;
+        try {
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, user.getFname());
+            ps.setString(2, user.getLname());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhonenum());
+            ps.setString(5, user.getAddress());
+            ps.setInt(6, user.getAccType());
+            ps.setString(7, user.getUserID());
+            line = ps.executeUpdate(); //rows affected
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            
+        }
+        return line == 1; //succeded or not
+    }
 }

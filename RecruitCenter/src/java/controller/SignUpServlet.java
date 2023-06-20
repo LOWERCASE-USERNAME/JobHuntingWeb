@@ -5,6 +5,7 @@
 package controller;
 
 import DAL.AccountDAO;
+import DAL.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import model.Account;
+import model.User;
 
 /**
  *
@@ -37,6 +39,7 @@ public class SignUpServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         AccountDAO accDAO = new AccountDAO();
+        UserDAO uDAO = new UserDAO();
         //get data from cookies
         String cookies = request.getParameter("Cookie");
         String decodedCookie = URLDecoder.decode(cookies, "UTF-8");
@@ -50,7 +53,7 @@ public class SignUpServlet extends HttpServlet {
 
         //get value of parameter
         String city = cookieArray[0];
-        String company = cookieArray[1];
+        String company = cookieArray[1]; //can be null
         String country = cookieArray[2];
         String district = cookieArray[3];
         String email = cookieArray[4];
@@ -60,10 +63,19 @@ public class SignUpServlet extends HttpServlet {
         String subdistrict = cookieArray[8];
         String username = cookieArray[9];
         String typeacc = cookieArray[10];
+        
         String id = signUpWithEmail(email); //get userID
         Account acc = new Account(id, username, pass);
-        accDAO.insertAccount(acc); //update all of the column with the same ID
+        accDAO.insertAccount(acc); //add to accounts table
         
+        //create address
+        String address = country + ", " + city + ", " + district + ", " + subdistrict;
+        int typeAccount = typeacc.equalsIgnoreCase("employees") ? 0 : 1;
+        //add to users table
+        User user = new User(id, fname, lname, email, address, typeAccount);
+        uDAO.updateUser(user);
+        
+        response.sendRedirect("welcome.html");
     }
 
     @Override
@@ -85,7 +97,7 @@ public class SignUpServlet extends HttpServlet {
         String id = accountDB.searchID(email);
         return id;
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";
