@@ -10,6 +10,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="./signup.css">
     <link rel="stylesheet" href="../../css/animate.css">
+    <link rel="stylesheet" href="../../css/toast.css">
     <!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> -->
 </head>
@@ -21,10 +22,10 @@
     <main>
         <div class="CTA-title text-center">Sign in to your online recruit center</div>
         <div id="form">
-            <form method="POST" novalidate>
+            <form method="POST" action="../../SignUpServlet">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input autocomplete="nope" id="email-input" type="email" class="form-control" name="email" value="Giang270903@gmail.com"
+                    <input autocomplete="nope" id="email-input" type="email" class="form-control" name="email"
                         placeholder="abc@def.com">
                     <small class="valid-feedback">Look good!</small>
                     <small class="invalid-feedback">Please select a valid email!
@@ -52,6 +53,7 @@
     <img src="../../assets/problem-solve.jpg" alt="background" id="img-bg-1">
     <img src="../../assets/idea-thinker.jpg" alt="background" id="img-bg-2">
 
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
         crossorigin="anonymous"></script>
@@ -66,6 +68,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/1d7268affb.js" crossorigin="anonymous"></script>
     <script src="auth.js"></script>
+    <script src="../../js/toast.js" defer></script>
 </body>
 
 </html>

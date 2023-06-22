@@ -36,24 +36,7 @@ public class AccountDAO {
         }
         return list;
     }
-    
-    public boolean initUserWithEmail(String email) {
-        try {
-            String insertQuery = "INSERT INTO Users(Email) VALUES(?)";
-            conn = new DBContext().getConnection();
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-            insertStatement.setString(1, email);
-            if (insertStatement.executeUpdate() == 1) {
-                return true;
-            }
-        } catch (Exception e) {
 
-        }
-        return false;
-    }
-    
-
-    
     public boolean insertAccount(Account acc){
         int lineAffected = 0;
         try {

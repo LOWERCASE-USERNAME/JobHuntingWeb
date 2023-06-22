@@ -10,14 +10,10 @@ import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.UUID;
 import model.Account;
 import model.User;
 
@@ -27,67 +23,80 @@ import model.User;
  */
 public class SignUpServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UUID userid = null;
+        
         PrintWriter out = response.getWriter();
         AccountDAO accDAO = new AccountDAO();
         UserDAO uDAO = new UserDAO();
-        //get data from cookies
-        String cookies = request.getParameter("Cookie");
-        String decodedCookie = URLDecoder.decode(cookies, "UTF-8");
-        String[] cookieArray = decodedCookie.split(";");
-        Arrays.sort(cookieArray);
-        for (int i = 0; i < cookieArray.length; i++) {
-            String[] temp = cookieArray[i].split("=");
-            cookieArray[i] = temp[1];
+        //get name of page is sending request to
+        String page = request.getParameter("page");
+        if(page.equalsIgnoreCase("signup")){
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            userid = signUpWithEmail(email);
+            request.getServletContext().setAttribute("userid", userid);
+            out.println(userid);
         }
+        
+        if(page.equalsIgnoreCase("queryname")){
+            String fname = (String)request.getParameter("firstname");
+            String lname = (String)request.getParameter("lastname");
+            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
+            User user = uDAO.getUserWithID(userid);
+            user.setFname(fname);
+            user.setLname(lname);
+            boolean successUpdateUser = false;
+            try{
+                successUpdateUser = uDAO.updateUser(user);
+            } catch(Exception e){
+                e.printStackTrace();
+                out.println(e);
+            }
+            out.println(user);
+            out.println(user.getUserID());
+            out.println(uDAO.getUserWithID(userid));
+            out.println(fname);
+            out.println(successUpdateUser);
+        }
+        
 //        out.println(Arrays.toString(cookieArray));
 
         //get value of parameter
-        String city = cookieArray[0];
-        String company = cookieArray[1]; //can be null
-        String country = cookieArray[2];
-        String district = cookieArray[3];
-        String email = cookieArray[4];
-        String fname = cookieArray[5];
-        String lname = cookieArray[6];
-        String pass = cookieArray[7];
-        String subdistrict = cookieArray[8];
-        String username = cookieArray[9];
-        String typeacc = cookieArray[10];
-        
-        String id = signUpWithEmail(email); //get userID
-        Account acc = new Account(id, username, pass);
-        accDAO.insertAccount(acc); //add to accounts table
-        
-        //create address
-        String address = country + ", " + city + ", " + district + ", " + subdistrict;
-        int typeAccount = typeacc.equalsIgnoreCase("employees") ? 0 : 1;
-        //add to users table
-        User user = new User(id, fname, lname, email, address, typeAccount);
-        uDAO.updateUser(user);
-        ServletContext sc = request.getServletContext();
-        sc.setAttribute("userid", user.getUserID());
-        sc.setAttribute("user", user);
-        sc.setAttribute("account", acc);
-//        response.sendRedirect();
-        response.getWriter().println("../welcome/welcome.html");
+//        String city = cookieArray[0];
+//        String company = cookieArray[1]; //can be null
+//        String country = cookieArray[2];
+//        String district = cookieArray[3];
+//        String email = cookieArray[4];
+//        String fname = cookieArray[5];
+//        String lname = cookieArray[6];
+//        String pass = cookieArray[7];
+//        String subdistrict = cookieArray[8];
+//        String username = cookieArray[9];
+//        String typeacc = cookieArray[10];
     }
 
+    public static void main(String[] args) {
+        UserDAO uDAO = new UserDAO();
+        boolean successUpdateUser = false;
+        User user = new User();
+        user.setUserID(UUID.fromString("681cdf66-f4d1-4d7b-b034-4c788c92d299"));
+        user.setFname("giang");
+        user.setAddress("412");
+        try{
+            successUpdateUser = uDAO.updateUser(user);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        System.out.println(successUpdateUser);
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-//        out.println("Hello");
         processRequest(request, response);
     }
 
@@ -98,11 +107,11 @@ public class SignUpServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    public static String signUpWithEmail(String email) {
-        AccountDAO accountDB = new AccountDAO();
-        accountDB.initUserWithEmail(email);
-        String id = accountDB.searchID(email);
-        return id;
+    public static UUID signUpWithEmail(String email) {
+        UserDAO userDB = new UserDAO();
+        userDB.initUserWithEmail(email);
+        User user = userDB.getUserWithEmail(email);
+        return user.getUserID();
     }
     
     @Override

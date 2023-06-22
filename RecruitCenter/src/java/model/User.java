@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.UUID;
+
 /**
  *
  * @author dell
@@ -13,10 +15,14 @@ public class User {
         EMPLOYER,
         EMPLOYEE
     }
-    private String userID, fname, lname, email, phonenum, address;
-    private AccountType accType;
+    private UUID userID;
+    private String fname, lname, email, phonenum, address;
+    private AccountType accType = AccountType.EMPLOYEE;
 
-    public User(String userID, String fname, String lname, String email, String address, int accType) {
+    public User() {
+    }
+    
+    public User(UUID userID, String fname, String lname, String email, String address, int accType) {
         this.userID = userID;
         this.fname = fname;
         this.lname = lname;
@@ -25,11 +31,11 @@ public class User {
         setAccType(accType);
     }
     
-    public String getUserID() {
+    public UUID getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(UUID userID) {
         this.userID = userID;
     }
 
@@ -80,6 +86,8 @@ public class User {
                 result = 0;
             case EMPLOYER:
                 result = 1;
+            default:
+                result = 0;
         }
         return result;
     }
