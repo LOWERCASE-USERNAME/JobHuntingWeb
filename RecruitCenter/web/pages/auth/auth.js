@@ -17,11 +17,9 @@ $(document).ready(function () {
 $(document).on("submit", 'form', function (e) {
     e.preventDefault();
     //submit the data to SignUpServlet.
-    // handleSubmitForm();
     const form = document.querySelector('form');
     var formData = $(this).serialize();
     console.log(formData);
-    // const encodedCookie = encodeURIComponent(document.cookie);
     $.ajax({
         url: form.action,
         method: form.method,
@@ -29,21 +27,25 @@ $(document).on("submit", 'form', function (e) {
             withCredentials: true
         },
         data: formData,
-        success: function (response) {
-            console.log(response + this.url);
-            onFormSubmitSuccess();
-//                window.location.href = response;
+        success: function (data, testStatus, jqXHR) {
+            console.log(data);
+            const page = $('input[name="page"]').val();
+            console.log(jqXHR.getResponseHeader("X-NextPage"));
+            if(page === 'signup'){ //page that display toast
+                if(jqXHR.getResponseHeader("X-NextPage") === "true"){
+                    onFormSubmitSuccess();
+                    createToast("success", "Email signup successful");
+                } else {
+                    createToast("error", "Email already exist. Try with another email");
+                }
+            } else {//page that is not
+                onFormSubmitSuccess();
+            }
         },
         error: function (xhr, status, error) {
             console.error("Request failed with status: " + xhr);
         }
     });
-    
-    //must fix this part
-
-
-    //every page submit
-    
 
     // window.history.pushState({}, '', `../personification/${URL}.html`);
 });

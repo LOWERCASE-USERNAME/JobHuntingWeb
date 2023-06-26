@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 import model.Account;
 
 /**
@@ -25,10 +26,9 @@ public class AccountDAO {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Account a = new Account(rs.getString(1), rs.getString(2), rs.getString(3));
+                Account a = new Account(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3));
                 list.add(a);
             }
-            
             rs.close();
             ps.close();
             conn.close();
@@ -41,10 +41,10 @@ public class AccountDAO {
         int lineAffected = 0;
         try {
             //insert
-            String insertQuery = "INSERT INTO Accounts VALUES(?, ?, ?)";
+            String insertQuery = "INSERT INTO Accounts VALUES(CAST(? as uniqueidentifier), ?, ?)";
             conn = new DBContext().getConnection();
             PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-            insertStatement.setString(1, acc.getId());
+            insertStatement.setString(1, acc.getId().toString());
             insertStatement.setString(2, acc.getUsername());
             insertStatement.setString(3, acc.getPassword());
             lineAffected = insertStatement.executeUpdate();
@@ -59,16 +59,34 @@ public class AccountDAO {
         return false;
     }
     
-    public String searchID(String email) {
-        String userID = null;
+    public boolean updateAccount(Account acc){
+        String query = "UPDATE Accounts SET username = ?, password = ? WHERE userid = CAST(? as uniqueidentifier)";
+        int line = 0;
         try {
-            String selectQuery = "SELECT ID FROM Users WHERE Email = ?";
+        conn = new DBContext().getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(3, acc.getId().toString());
+        ps.setString(1, acc.getUsername());
+        ps.setString(2, acc.getPassword());
+        line = ps.executeUpdate();
+        ps.close();
+        conn.close();
+        } catch (Exception e) {
+////            System.out.println(e);
+        }
+        return line == 1; //succeded or not
+    }
+    
+    public Account getAccountWithUsername(String username) {
+        Account acc = null;
+        try {
+            String selectQuery = "SELECT * FROM Accounts WHERE username = ?";
             conn = new DBContext().getConnection();
             PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
-            selectStatement.setString(1, email);
+            selectStatement.setString(1, username);
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
-                userID = rs.getString(1);
+                acc = new Account(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3)) ;
             }
             rs.close();
             selectStatement.close();
@@ -76,7 +94,7 @@ public class AccountDAO {
         } catch (Exception e) {
 
         }
-        return userID;
+        return acc;
     }
     
 }

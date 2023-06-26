@@ -80,11 +80,11 @@ public class UserDAO {
         return user;
     }
     
-    public boolean updateUser(User user) throws Exception{
-        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, AccountType = ? WHERE ID = CAST(? AS uniqueidentifier)";
+    public boolean updateUser(User user){
+        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, CurrentCompany = ?, AccountType = ? WHERE ID = CAST(? AS uniqueidentifier)";
 //        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, AccountType = ?";
         int line = 0;
-//        try {
+        try {
         conn = new DBContext().getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, user.getFname());
@@ -92,15 +92,15 @@ public class UserDAO {
         ps.setString(3, user.getEmail());
         ps.setString(4, user.getPhonenum());
         ps.setString(5, user.getAddress());
-        ps.setInt(6, user.getAccType());
-        ps.setString(7, user.getUserID().toString());
+        ps.setString(6, user.getCurrentCompany());
+        ps.setInt(7, user.getAccType());
+        ps.setString(8, user.getUserID().toString());
         line = ps.executeUpdate();
         ps.close();
         conn.close();
-//        } catch (Exception e) {
-//            throw(e);
-////            System.out.println(e);
-//        }
+        } catch (Exception e) {
+            
+        }
         return line == 1; //succeded or not
     }
     

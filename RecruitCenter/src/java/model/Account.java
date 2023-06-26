@@ -4,24 +4,30 @@
  */
 package model;
 
+import java.util.UUID;
+
 /**
  *
  * @author dell
  */
 public class Account {
-    private String id, username, password;
+    private UUID id;
+    private String username, password;
 
-    public Account(String id, String username, String password) {
+    public Account() {
+    }
+    
+    public Account(UUID id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }   
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -11,12 +11,12 @@ import java.util.UUID;
  * @author dell
  */
 public class User {
-    enum AccountType {
+    public enum AccountType {
         EMPLOYER,
         EMPLOYEE
     }
     private UUID userID;
-    private String fname, lname, email, phonenum, address;
+    private String fname, lname, email, phonenum, address, currentCompany;
     private AccountType accType = AccountType.EMPLOYEE;
 
     public User() {
@@ -105,6 +105,18 @@ public class User {
         }
     }
 
+    public void setAccType(AccountType t){
+        this.accType = t;
+    }
+
+    public String getCurrentCompany() {
+        return currentCompany;
+    }
+
+    public void setCurrentCompany(String currentCompany) {
+        this.currentCompany = currentCompany;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "userID=" + userID + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", phonenum=" + phonenum + ", address=" + address + ", accType=" + accType + '}';

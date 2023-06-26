@@ -46,7 +46,7 @@
                         
                             <div class="header-CTA order-2 order-lg-2">
                                 <button class="btn-warning"><a href="./pages/auth/login.html">Login</a></button>
-                                <button class="btn-danger"><a href="./pages/auth/signup.html">Sign Up</a></button>
+                                <button class="btn-danger"><a href="./pages/auth/signup.jsp">Sign Up</a></button>
                             </div>
                     </c:when>
                     <c:otherwise>

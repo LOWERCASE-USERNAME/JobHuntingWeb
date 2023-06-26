@@ -1,11 +1,4 @@
-/* Import Google font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+
 :root {
   --dark: #34495E;
   --light: #ffffff;
@@ -19,6 +12,7 @@
   position: fixed;
   top: 30px;
   right: 20px;
+  z-index: 100;
 }
 .notifications :where(.toast, .column) {
   display: flex;
@@ -35,6 +29,7 @@
   background: var(--light);
   justify-content: space-between;
   animation: show_toast 0.3s ease forwards;
+  color: black;
 }
 @keyframes show_toast {
   0% {
