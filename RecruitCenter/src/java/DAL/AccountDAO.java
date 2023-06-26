@@ -37,7 +37,7 @@ public class AccountDAO {
         return list;
     }
 
-    public boolean insertAccount(Account acc){
+    public boolean insertAccount(Account acc) throws Exception{
         int lineAffected = 0;
         try {
             //insert
@@ -52,7 +52,7 @@ public class AccountDAO {
             insertStatement.close();
             conn.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw(e);
         } 
         //return true if suceeded
         if(lineAffected == 1) return true;
@@ -84,6 +84,26 @@ public class AccountDAO {
             conn = new DBContext().getConnection();
             PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
             selectStatement.setString(1, username);
+            ResultSet rs = selectStatement.executeQuery();
+            while (rs.next()) {
+                acc = new Account(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3)) ;
+            }
+            rs.close();
+            selectStatement.close();
+            conn.close();
+        } catch (Exception e) {
+
+        }
+        return acc;
+    }
+    
+    public Account getAccountWithID(UUID ID) {
+        Account acc = null;
+        try {
+            String selectQuery = "SELECT * FROM Accounts WHERE userID = CAST (? AS uniqueidentifier)";
+            conn = new DBContext().getConnection();
+            PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
+            selectStatement.setString(1, ID.toString());
             ResultSet rs = selectStatement.executeQuery();
             while (rs.next()) {
                 acc = new Account(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3)) ;

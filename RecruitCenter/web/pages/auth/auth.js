@@ -31,14 +31,21 @@ $(document).on("submit", 'form', function (e) {
             console.log(data);
             const page = $('input[name="page"]').val();
             console.log(jqXHR.getResponseHeader("X-NextPage"));
-            if(page === 'signup'){ //page that display toast
+            if(page === 'signup'){ 
                 if(jqXHR.getResponseHeader("X-NextPage") === "true"){
                     onFormSubmitSuccess();
                     createToast("success", "Email signup successful");
                 } else {
                     createToast("error", "Email already exist. Try with another email");
                 }
-            } else {//page that is not
+            } else if(page === 'queryusername') {
+                if(jqXHR.getResponseHeader("X-NextPage") === "true"){
+                    window.location.href = "../welcome/welcome.html";
+                    createToast("success", "You have finish your personification");
+                } else {
+                    createToast("error", "Username already exist. Try with another username");
+                }
+            } else {
                 onFormSubmitSuccess();
             }
         },

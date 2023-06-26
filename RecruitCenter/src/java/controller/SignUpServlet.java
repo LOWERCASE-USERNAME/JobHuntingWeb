@@ -58,9 +58,13 @@ public class SignUpServlet extends HttpServlet {
             Account newAcc = new Account();
             newAcc.setId(userid);
             newAcc.setPassword(password);
-            successUpdateAccount = accDAO.insertAccount(newAcc);
+            try {
+                successUpdateAccount = accDAO.insertAccount(newAcc);
+            } catch (Exception e) {
+                out.println(e);
+            }
+            out.println(successUpdateAccount);
             request.getSession().setAttribute("userid", userid);
-            
         }
         //request from page queryname, change href to page querylocation
         if(page.equalsIgnoreCase("queryname")){
@@ -111,6 +115,7 @@ public class SignUpServlet extends HttpServlet {
                     accounttype = User.AccountType.EMPLOYER;
                     break;
             }
+            out.println(accounttype);
             userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             
@@ -118,6 +123,7 @@ public class SignUpServlet extends HttpServlet {
             user.setCurrentCompany(company);
             user.setAccType(accounttype);
             try{
+                out.println(user.getAccType());
                 successUpdateUser = uDAO.updateUser(user);
             } catch(Exception e){ //output to toast
                 e.printStackTrace();
@@ -128,19 +134,21 @@ public class SignUpServlet extends HttpServlet {
         //request from page queryusername, change href to page welcome
         if(page.equalsIgnoreCase("queryusername")){
             String username = request.getParameter("username");
-            Account acc;
             /*TODO: check if username is already occupied*/
-            if((acc = accDAO.getAccountWithUsername(username)) != null){//username already occupied
+            if(accDAO.getAccountWithUsername(username)!= null){//username already occupied
                 //send toast
                 request.getSession().setAttribute("usernameExisted", "true");
                 response.setHeader("X-NextPage", "false");
                 return;
             } else {
                 request.getSession().setAttribute("usernameExisted", "false");
+                
                 response.setHeader("X-NextPage", "true"); 
             }
-//            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            Account acc = accDAO.getAccountWithID(userid);
             acc.setUsername(username);
+            request.getSession().setAttribute("account", acc);
             try{
                 successUpdateAccount = accDAO.updateAccount(acc);
             } catch(Exception e){

@@ -84,10 +84,13 @@ public class User {
         switch(this.accType){
             case EMPLOYEE: 
                 result = 0;
+                break;
             case EMPLOYER:
                 result = 1;
+                break;
             default:
                 result = 0;
+                break;
         }
         return result;
     }

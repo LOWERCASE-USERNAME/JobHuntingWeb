@@ -42,7 +42,7 @@
                 </div>
 
                 <c:choose>
-                    <c:when test = "${applicationScope.userid == null}">
+                    <c:when test = "${sessionScope.userid == null}">
                         
                             <div class="header-CTA order-2 order-lg-2">
                                 <button class="btn-warning"><a href="./pages/auth/login.html">Login</a></button>
@@ -53,7 +53,7 @@
                         <div class="header-account order-1 order-lg-1">
                             <div id="account-thumb" class="dropdown">
                                 <div class="dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown">
-                                    <c:out value="${applicationScope.account.getUsername().substring(0, 1)}"></c:out>
+                                    <c:out value="${sessionScope.account.getUsername().substring(0, 1)}"></c:out>
                                 </div>
                                 <div class="dropdown-menu" aria-labelledby="accountDropdown">
                                     <a class="dropdown-item" href="#">Action</a>
