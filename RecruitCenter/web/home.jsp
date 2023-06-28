@@ -1,6 +1,5 @@
-
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +8,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
         <link rel="stylesheet" href="css/styleheader.css">
         <link rel="stylesheet" href="css/stylesearch.css">
         <link rel="stylesheet" href="css/styleresult.css">
@@ -19,54 +19,62 @@
 
     <body>
         <header class="container-fluid">
-            <nav class="header navbar navbar-expand-lg navbar-light  sticky-top">
+            <nav class="header navbar navbar-expand-lg navbar-light bg-light">
                 <div class="header-logo order-1 order-lg-0">
                     <a href="pages/login/login.html" class="navbar-brand">recruitCenter...</a>
                 </div>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                        aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+                        data-target="#navigation" aria-controls="navigation" aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="header-collapse collapse navbar-collapse order-3 order-lg-0" id="navigation">
                     <ul class="navbar-nav">
-                        <li class="nav-item active"><i class="fa-solid fa-house"></i><a class="nav-link" href="">Home</a>
+                        <li class="nav-item active"><i class="fa-solid fa-house"></i><a class="nav-link"
+                                                                                        href="">Home</a>
                         </li>
-                        <li class="nav-item"><i class="fa-solid fa-briefcase"></i><a class="nav-link" href="">Jobs</a></li>
-                        <li class="nav-item"><i class="fa-solid fa-building"></i><a class="nav-link" href="">Companies</a>
+                        <li class="nav-item"><i class="fa-solid fa-briefcase"></i><a class="nav-link"
+                                                                                     href="">Jobs</a></li>
+                        <li class="nav-item"><i class="fa-solid fa-building"></i><a class="nav-link"
+                                                                                    href="">Companies</a>
                         </li>
-                        <li class="nav-item"><i class="fa-solid fa-message"></i><a class="nav-link" href="">Messages</a>
+                        <li class="nav-item"><i class="fa-solid fa-message"></i><a class="nav-link"
+                                                                                   href="">Messages</a>
                         </li>
-                        <li class="nav-item"><i class="fa-solid fa-bell"></i><a class="nav-link" href="">Notification</a>
+                        <li class="nav-item"><i class="fa-solid fa-bell"></i><a class="nav-link"
+                                                                                href="">Notification</a>
                         </li>
                     </ul>
                 </div>
-
+                <!--TODO: may have to change this condition soon -->
                 <c:choose>
-                    <c:when test = "${sessionScope.userid == null}">
-                        
-                            <div class="header-CTA order-2 order-lg-2">
-                                <button class="btn-warning"><a href="./pages/auth/login.html">Login</a></button>
-                                <button class="btn-danger"><a href="./pages/auth/signup.jsp">Sign Up</a></button>
-                            </div>
+                    <c:when test="${sessionScope.userid == null and empty cookie['userid'].value}">
+                        <div class="header-CTA order-2 order-lg-2">
+                            <button class="btn-warning"><a href="./pages/auth/login.jsp">Login</a></button>
+                            <button class="btn-danger"><a href="./pages/auth/signup.jsp">Sign Up</a></button>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <div class="header-account order-1 order-lg-1">
                             <div id="account-thumb" class="dropdown">
-                                <div class="dropdown-toggle" id="accountDropdown" role="button" data-toggle="dropdown">
-                                    <c:out value="${sessionScope.account.getUsername().substring(0, 1)}"></c:out>
-                                </div>
-                                <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-toggle" id="accountDropdown" role="button"
+                                     data-toggle="dropdown">
+                                    <c:out value="${cookie['username'].value.substring(0, 1)}"></c:out>
+                                    </div>
+                                    <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="header-CTA order-2 order-lg-2">
-                            <button style="background-color: #6c63ff;"><a href="./pages/employer/JobPosting.html">Post a Job</a></button>
-                            <button style="background-color: #ff6347;"><a href="./pages/auth/jobSearching.html">Want a Job</a></button>
-                        </div>
+                            <div class="header-CTA order-2 order-lg-2">
+                                <button style="background-color: #6c63ff;"><a
+                                        href="./pages/user/employer/JobPosting.jsp">Post a Job</a></button>
+                                <button style="background-color: #ff6347;"><a href="./pages/user/employee/jobSearching.jsp">Want
+                                        a Job</a></button>
+                            </div>
                     </c:otherwise>
                 </c:choose>
 
@@ -79,8 +87,8 @@
                             <label class="input-group-text" for="job-search">What</label>
                         </div>
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                        <input id="job-search" name="job-search" class="form-control" type="text" placeholder="Search..."
-                               list="jobsList" autocomplete="nope">
+                        <input id="job-search" name="job-search" class="form-control" type="text"
+                               placeholder="Search..." list="jobsList" autocomplete="nope">
                         <datalist id="jobsList">
                         </datalist>
                     </div>
@@ -90,8 +98,9 @@
                             <label class="input-group-text" for="city-search">City</label>
                         </div>
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                        <input list="cityList" id="city-search" name="city-search" class="form-control location-search"
-                               type="text" placeholder="City..." autocomplete="nope" data-type="p">
+                        <input list="cityList" id="city-search" name="city-search"
+                               class="form-control location-search" type="text" placeholder="City..."
+                               autocomplete="nope" data-type="p">
                         <datalist id="cityList">
                         </datalist>
                     </div>
@@ -100,8 +109,9 @@
                             <label class="input-group-text" for="dist-search">District</label>
                         </div>
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                        <input list="distList" id="dist-search" name="dist-search" class="form-control location-search"
-                               type="text" placeholder="District..." autocomplete="nope" data-type="d">
+                        <input list="distList" id="dist-search" name="dist-search"
+                               class="form-control location-search" type="text" placeholder="District..."
+                               autocomplete="nope" data-type="d">
                         <datalist id="distList">
                         </datalist>
                     </div>
@@ -110,8 +120,9 @@
                             <label class="input-group-text" for="ward-search">Wards</label>
                         </div>
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
-                        <input list="wardList" id="ward-search" name="ward-search" class="form-control location-search"
-                               type="text" placeholder="Wards..." autocomplete="nope" data-type="w">
+                        <input list="wardList" id="ward-search" name="ward-search"
+                               class="form-control location-search" type="text" placeholder="Wards..."
+                               autocomplete="nope" data-type="w">
                         <datalist id="wardList">
                         </datalist>
                     </div>
@@ -161,6 +172,15 @@
                         <option value="3">Temporary</option>
                         <option value="4">Contract</option>
                         <option value="5">Freelance</option>
+                    </select>
+                    <select class="form-control">
+                        <option selected disabled hidden>Education Level</option>
+                        <option value="1">Secondary school</option>
+                        <option value="2">High school</option>
+                        <option value="3">College</option>
+                        <option value="4">Bachelor</option>
+                        <option value="5">Master</option>
+                        <option value="6">PhD</option>
                     </select>
                     <select class="form-control">
                         <option selected disabled hidden>Allow remote</option>

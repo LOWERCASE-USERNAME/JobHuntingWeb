@@ -126,7 +126,7 @@ function showPosition(position) {
         params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            localityLanguage: 'vi'
+            localityLanguage: 'v`i'
         }
     })
         .then(function (response) {

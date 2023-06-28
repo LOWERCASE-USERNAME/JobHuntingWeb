@@ -1,0 +1,73 @@
+html{
+    overflow: hidden;
+}
+h1{
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    /* margin-top: 200px; */
+}
+form{
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+}
+h1,form{
+    transform: translate(-50%);
+}
+label{
+    font-size: 110%;
+}
+
+input{
+    width: 100%;
+}
+
+.form-group{
+    margin-top: 10px;
+}
+.input-group{
+    position: relative;
+}
+form i{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type="submit"]{
+    width: 60%;
+}
+
+.utils{
+    display: flex;
+}
+.utils a{
+    margin-left: auto;
+}
+img{
+    z-index: -101;
+    position: fixed;
+}
+img:nth-of-type(1){
+    top: 0%;
+    left: -5%;
+    width: 400px;
+}
+
+img:nth-of-type(2){
+    top: -10%;
+    right: 0%;
+    width: 400px;
+}
+
+img:nth-of-type(3){
+    bottom: 0%;
+    left: 40%;
+    width: 300px;
+}
