@@ -56,9 +56,12 @@
             </div>
         </fieldset>
 
+        <button type="submit" class="btn">Submit</button>
+
         <fieldset class="form">
             <legend class="heading">Job Information</legend>
             <div class="form-group">
+                <!-- TODO: put a level at here eg Fresher Junior -->
                 <label for="job_title">Job Title: </label>
                 <input id="job_title" type="text" class="form-control" name="job_title"
                     placeholder="Software Developer" required>
@@ -78,13 +81,30 @@
                 <label for="job_field">Field: </label>
                 <small>Not required, but this will help your job reach a wider audience</small>
                 <select id="job_field" type="text" class="form-select" name="job_field">
-                    <option value=""></option>
+                    <!-- TODO: find field on internet -->
+                    <option value="">Agriculture, Food & Natural Resources</option>
+                    <option value="">Architecture & Construction</option>
+                    <option value="">Arts, Audio/Video Technology & Communications</option>
+                    <option value="">Business Management & Administration</option>
+                    <option value="">Education & Training</option>
+                    <option value="">Finance</option>
+                    <option value="">Government & Public Administration</option>
+                    <option value="">Health Science</option>
+                    <option value="">Hospitality & Tourism</option>
+                    <option value="">Human Services</option>
+                    <option value="">Information Technology</option>
+                    <option value="">Law, Public Safety, Corrections & Security</option>
+                    <option value="">Manufacturing</option>
+                    <option value="">Marketing</option>
+                    <option value="">Science, Technology, Engineering & Mathematics</option>
+                    <option value="">Transportation, Distribution & Logistics</option>
                 </select>
             </div>
 
             <!-- TODO: figure out how to do the address thingy -->
             <div class="form-group">
                 <label for="job_location">Job Location: </label>
+                <!-- create four datalist to recommend and one input which is readonly -->
                 <input id="job_location" type="text" class="form-control" name="job_location" placeholder=""
                     required>
             </div>
@@ -94,9 +114,9 @@
                     required>
                 <div class="form-check-inline">
                     <input class="form-check-input" type="checkbox" name="neg" id="neg" value="negotiable">
-                    <label class="form-check-label" for="neg">Negotiable</label>
+                    <label class="form-check-label" for="neg">Negotiable</label><!-- tick here if negotiable -->
                 </div>
-                <!-- tick here if negotiable -->
+                
             </div>
             <div class="form-group">
                 <label for="job_expire">Expiration Date: </label>
@@ -134,6 +154,7 @@
                     <option value="3">Both</option>
                 </select>
             </div>
+            <hr>
             <div class="form-group">
                 <label for="job_desc">Job Descriptions: </label>
                 <textarea class="form-control" id="job_desc" rows="10"></textarea>
@@ -146,6 +167,7 @@
                 <label for="job_benefit">Job Benefits: </label>
                 <textarea class="form-control" id="job_benefit" rows="10"></textarea>
             </div>
+            <!-- small: three of this will be aggregated together to create a overall description or you can upload a pdf to heree -->
         </fieldset>
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -159,4 +181,19 @@
         crossorigin="anonymous"></script>
 </body>
 
-</html>
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+
+
+.template {
+    width: 297mm;
+    /* height: 210mm; */
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#thumbnail img{
+    width: 200px;height: 200px;
+}
+#name{
+    font-size: 150%;
+}
+#headline{
+    font-size: 130%;
+    color: teal;
+}
+.img-circle {
+    border-radius: 50%;
+}
+
+.template>div {
+    /* display: inline-block; */
+    width: fit-content;
+    outline: none;
+}
+
+.template ul {
+    outline: none;
+}
+
+.template div:hover,
+.template ul:hover,
+.template div:focus,
+.template ul:focus,
+.template div:active,
+.template ul:active {
+    outline: none;
+    /* outline: #212121 dashed 1px; */
+}
+
+.edu-record-subject ul,
+.skill ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.edu-record-subject li {
+    flex-basis: 33%;
+    width: fit-content;
+}
+
+.skill-list li {
+    flex-basis: 45%;
+    /* width: fit-content; */
+}
+
+input[type="range"] {
+    width: 267px;
+    margin: 0 auto;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+        overflow: hidden;
+        width: 267px;
+        -webkit-appearance: none;
+        background-color: white;
+    }
+
+    input[type='range']::-webkit-slider-runnable-track {
+        height: 20px;
+        border-radius: 20px;
+        -webkit-appearance: none;
+        /* color: ; */
+        margin-top: -1px;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        width: 5px;
+        -webkit-appearance: none;
+        height: 20px;
+        /* border-radius: 50%; */
+        /* cursor: ew-resize; */
+        background: transparent;
+        box-shadow: -267px 0 0 267px tomato;
+    }
+
+}

@@ -35,7 +35,8 @@ body{
     font-weight: bold;
 }
 
-.form .btn {
+.form-container .btn {
+    background-color: #ffffff;
     margin-top: 2em;
     align-self: center;
     padding: 0.7em;
@@ -48,13 +49,13 @@ body{
     box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
 }
 
-.form .btn:hover {
+.form-container .btn:hover {
     box-shadow: 6px 6px 0px #969696,
         -3px -3px 10px #ffffff;
     transform: translateX(-0.5em) translateY(-0.5em);
 }
 
-.form .btn:active {
+.form-container .btn:active {
     transition: .2s;
     transform: translateX(0em) translateY(0em);
     box-shadow: none;

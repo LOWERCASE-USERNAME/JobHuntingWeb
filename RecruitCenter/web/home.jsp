@@ -72,8 +72,9 @@
                             <div class="header-CTA order-2 order-lg-2">
                                 <button style="background-color: #6c63ff;"><a
                                         href="./pages/user/employer/JobPosting.jsp">Post a Job</a></button>
-                                <button style="background-color: #ff6347;"><a href="./pages/user/employee/jobSearching.jsp">Want
+                                <button style="background-color: #ff6347;"><a href="./pages/user/employee/CVbuilder.jsp">Want
                                         a Job</a></button>
+                                        <!-- This is more of a post your cv type -->
                             </div>
                     </c:otherwise>
                 </c:choose>
