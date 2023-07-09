@@ -26,6 +26,9 @@ public class SignInServlet extends HttpServlet {
         String username = request.getParameter("username_login");
         String password = request.getParameter("pwd_login");
         String remember = request.getParameter("remember");
+        if(remember == null){
+            remember = "";
+        }
         
         AccountDAO accDAO = new AccountDAO();
         Account rtAccount = accDAO.getAccountWithUsername(username); //retrieve account
@@ -61,8 +64,8 @@ public class SignInServlet extends HttpServlet {
                 request.getSession().setAttribute("loginSuccess", false);//login fail, password wrong
             }
         }
-//        request.getRequestDispatcher("/pages/auth/login.jsp").forward(request, response);
-        response.sendRedirect("/RecruitCenter/pages/auth/login.jsp");
+ //       request.getRequestDispatcher("/RecruitCenter/pages/auth/login.jsp").forward(request, response);
+       response.sendRedirect("/RecruitCenter/pages/auth/login.jsp");
     }
 
     @Override

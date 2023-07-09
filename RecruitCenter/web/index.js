@@ -30,9 +30,8 @@ $(document).ready(function () {
     var searchTerm = $(this).val();
     var type = $(this).attr('data-type');
     const container = $(this).next();
-    autocompleteLocation(searchTerm, type, container);
+    autocompleteLocation(searchTerm, type,container);
   })
-
   $('#city-search').on('change', (e) => {
     let value = e.target.value;
     let selectedCity = data.find(function (city) {
@@ -58,7 +57,7 @@ $(document).ready(function () {
 })
 
 
-function autocompleteLocation(searchTerm, type, container, usingCode = false, falling = false) {
+function autocompleteLocation(searchTerm, type, container, usingCode = false, falling = false) { //I actually don't remember why I must do api call from the server side 
   const baseURL = 'ServerSideRequest';
   axios.get(baseURL, {
     params: {

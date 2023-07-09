@@ -11,9 +11,7 @@
         <link rel="stylesheet" href="../../css/toast.css">
 </head>
 <body>
-    <c:remove scope="session" var="loginSuccess"/>
-    <c:remove scope="session" var="accountExisted"/>
-    <c:remove scope="session" var="passwordIncorrect"/>
+    
     <div class="notifications"></div>
     <h1>Back to your professional career hub</h1>
     <form action="../../SignInServlet" method="post">
@@ -73,7 +71,9 @@
                 }, 5000);
             </c:otherwise>
         </c:choose>
-        
+        <c:remove scope="session" var="loginSuccess"/>
+        <c:remove scope="session" var="accountExisted"/>
+        <c:remove scope="session" var="passwordIncorrect"/>
     </script>
 </body>
 </html>

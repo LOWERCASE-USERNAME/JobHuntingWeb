@@ -17,6 +17,8 @@ import java.util.logging.Logger;
  */
 public class SkillAndTitleDAO {
     Connection conn = null;
+    
+    
     public ArrayList<String> searchJobwithTerm(String term){
         ArrayList<String> sList = new ArrayList<>();
         //chinh sua thanh JobTitle
@@ -35,5 +37,23 @@ public class SkillAndTitleDAO {
             Logger.getLogger(SkillAndTitleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sList;
+    }
+    
+    public String getSkillIDwithName(String skillName){
+        String id = "";
+        String query = "SELECT DISTINCT ID FROM SkillandTitle WHERE SkillandTitle LIKE ?";
+        try {
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, skillName);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                id = rs.getString(1);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(SkillAndTitleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
     }
 }

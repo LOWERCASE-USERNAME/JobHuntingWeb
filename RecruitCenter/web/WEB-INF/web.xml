@@ -16,6 +16,10 @@
         <servlet-name>SignInServlet</servlet-name>
         <servlet-class>controller.SignInServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JobServlet</servlet-name>
+        <servlet-class>controller.JobServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>SignInServlet</servlet-name>
         <url-pattern>/SignInServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JobServlet</servlet-name>
+        <url-pattern>/JobServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
