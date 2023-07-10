@@ -15,6 +15,7 @@
     </head>
 
     <body>
+        <c:out value="${sessionScope.userid}"></c:out>
         <form action="../../../JobServlet" class="form-container" novalidate="true" method="POST">
             <fieldset class="form">
                 <legend class="heading">Company Information</legend>
@@ -182,15 +183,15 @@
                     </select>
                 </div>
                 <hr>
-                <div class="form-group">
+                <div class="form-group" spellcheck="false">
                     <label for="job_desc">Job Descriptions: </label>
                     <textarea class="form-control" name="job_desc" id="job_desc" rows="10"></textarea>
                 </div>
-                <div class="form-group">
+                <div class="form-group" spellcheck="false">
                     <label for="job_qualification">Job Qualifications: </label>
                     <textarea class="form-control" name="job_qualification" id="job_qualification" rows="10"></textarea>
                 </div>
-                <div class="form-group">
+                <div class="form-group" spellcheck="false">
                     <label for="job_benefit">Job Benefits: </label>
                     <textarea class="form-control" name="job_benefit" id="job_benefit" rows="10"></textarea>
                 </div>

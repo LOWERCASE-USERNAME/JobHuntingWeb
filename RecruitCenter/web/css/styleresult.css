@@ -1,8 +1,10 @@
 main{
     margin-top: 40px;
 }
-.header-search-result{
-    background-color: tomato;
-    height: 1000px;
-    width: 100%;
+.clamped-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 10; /* Set the desired number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

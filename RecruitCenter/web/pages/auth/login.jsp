@@ -25,7 +25,7 @@
         <div class="form-group">
             <label for="pwd_login">Password: </label>
             <div class="input-group">
-                <input id="pwd_login" type="password" class="form-control" name="pwd_login" required>
+                <input id="pwd_login" type="password" class="form-control" name="pwd_login" required value="Giang270903">
                 <i class="fa-solid fa-lock-open"></i>
             </div>
         </div>
@@ -64,11 +64,11 @@
                 </c:if>
             </c:when>
             <c:otherwise>
-                <c:set scope="session" var="userid" value="${sessionScope.SignInAcc.id}"/>
+                <c:set scope="application" var="userid" value="${sessionScope.SignInAcc.id}"/>
                 createToast("success", "Login successful.");
                 setTimeout(()=>{
                     document.location.href = "../../home.jsp";
-                }, 5000);
+                }, 50);
             </c:otherwise>
         </c:choose>
         <c:remove scope="session" var="loginSuccess"/>

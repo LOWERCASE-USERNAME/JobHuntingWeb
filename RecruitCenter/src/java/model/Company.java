@@ -76,6 +76,11 @@ public class Company {
     public void setCompanyNumOfRatings(int CompanyNumOfRatings) {
         this.CompanyNumOfRatings = CompanyNumOfRatings;
     }
+
+    @Override
+    public String toString() {
+        return "Company{" + "CompanyID=" + CompanyID + ", CompanyName=" + CompanyName + ", CompanyWebsite=" + CompanyWebsite + ", CompanyAddress=" + CompanyAddress + ", CompanyReviews=" + CompanyReviews + ", CompanyRatings=" + CompanyRatings + ", CompanyNumOfRatings=" + CompanyNumOfRatings + '}';
+    }
     
     
 }

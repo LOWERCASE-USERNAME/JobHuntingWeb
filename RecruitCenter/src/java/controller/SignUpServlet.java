@@ -64,13 +64,13 @@ public class SignUpServlet extends HttpServlet {
                 out.println(e);
             }
             out.println(successUpdateAccount);
-            request.getSession().setAttribute("userid", userid);
+            request.getServletContext().setAttribute("userid", userid);
         }
         //request from page queryname, change href to page querylocation
         if(page.equalsIgnoreCase("queryname")){
             String fname = (String)request.getParameter("firstname");
             String lname = (String)request.getParameter("lastname");
-            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             user.setFname(fname);
             user.setLname(lname);
@@ -91,7 +91,7 @@ public class SignUpServlet extends HttpServlet {
             if(subdistrict == null){//if subdistrict input is null
                 subdistrict = "\b\b"; //backspace two character
             }
-            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             user.setAddress(country + ", " + city + ", " + district + ", " + subdistrict);
             try{
@@ -116,7 +116,7 @@ public class SignUpServlet extends HttpServlet {
                     break;
             }
             out.println(accounttype);
-            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             
             /*TODO: add to company*/
@@ -145,7 +145,7 @@ public class SignUpServlet extends HttpServlet {
                 
                 response.setHeader("X-NextPage", "true"); 
             }
-            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
             Account acc = accDAO.getAccountWithID(userid);
             acc.setUsername(username);
             request.getSession().setAttribute("account", acc);

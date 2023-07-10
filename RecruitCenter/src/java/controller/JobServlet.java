@@ -95,27 +95,27 @@ public class JobServlet extends HttpServlet {
         String job_benefit_param = request.getParameter("job_benefit");
 
         //testing
-//        out.println("company_param = " + company_param);
-//        out.println("company_size_param = " + company_size_param);
-//        out.println("company_website_param = " + company_website_param);
-//        out.println("contact_name_param = " + contact_name_param);
-//        out.println("contact_email_param = " + contact_email_param);
-//        out.println("contact_phone_param = " + contact_phone_param);
-//        out.println("job_title_param = " + job_title_param);
-//        out.println("job_type_param = " + job_type_param);
-//        out.println("job_field_param = " + job_field_param);
-//        out.println("job_location_param = " + job_location_param);
-//        out.println("job_salary_param = " + job_salary_param);
-//        out.println("neg_param = " + neg_param);
-//        out.println("job_expire_param = " + job_expire_param);
-//        out.println("job_skill_param = " + job_skill_param);
-//        out.println("job_gender_param = " + job_gender_param);
-//        out.println("job_degree_param = " + job_degree_param);
-//        out.println("job_workplace_param = " + job_workplace_param);
-//        out.println("job_desc_param = " + job_desc_param);
-//        out.println("job_qualification_param = " + job_qualification_param);
-//        out.println("job_benefit_param = " + job_benefit_param);
-
+        out.println("company_param = " + company_param);
+        out.println("company_size_param = " + company_size_param);
+        out.println("company_website_param = " + company_website_param);
+        out.println("contact_name_param = " + contact_name_param);
+        out.println("contact_email_param = " + contact_email_param);
+        out.println("contact_phone_param = " + contact_phone_param);
+        out.println("job_title_param = " + job_title_param);
+        out.println("job_type_param = " + job_type_param);
+        out.println("job_field_param = " + job_field_param);
+        out.println("job_location_param = " + job_location_param);
+        out.println("job_salary_param = " + job_salary_param);
+        out.println("neg_param = " + neg_param);
+        out.println("job_expire_param = " + job_expire_param);
+        out.println("job_skill_param = " + job_skill_param);
+        out.println("job_gender_param = " + job_gender_param);
+        out.println("job_degree_param = " + job_degree_param);
+        out.println("job_workplace_param = " + job_workplace_param);
+        out.println("job_desc_param = " + job_desc_param);
+        out.println("job_qualification_param = " + job_qualification_param);
+        out.println("job_benefit_param = " + job_benefit_param);
+        
         //create a recruitment object
         Recruitments rc = new Recruitments();
         rc.setContactName(contact_name_param);
@@ -139,8 +139,10 @@ public class JobServlet extends HttpServlet {
             }catch(Exception e){
                 e.printStackTrace(out);
             }
+            out.println(comp.toString());
         } else {
             rc.setCompanyID(existedCompany.getCompanyID()); //if exist then set company id into recruitments record
+            out.println(existedCompany.toString());
         }
         rc.setFieldID(job_field_param);
         rc.setLocation(job_location_param);
@@ -153,35 +155,41 @@ public class JobServlet extends HttpServlet {
         rc.setPostedDate(new java.sql.Date(System.currentTimeMillis()));
         
         //TODO: expire date resolve
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        java.util.Date utilDate = null;
-        try {
-            utilDate = format.parse(job_expire_param);
-        } catch (Exception e) {
-            // Handle the parse exception appropriately
-            e.printStackTrace(out);
+        if(!job_expire_param.equals("")){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            java.util.Date utilDate = null;
+            try {
+                utilDate = format.parse(job_expire_param);
+            } catch (Exception e) {
+                // Handle the parse exception appropriately
+                e.printStackTrace(out);
+            }
+            Date expireSQLDate = new Date(utilDate.getTime());
+
+            rc.setExpDate(expireSQLDate);
         }
-        Date expireSQLDate = new Date(utilDate.getTime());
-        
-        rc.setExpDate(expireSQLDate);
-        rc.setSkillAndTitleID(UUID.fromString(job_skill_param));
+        if(!job_skill_param.equals("None")){
+            rc.setSkillAndTitleID(UUID.fromString(job_skill_param));
+        }
         rc.setGender(job_gender_param);
         rc.setDegree(Degree.DEGREES[job_degree_param]);
-        rc.setJobDescription(
-                "Company size: " + company_size_param + "\n"
-                + "Preferred Workplace: " + Workplace.WORKPLACES[job_workplace_param]  + "\n"
-                + "Job Description:\n " + job_desc_param + "\n"
-                + "Job Qualification: \n" + job_qualification_param + "\n"
-                + "Job Benefit: \n" + job_benefit_param + "\n"
+        rc.setJobDescription("Company size: " + company_size_param + "<br>"
+                + "Preferred Workplace: " + Workplace.WORKPLACES[job_workplace_param]  + "<br>"
+                + "Job Description:\n " + job_desc_param + "<br>"
+                + "Job Qualification: \n" + job_qualification_param + "<br>"
+                + "Job Benefit: \n" + job_benefit_param + "<br>"
         );
         
         out.println(rc.toString());
+        
         //send it to the server
         try {
             rcDAO.insertRecruitment(rc);
         } catch (Exception ex) {
             ex.printStackTrace(out);
         }
+        out.println(request.getSession().isNew());
+        response.sendRedirect("home.jsp");
     }
 
     @Override
