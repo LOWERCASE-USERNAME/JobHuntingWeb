@@ -4,10 +4,13 @@
  */
 package DAL;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import model.Account;
@@ -55,10 +58,10 @@ public class RecruitmentsDAO {
         }
         return list;
     }
-    
-    public ArrayList<String> getRecruitmentsWithSearchFilter(Map<String, String> conditionMap) throws Exception {
-        StringBuilder query = new StringBuilder();
+
+    public <T> ArrayList<String> getRecruitmentsWithFilter(Map<String, T> conditionMap) throws Exception {
         ArrayList<String> list = new ArrayList<>();
+        StringBuilder query = new StringBuilder();
         Connection conn = null;
         PreparedStatement ps = null;
         try {
@@ -69,51 +72,124 @@ public class RecruitmentsDAO {
                     list.add(recruitment.getRecruitmentID().toString().toUpperCase());
                 }
                 return list;
-//                return getListRecruitments();
             }
-            query.append("SELECT id FROM Recruitments WHERE");
+
+            query.append("SELECT * FROM Recruitments WHERE");
             int conditionCount = 0;
 
-            for (Map.Entry<String, String> entry : conditionMap.entrySet()) {
+            for (Map.Entry<String, T> entry : conditionMap.entrySet()) {
                 String column = entry.getKey();
-                String value = entry.getValue();
+                T value = entry.getValue();
 
                 if (conditionCount > 0) {
                     query.append(" AND");
                 }
 
-                query.append(" ")
-                        .append(column)
+                query.append(" ");
+
+                if (value.getClass().isArray()) {
+                    query.append("(");
+                    int length = Array.getLength(value);
+                    for (int i = 0; i < length; i++) {
+                        if (i > 0) {
+                            query.append(" OR");
+                        }
+                        query.append(" ")
+                                .append(column)
+                                .append(" LIKE ?");
+                    }
+                    query.append(")");
+                } else {
+                    query.append(column)
                         .append(" LIKE ?");
 
+                }
                 conditionCount++;
             }
 
             ps = conn.prepareStatement(query.toString());
 
             int paramIndex = 1;
-            for (String value : conditionMap.values()) {
-                ps.setString(paramIndex, "%" + value + "%");
-                paramIndex++;
+            for (Map.Entry<String, T> entry : conditionMap.entrySet()) {
+                String column = entry.getKey();
+                T value = entry.getValue();
+
+                if (value.getClass().isArray()) {
+                    int length = Array.getLength(value);
+                    for (int i = 0; i < length; i++) {
+                        Object element = Array.get(value, i);
+                        ps.setObject(paramIndex, "%" + element + "%");
+                        paramIndex++;
+                    }
+                } else {
+                    ps.setObject(paramIndex, "%" + value + "%");
+                    paramIndex++;
+                }
             }
 
             ResultSet rs = ps.executeQuery();
-            // Process the ResultSet as needed
+//            // Process the ResultSet as needed
             while (rs.next()) {
                 list.add(rs.getString(1));
             }
             rs.close();
             ps.close();
             conn.close();
+
         } catch (Exception e) {
-            throw(e);
-//            e.printStackTrace();
+            throw (e);
             // Handle the exception appropriately
         }
-
         return list;
     }
 
+    public ArrayList<String> getRecruitmentsWithJobTerm(String searchTerm) throws Exception{
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            String query = "SELECT ID FROM Recruitments R WHERE JobTitle LIKE ? OR JobDescription LIKE ? OR R.SkillandTitleID IN (SELECT id FROM SkillandTitle WHERE SkillandTitle LIKE ?)";
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            ps.setString(3, "%" + searchTerm + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString(1);
+                list.add(id);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            throw(e);
+        }
+        return list;
+    }
+    
+    public ArrayList<String> getRecruitmentsWithLocationTerm(String cityTerm, String distTerm, String wardTerm) throws Exception{
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            String query = "SELECT ID FROM Recruitments WHERE Location LIKE ?";
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, "%" + wardTerm + "%" + distTerm + "%" + cityTerm + "%");
+//            ps.setString(2, "%" + distTerm);
+//            ps.setString(3, "%" + cityTerm + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString(1);
+                list.add(id);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            throw(e);
+        }
+        return list;
+    }
+    
+    
     public boolean insertRecruitment(Recruitments rc) throws Exception {
         int lineAffected = 0;
         try {
@@ -164,3 +240,61 @@ public class RecruitmentsDAO {
         return lineAffected == 1;
     }
 }
+
+//    public ArrayList<String> getRecruitmentsWithSearchFilter(Map<String, String> conditionMap) throws Exception {
+//        StringBuilder query = new StringBuilder();
+//        ArrayList<String> list = new ArrayList<>();
+//        Connection conn = null;
+//        PreparedStatement ps = null;
+//        try {
+//            conn = new DBContext().getConnection();
+//            if (conditionMap.isEmpty()) {
+//                ArrayList<Recruitments> totalList = getListRecruitments();
+//                for (Recruitments recruitment : totalList) {
+//                    list.add(recruitment.getRecruitmentID().toString().toUpperCase());
+//                }
+//                return list;
+////                return getListRecruitments();
+//            }
+//            query.append("SELECT id FROM Recruitments WHERE");
+//            int conditionCount = 0;
+//
+//            for (Map.Entry<String, String> entry : conditionMap.entrySet()) {
+//                String column = entry.getKey();
+//                String value = entry.getValue();
+//
+//                if (conditionCount > 0) {
+//                    query.append(" AND");
+//                }
+//
+//                query.append(" ")
+//                        .append(column)
+//                        .append(" LIKE ?");
+//
+//                conditionCount++;
+//            }
+//
+//            ps = conn.prepareStatement(query.toString());
+//
+//            int paramIndex = 1;
+//            for (String value : conditionMap.values()) {
+//                ps.setString(paramIndex, "%" + value + "%");
+//                paramIndex++;
+//            }
+//
+//            ResultSet rs = ps.executeQuery();
+//            // Process the ResultSet as needed
+//            while (rs.next()) {
+//                list.add(rs.getString(1));
+//            }
+//            rs.close();
+//            ps.close();
+//            conn.close();
+//        } catch (Exception e) {
+//            throw(e);
+////            e.printStackTrace();
+//            // Handle the exception appropriately
+//        }
+//
+//        return list;
+//    }

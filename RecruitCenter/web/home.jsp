@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="model.JobType" %>
 <%@page import="model.Recruitments" %>
@@ -34,7 +36,7 @@
             <header class="container-fluid">
                 <nav class="header navbar navbar-expand-lg navbar-light bg-light">
                     <div class="header-logo order-1 order-lg-0">
-                        <a href="pages/login/login.html" class="navbar-brand">recruitCenter...</a>
+                        <a href="home.jsp" class="navbar-brand">recruitCenter...</a>
                     </div>
                     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
                             data-target="#navigation" aria-controls="navigation" aria-expanded="false"
@@ -142,7 +144,7 @@
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
                         <input list="distList" id="dist-search" name="dist-search"
                                class="form-control location-search" type="text" placeholder="District..."
-                               autocomplete="nope" data-type="d" hidden fade>
+                               autocomplete="nope" data-type="d">
                         <datalist id="distList">
                         </datalist>
                     </div>
@@ -153,7 +155,7 @@
                         <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
                         <input list="wardList" id="ward-search" name="ward-search"
                                class="form-control location-search" type="text" placeholder="Wards..."
-                               autocomplete="nope" data-type="w" hidden fade>
+                               autocomplete="nope" data-type="w">
                         <datalist id="wardList">
                         </datalist>
                     </div>
@@ -162,7 +164,7 @@
                     </div>
                 </div>
                 <div class="form-row" id="filter">
-                    <select class="form-control" name="datePosted">
+                    <select class="form-control" name="datePosted" value="1">
                         <option value="0" selected hidden>Date posted</option>
                         <option value="anytime">Anytime</option>
                         <option value="within24">Within 24 hour</option>
@@ -172,12 +174,12 @@
                     </select>
                     <select class="form-control" name="salary">
                         <option value="0" selected hidden>Salary</option>
-                        <option value="0 - 1000">$0 ~ $1,000</option>
-                        <option value="1000 - 5000">$1,000 ~ $5,000</option>
-                        <option value="5000 - 10000">$5,000 ~ $10,000</option>
-                        <option value="10000 - 50000">$10,000 ~ $50,000</option>
-                        <option value="50000 - 100000">$50,000 ~ $100,000</option>
-                        <option value=">100000">Above $100,000</option>
+                        <option value="1">$0 ~ $1.000</option>
+                        <option value="2">$1.000 ~ $5.000</option>
+                        <option value="3">$5.000 ~ $10.000</option>
+                        <option value="4">$10.000 ~ $50.000</option>
+                        <option value="5">$50.000 ~ $100.000</option>
+                        <option value="6">Above $100.000</option>
                     </select>
                     <select class="form-control" name="experience">
                         <option value="0" selected hidden>Experience</option>
@@ -311,7 +313,15 @@
                                         </div>
                                         <div>
                                             <b>Salary:</b>
-                                            ${item.Salaries}
+                                            <c:choose>
+                                                <c:when test="${fn:endsWith(item.Salaries, '(negotiable)')}">
+                                                    <fmt:formatNumber type="currency" value="${fn:substringBefore(item.Salaries, '(negotiable)')}"></fmt:formatNumber>(negotiable)
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <fmt:formatNumber type="currency" value="${item.Salaries}"></fmt:formatNumber>
+                                                </c:otherwise>
+                                            </c:choose>
+
                                         </div>
                                         <div>
                                             <b>Preferred Gender: </b>
@@ -356,7 +366,9 @@
                                             <div>Never expired</div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div>Expire when ${item.ExpirationDate}</div>
+                                            <div>Expire in
+                                                <fmt:formatDate value="${item.ExpirationDate}"/>
+                                            </div>
                                         </c:otherwise>
                                     </c:choose>
 
@@ -383,6 +395,7 @@
         <script src="./search_term.js" type="module"></script>
         <script src="./search_location.js" type="module"></script>
         <script src="./js/toast.js" type="text/javascript"></script>
+        <script src="./deserialized.js"></script>
         <script>
             <c:if test="${sessionScope.logout == true}">
             createToast("success", "Log out successfully");

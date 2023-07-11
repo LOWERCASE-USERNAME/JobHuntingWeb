@@ -127,7 +127,7 @@
                             <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
                             <input list="cityList" id="city-search" name="city-search"
                                    class="form-control location-search" type="text" placeholder="City..."
-                                   autocomplete="nope" data-type="p">
+                                   autocomplete="nope" data-type="p" required>
                             <datalist id="cityList">
                             </datalist>
                         </div>
@@ -170,7 +170,7 @@
                 </div>
                 <div class="form-group">
                     <label for="job_expire">Expiration Date: </label>
-                    <input id="job_expire" type="datetime-local" class="form-control" name="job_expire" placeholder="">
+                    <input id="job_expire" type="date" class="form-control" name="job_expire" placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="job_skill">Prefered Skill: </label>
@@ -220,15 +220,15 @@
                 <hr>
                 <div class="form-group" spellcheck="false">
                     <label for="job_desc">Job Descriptions: </label>
-                    <textarea class="form-control" name="job_desc" id="job_desc" rows="10"></textarea>
+                    <textarea class="form-control" name="job_desc" id="job_desc" rows="10" required></textarea>
                 </div>
                 <div class="form-group" spellcheck="false">
                     <label for="job_qualification">Job Qualifications: </label>
-                    <textarea class="form-control" name="job_qualification" id="job_qualification" rows="10"></textarea>
+                    <textarea class="form-control" name="job_qualification" id="job_qualification" rows="10" required></textarea>
                 </div>
                 <div class="form-group" spellcheck="false">
                     <label for="job_benefit">Job Benefits: </label>
-                    <textarea class="form-control" name="job_benefit" id="job_benefit" rows="10"></textarea>
+                    <textarea class="form-control" name="job_benefit" id="job_benefit" rows="10" required></textarea>
                 </div>
                 <!-- small: three of this will be aggregated together to create a overall description or you can upload a pdf to heree -->
             </fieldset>

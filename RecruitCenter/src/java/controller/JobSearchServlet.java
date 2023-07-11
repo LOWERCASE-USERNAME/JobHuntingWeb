@@ -11,13 +11,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Degree;
 import model.Recruitments;
+import model.Workplace;
 
 /**
  *
@@ -39,38 +44,63 @@ public class JobSearchServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         RecruitmentsDAO rdao = new RecruitmentsDAO();
-        Map<String, String> conditionMap = new HashMap<>();
-        ArrayList<String> list = null;
+        Map<String, Object> filterMap = new HashMap<>();
+        List<String> list = null;
         //retrieve parameter
-        String jobTerm = request.getParameter("job-search"); //jobtitle and skill
-        String cityTerm = request.getParameter("city-search"); //location
-        String distTerm = request.getParameter("dist-search"); //location
-        String wardTerm = request.getParameter("ward-search"); //location
-        String datePostedFilter = request.getParameter("datePosted"); //date posted
-        String salaryFilter = request.getParameter("salary"); //salary
+        String jobTerm = request.getParameter("job-search"); //jobtitle and skill and description: done
+        String cityTerm = request.getParameter("city-search"); //location :done
+        String distTerm = request.getParameter("dist-search"); //location :done
+        String wardTerm = request.getParameter("ward-search"); //location :done
+        String datePostedFilter = request.getParameter("datePosted"); //date posted: processing
+        String salaryFilter = request.getParameter("salary"); //salary: null
         String experienceFilter = request.getParameter("experience"); //null
-        String fieldFilter = request.getParameter("field"); //fieldid
-        String jobTypeFilter = request.getParameter("jobType"); //jobtype
-        String educationFilter = request.getParameter("education"); //degree
-        String workplaceFilter = request.getParameter("workplace"); //workplace
+        String fieldFilter = request.getParameter("field"); //fieldid :done
+        String jobTypeFilter = request.getParameter("jobType"); //jobtype:done
+        String educationFilter = request.getParameter("education"); //degree:done
+        String workplaceFilter = request.getParameter("workplace"); //workplace:done
         String languageFilter = request.getParameter("language"); //null
 
+        Map<String, String[]> paramMap = request.getParameterMap();
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append("home.jsp?");
+        int count = 0;
+        for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
+            String key = entry.getKey();
+            String[] val = entry.getValue();
+            if(count != 0) urlBuilder.append("&");
+            urlBuilder.append(key + "=" + URLEncoder.encode(val[0], "UTF-8"));
+            count++;
+        }
         //field filter
         if (Integer.parseInt(fieldFilter) != 0) {
-            conditionMap.put("FieldID", fieldFilter);
-            
+            filterMap.put("FieldID", fieldFilter);
+
         }
         //job type filter
         if (Integer.parseInt(jobTypeFilter) != 0) {
-            conditionMap.put("JobTypeID", jobTypeFilter);
+            filterMap.put("JobTypeID", jobTypeFilter);
         }
+        //minimum degree
+        int educationScore = Integer.parseInt(educationFilter);
+        if (educationScore != 0) {
+            String[] conditionArr = Arrays.copyOfRange(Degree.DEGREES, 1, educationScore + 1);
+            filterMap.put("Degree", conditionArr);
+        }
+        //workplace
+        if (Integer.parseInt(workplaceFilter) != 0) {
+            filterMap.put("JobDescription", "Preferred Workplace: " + Workplace.WORKPLACES[Integer.parseInt(workplaceFilter)]);
+        }
+        List<String> tempList = null;
         try {
-//            out.println(conditionMap);
-            list = rdao.getRecruitmentsWithSearchFilter(conditionMap);
+            list = rdao.getRecruitmentsWithFilter(filterMap);
+            tempList = rdao.getRecruitmentsWithJobTerm(jobTerm);
+            list = intersection(list, tempList);
+            tempList = rdao.getRecruitmentsWithLocationTerm(cityTerm, distTerm, wardTerm);
+            list = intersection(list, tempList);
             request.getSession().setAttribute("recruitmentSearchList", list);
-//            out.println(list);
-            response.sendRedirect("home.jsp");
-//            request.getRequestDispatcher("home.jsp").forward(request, response);
+            
+            response.sendRedirect(urlBuilder.toString());
+//            request.getRequestDispatcher("home.jsp").include(request, response);
         } catch (Exception ex) {
             ex.printStackTrace(out);
         }
@@ -82,6 +112,7 @@ public class JobSearchServlet extends HttpServlet {
 //        out.println("wardTerm: " + wardTerm);
 //        out.println("datePostedFilter: " + datePostedFilter);
 //        out.println("salaryFilter: " + salaryFilter);
+////        out.println("salaryFilter: " + Integer.parseInt("Integer.MAX_VALUE"));
 //        out.println("experienceFilter: " + experienceFilter);
 //        out.println("fieldFilter: " + fieldFilter);
 //        out.println("jobTypeFilter: " + jobTypeFilter);
@@ -90,6 +121,17 @@ public class JobSearchServlet extends HttpServlet {
 //        out.println("languageFilter: " + languageFilter);
     }
 
+    public <T> List<T> intersection(List<T> list1, List<T> list2) {
+        List<T> list = new ArrayList<T>();
+
+        for (T t : list1) {
+            if(list2.contains(t)) {
+                list.add(t);
+            }
+        }
+        return list;
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -119,5 +161,42 @@ public class JobSearchServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public void TrashCan() {
+        //salary filter:
+//        if (Integer.parseInt(salaryFilter) != 0) {
+//            String[] salaryCondition = new String[2];
+//            switch (salaryFilter) {
+//                case "1":
+//                    salaryCondition[0] = "> 0";
+//                    salaryCondition[1] = "<= 1000";
+//                    filterMap.put("Salaries", salaryCondition);
+//                    break;
+//                case "2":
+//                    salaryCondition[0] = "> 1000";
+//                    salaryCondition[1] = "<= 5000";
+//                    filterMap.put("Salaries", salaryCondition);
+//                    break;
+//                case "3":
+//                    salaryCondition[0] = "> 5000";
+//                    salaryCondition[1] = "<= 10000";
+//                    filterMap.put("Salaries", salaryCondition);
+//                    break;
+//                case "4":
+//                    salaryCondition[0] = "> 10000";
+//                    salaryCondition[1] = "<= 50000";
+//                    filterMap.put("Salaries", salaryCondition);
+//                    break;
+//                case "5":
+//                    salaryCondition[0] = "> 50000";
+//                    salaryCondition[1] = "<= 100000";
+//                    filterMap.put("Salaries", salaryCondition);
+//                    break;
+//                case "6":
+//                    filterMap.put("FieldID", "> 100000");
+//                    break;
+//            }
+//        }
+    }
 
 }
