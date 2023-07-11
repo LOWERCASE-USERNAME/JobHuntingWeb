@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 import model.Account;
 import model.Recruitments;
@@ -17,11 +18,13 @@ import model.Recruitments;
  * @author dell
  */
 public class RecruitmentsDAO {
+
     Connection conn = null;
+
     public ArrayList<Recruitments> getListRecruitments() {
         ArrayList<Recruitments> list = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Recruitment";
+            String query = "SELECT * FROM Recruitments";
             conn = new DBContext().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -53,7 +56,65 @@ public class RecruitmentsDAO {
         return list;
     }
     
-    public boolean insertRecruitment(Recruitments rc) throws Exception{
+    public ArrayList<String> getRecruitmentsWithSearchFilter(Map<String, String> conditionMap) throws Exception {
+        StringBuilder query = new StringBuilder();
+        ArrayList<String> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = new DBContext().getConnection();
+            if (conditionMap.isEmpty()) {
+                ArrayList<Recruitments> totalList = getListRecruitments();
+                for (Recruitments recruitment : totalList) {
+                    list.add(recruitment.getRecruitmentID().toString().toUpperCase());
+                }
+                return list;
+//                return getListRecruitments();
+            }
+            query.append("SELECT id FROM Recruitments WHERE");
+            int conditionCount = 0;
+
+            for (Map.Entry<String, String> entry : conditionMap.entrySet()) {
+                String column = entry.getKey();
+                String value = entry.getValue();
+
+                if (conditionCount > 0) {
+                    query.append(" AND");
+                }
+
+                query.append(" ")
+                        .append(column)
+                        .append(" LIKE ?");
+
+                conditionCount++;
+            }
+
+            ps = conn.prepareStatement(query.toString());
+
+            int paramIndex = 1;
+            for (String value : conditionMap.values()) {
+                ps.setString(paramIndex, "%" + value + "%");
+                paramIndex++;
+            }
+
+            ResultSet rs = ps.executeQuery();
+            // Process the ResultSet as needed
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            throw(e);
+//            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+
+        return list;
+    }
+
+    public boolean insertRecruitment(Recruitments rc) throws Exception {
         int lineAffected = 0;
         try {
             String insertQuery = "INSERT INTO Recruitments(ContactName, ContactEmail, ContactPhoneNumber, JobTitle, JobTypeID, CompanyID, FieldID, Location, Salaries, PostedDate, ExpirationDate, SkillandTitleID, Gender, Degree, JobDescription)\n"
@@ -91,16 +152,15 @@ public class RecruitmentsDAO {
             insertStatement.setString(13, rc.getGender());
             insertStatement.setString(14, rc.getDegree());
             insertStatement.setString(15, rc.getJobDescription());
-            
+
             lineAffected = insertStatement.executeUpdate();
             //release the resource
             insertStatement.close();
             conn.close();
         } catch (Exception e) {
-            throw(e);
-        } 
+            throw (e);
+        }
         //return true if suceeded
         return lineAffected == 1;
     }
 }
-

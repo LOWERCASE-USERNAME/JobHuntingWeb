@@ -31,7 +31,7 @@
                             SELECT Company from Companies;
                         </sql:query>
                         <c:forEach items="${result.rows}" var="item">
-                            <option value="${item.get("company")}"></option>
+                            <option value="${item.company}"></option>
                         </c:forEach>
                     </datalist>
                 </div>
@@ -122,8 +122,43 @@
                 <!-- TODO: figure out how to do the address thingy -->
                 <div class="form-group">
                     <label for="job_location">Job Location: </label>
+                    <div class="d-flex flex-column flex-wrap justify-content-around" style="gap: 20px">
+                        <div class="form-group col-md-5">
+                            <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                            <input list="cityList" id="city-search" name="city-search"
+                                   class="form-control location-search" type="text" placeholder="City..."
+                                   autocomplete="nope" data-type="p">
+                            <datalist id="cityList">
+                            </datalist>
+                        </div>
+                        <div class="form-group col-md-5">
+                    
+                            <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                            <input list="distList" id="dist-search" name="dist-search"
+                                   class="form-control location-search" type="text" placeholder="District..."
+                                   autocomplete="nope" data-type="d" fade>
+                            <datalist id="distList">
+                            </datalist>
+                        </div>
+                        <div class="form-group col-md-5">
+                        
+                            <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                            <input list="wardList" id="ward-search" name="ward-search"
+                                   class="form-control location-search" type="text" placeholder="Wards..."
+                                   autocomplete="nope" data-type="w" fade>
+                            <datalist id="wardList">
+                            </datalist>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+                            <input id="house-search" name="house-search"
+                                   class="form-control location-search" type="text" placeholder="Floor 3, 124 Street..."
+                                   autocomplete="nope" data-type="h" fade>
+                        </div>
+                    </div>
+                    
                     <!-- create four datalist to recommend and one input which is readonly -->
-                    <input id="job_location" type="text" class="form-control" name="job_location" placeholder="" required>
+                    <input id="job_location" type="text" class="form-control" name="job_location" placeholder="" required style="margin-top: 10px" readonly>
                 </div>
                 <div class="form-group">
                     <label for="job_salary">Job Salary: </label>
@@ -146,7 +181,7 @@
                             SELECT * from SkillandTitle;
                         </sql:query>
                         <c:forEach items="${result.rows}" var="item">
-                            <option value="${item.get("id")}">${item.get("SkillandTitle")}</option>
+                            <option value="${item.id}">${item.SkillandTitle}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -207,6 +242,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="../../../search_location.js"></script>
     </body>
 
 </html>

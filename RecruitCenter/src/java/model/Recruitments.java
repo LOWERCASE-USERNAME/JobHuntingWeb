@@ -38,7 +38,7 @@ public class Recruitments {
         this.postedDate = postedDate;
         this.expDate = expDate;
     }
-
+    
     public UUID getRecruitmentID() {
         return RecruitmentID;
     }

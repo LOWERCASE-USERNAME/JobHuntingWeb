@@ -29,7 +29,7 @@ form{
     gap: 20px;
 }
 #filter select{
-    width: fit-content;
+    width: auto;
     border-radius: 20px;
     /* margin-right: 1%; */
     appearance: none;

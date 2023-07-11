@@ -24,6 +24,10 @@
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controller.LogOutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JobSearchServlet</servlet-name>
+        <servlet-class>controller.JobSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -48,9 +52,13 @@
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/LogOutServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JobSearchServlet</servlet-name>
+        <url-pattern>/JobSearchServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            1
+            60
         </session-timeout>
     </session-config>
 </web-app>
