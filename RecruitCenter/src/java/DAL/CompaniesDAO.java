@@ -17,7 +17,9 @@ import model.Company;
  * @author dell
  */
 public class CompaniesDAO {
+
     Connection conn = null;
+
     public ArrayList<Company> getListCompanies() {
         ArrayList<Company> list = new ArrayList<>();
         try {
@@ -43,13 +45,13 @@ public class CompaniesDAO {
         }
         return list;
     }
-    
+
     public Company getCompanyWithName(String companyName) {
         Company c = null;
         try {
             String query = "SELECT * FROM Companies WHERE Company = ?";
             conn = new DBContext().getConnection();
-            try (PreparedStatement ps = conn.prepareStatement(query)) {
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, companyName);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
@@ -63,9 +65,8 @@ public class CompaniesDAO {
         }
         return c;
     }
-    
-    
-    public boolean insertCompany(Company comp) throws Exception{
+
+    public boolean insertCompany(Company comp) throws Exception {
         int lineAffected = 0;
         try {
             //insert
@@ -83,9 +84,45 @@ public class CompaniesDAO {
             insertStatement.close();
             conn.close();
         } catch (Exception e) {
-            throw(e);
-        } 
+            throw (e);
+        }
         //return true if suceeded
         return lineAffected == 1;
     }
+
+    public boolean updateCompany(Company comp) throws Exception {
+        int lineAffected = 0;
+        try {
+            String updateQuery = "UPDATE Companies SET "
+                    + "Company = ?, "
+                    + "Website = ?, "
+                    + "Address = ?, "
+                    + "Reviews = ?, "
+                    + "Ratings = ?, "
+                    + "NumOfRating = ? "
+                    + "WHERE companyid LIKE ?"; // Specify the condition for the update
+
+            conn = new DBContext().getConnection();
+            PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+            updateStatement.setString(1, comp.getCompanyName());
+            updateStatement.setString(2, comp.getCompanyWebsite());
+            updateStatement.setString(3, comp.getCompanyAddress());
+            updateStatement.setString(4, comp.getCompanyReviews());
+            updateStatement.setFloat(5, comp.getCompanyRatings());
+            updateStatement.setInt(6, comp.getCompanyNumOfRatings());
+            updateStatement.setString(7, comp.getCompanyID().toString());
+            // Set the condition parameter(s) for the update
+            // For example: updateStatement.setInt(7, comp.getId());
+
+            lineAffected = updateStatement.executeUpdate();
+            // Release the resource
+            updateStatement.close();
+            conn.close();
+        } catch (Exception e) {
+            throw (e);
+        }
+        // Return true if succeeded
+        return lineAffected == 1;
+    }
+
 }

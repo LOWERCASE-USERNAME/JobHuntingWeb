@@ -16,8 +16,8 @@
 
     <body>
         <c:out value="${sessionScope.userid}"></c:out>
-        <form action="../../../JobServlet" class="form-container" novalidate="true" method="POST">
-            <fieldset class="form">
+        <form action="../../../JobServlet" class="form-container d-flex flex-wrap" method="POST">
+            <fieldset class="form col-md-5 col-12">
                 <legend class="heading">Company Information</legend>
                 <div class="form-group">
                     <label for="company">Your company's name: </label>
@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label for="company_size">Your company size: </label>
                     <select id="company_size" type="text" class="form-select" name="company_size">
-                        <option value="All" selected hidden></option>
+                        <option selected hidden></option>
                         <option value="0-50 persons">0-50 persons</option>
                         <option value="50-150 persons">50-150 persons</option>
                         <option value="150-300 persons">150-300 persons</option>
@@ -75,7 +75,7 @@
 
             <button type="submit" class="btn">Submit</button>
 
-            <fieldset class="form">
+            <fieldset class="form col-md-5">
                 <legend class="heading">Job Information</legend>
                 <div class="form-group">
                     <!-- TODO: put a level at here eg Fresher Junior -->

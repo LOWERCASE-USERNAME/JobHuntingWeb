@@ -12,18 +12,20 @@ import java.util.UUID;
  * @author dell
  */
 public class Recruitments {
-    UUID RecruitmentID, CompanyID, SkillAndTitleID;
+    UUID RecruitmentID, CompanyID, SkillAndTitleID, createdBy;
     int jobTypeID, fieldID;
-    String contactName, contactEmail, contactPhoneNumber, JobTitle, Location, Salaries, Gender, Degree, JobDescription;
+    String contactName, contactEmail, contactPhoneNumber, JobTitle, Location, Salaries, Gender, Degree, JobDescription, companySize, workplace;
     Date postedDate, expDate;
+    boolean negotiable;
 
     public Recruitments() {
     }
 
-    public Recruitments(UUID RecruitmentID, UUID CompanyID, UUID SkillAndTitleID, int jobTypeID, int fieldID, String contactName, String contactEmail, String contactPhoneNumber, String JobTitle, String Location, String Salaries, String Gender, String Degree, String JobDescription, Date postedDate, Date expDate) {
+    public Recruitments(UUID RecruitmentID, UUID CompanyID, UUID SkillAndTitleID, UUID createdBy, int jobTypeID, int fieldID, String contactName, String contactEmail, String contactPhoneNumber, String JobTitle, String Location, String Salaries, String Gender, String Degree, String JobDescription, String companySize, String workplace, Date postedDate, Date expDate, boolean negotiable) {
         this.RecruitmentID = RecruitmentID;
         this.CompanyID = CompanyID;
         this.SkillAndTitleID = SkillAndTitleID;
+        this.createdBy = createdBy;
         this.jobTypeID = jobTypeID;
         this.fieldID = fieldID;
         this.contactName = contactName;
@@ -35,10 +37,13 @@ public class Recruitments {
         this.Gender = Gender;
         this.Degree = Degree;
         this.JobDescription = JobDescription;
+        this.companySize = companySize;
+        this.workplace = workplace;
         this.postedDate = postedDate;
         this.expDate = expDate;
+        this.negotiable = negotiable;
     }
-    
+
     public UUID getRecruitmentID() {
         return RecruitmentID;
     }
@@ -61,6 +66,14 @@ public class Recruitments {
 
     public void setSkillAndTitleID(UUID SkillAndTitleID) {
         this.SkillAndTitleID = SkillAndTitleID;
+    }
+
+    public UUID getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(UUID createdBy) {
+        this.createdBy = createdBy;
     }
 
     public int getJobTypeID() {
@@ -151,6 +164,22 @@ public class Recruitments {
         this.JobDescription = JobDescription;
     }
 
+    public String getCompanySize() {
+        return companySize;
+    }
+
+    public void setCompanySize(String companySize) {
+        this.companySize = companySize;
+    }
+
+    public String getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+
     public Date getPostedDate() {
         return postedDate;
     }
@@ -167,10 +196,14 @@ public class Recruitments {
         this.expDate = expDate;
     }
 
-    @Override
-    public String toString() {
-        return "Recruitments{" + "RecruitmentID=" + RecruitmentID + ", CompanyID=" + CompanyID + ", SkillAndTitleID=" + SkillAndTitleID + ", jobTypeID=" + jobTypeID + ", fieldID=" + fieldID + ", contactName=" + contactName + ", contactEmail=" + contactEmail + ", contactPhoneNumber=" + contactPhoneNumber + ", JobTitle=" + JobTitle + ", Location=" + Location + ", Salaries=" + Salaries + ", Gender=" + Gender + ", Degree=" + Degree + ", JobDescription=" + JobDescription + ", postedDate=" + postedDate + ", expDate=" + expDate + '}';
+    public boolean isNegotiable() {
+        return negotiable;
     }
+
+    public void setNegotiable(boolean negotiable) {
+        this.negotiable = negotiable;
+    }
+    
     
     
 }

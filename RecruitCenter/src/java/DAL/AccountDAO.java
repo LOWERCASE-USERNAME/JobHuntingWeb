@@ -41,12 +41,13 @@ public class AccountDAO {
         int lineAffected = 0;
         try {
             //insert
-            String insertQuery = "INSERT INTO Accounts VALUES(CAST(? as uniqueidentifier), ?, ?)";
+            String insertQuery = "INSERT INTO Accounts VALUES(CAST(? as uniqueidentifier), ?, ?, ?)";
             conn = new DBContext().getConnection();
             PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
             insertStatement.setString(1, acc.getId().toString());
             insertStatement.setString(2, acc.getUsername());
             insertStatement.setString(3, acc.getPassword());
+            insertStatement.setString(4, "user");
             lineAffected = insertStatement.executeUpdate();
             //release the resource
             insertStatement.close();

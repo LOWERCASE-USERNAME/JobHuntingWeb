@@ -37,24 +37,28 @@ public class SignInServlet extends HttpServlet {
             request.getSession().setAttribute("loginSuccess", false); //login fail, account not existed
         } else {
             String rtAccountPass = rtAccount.getPassword();
+            out.println(rtAccountPass + " " + password);
             if(rtAccountPass.equals(password)){
+                out.println("Hi");
                 request.getSession().setAttribute("loginSuccess", true);//login success
+                int maxAge = 30 * 24 * 60 * 60; // 30 days in seconds
+                request.getServletContext().setAttribute("userid", rtAccount.getId().toString());
+                out.println(request.getServletContext().getAttribute("userid"));
+                Cookie useridCookie = new Cookie("userid", rtAccount.getId().toString());
+                useridCookie.setMaxAge(maxAge);
+                response.addCookie(useridCookie);
                 if(remember.equals("remember_me")){
                     //set cookies here
                     Cookie usernameCookie = new Cookie("username", username);
                     Cookie passwordCookie = new Cookie("password", password);
-                    Cookie useridCookie = new Cookie("userid", rtAccount.getId().toString());
-                    
                     //setMaxAge
-                    int maxAge = 30 * 24 * 60 * 60; // 30 days in seconds
                     usernameCookie.setMaxAge(maxAge);
                     passwordCookie.setMaxAge(maxAge);
-                    useridCookie.setMaxAge(maxAge);
                     
                     //add Cookie to response
                     response.addCookie(usernameCookie);
                     response.addCookie(passwordCookie);
-                    response.addCookie(useridCookie);
+                    
                 }
                 request.getSession().setAttribute("SignInAcc", rtAccount);
                 

@@ -24,7 +24,7 @@ public class RecruitmentsDAO {
 
     Connection conn = null;
 
-    public ArrayList<Recruitments> getListRecruitments() {
+    public ArrayList<Recruitments> getListRecruitments() throws Exception {
         ArrayList<Recruitments> list = new ArrayList<>();
         try {
             String query = "SELECT * FROM Recruitments";
@@ -49,12 +49,17 @@ public class RecruitmentsDAO {
                 a.setGender(rs.getString("Gender"));
                 a.setDegree(rs.getString("Degree"));
                 a.setJobDescription(rs.getString("JobDescription"));
+                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                a.setWorkplace(rs.getString("workplace"));
+                a.setNegotiable(rs.getBoolean("negotiable"));
+                a.setCompanySize("company_size");
                 list.add(a);
             }
             rs.close();
             ps.close();
             conn.close();
         } catch (Exception e) {
+            throw (e);
         }
         return list;
     }
@@ -101,7 +106,7 @@ public class RecruitmentsDAO {
                     query.append(")");
                 } else {
                     query.append(column)
-                        .append(" LIKE ?");
+                            .append(" LIKE ?");
 
                 }
                 conditionCount++;
@@ -143,7 +148,7 @@ public class RecruitmentsDAO {
         return list;
     }
 
-    public ArrayList<String> getRecruitmentsWithJobTerm(String searchTerm) throws Exception{
+    public ArrayList<String> getRecruitmentsWithJobTerm(String searchTerm) throws Exception {
         ArrayList<String> list = new ArrayList<>();
         try {
             String query = "SELECT ID FROM Recruitments R WHERE JobTitle LIKE ? OR JobDescription LIKE ? OR R.SkillandTitleID IN (SELECT id FROM SkillandTitle WHERE SkillandTitle LIKE ?)";
@@ -161,12 +166,12 @@ public class RecruitmentsDAO {
             ps.close();
             conn.close();
         } catch (Exception e) {
-            throw(e);
+            throw (e);
         }
         return list;
     }
-    
-    public ArrayList<String> getRecruitmentsWithLocationTerm(String cityTerm, String distTerm, String wardTerm) throws Exception{
+
+    public ArrayList<String> getRecruitmentsWithLocationTerm(String cityTerm, String distTerm, String wardTerm) throws Exception {
         ArrayList<String> list = new ArrayList<>();
         try {
             String query = "SELECT ID FROM Recruitments WHERE Location LIKE ?";
@@ -184,16 +189,15 @@ public class RecruitmentsDAO {
             ps.close();
             conn.close();
         } catch (Exception e) {
-            throw(e);
+            throw (e);
         }
         return list;
     }
-    
-    
+
     public boolean insertRecruitment(Recruitments rc) throws Exception {
         int lineAffected = 0;
         try {
-            String insertQuery = "INSERT INTO Recruitments(ContactName, ContactEmail, ContactPhoneNumber, JobTitle, JobTypeID, CompanyID, FieldID, Location, Salaries, PostedDate, ExpirationDate, SkillandTitleID, Gender, Degree, JobDescription)\n"
+            String insertQuery = "INSERT INTO Recruitments(ContactName, ContactEmail, ContactPhoneNumber, JobTitle, JobTypeID, CompanyID, FieldID, Location, Salaries, PostedDate, ExpirationDate, SkillandTitleID, Gender, Degree, JobDescription, negotiable, workplace, company_size, createdby)\n"
                     + "VALUES(\n"
                     + "?,\n"//ContactName 2
                     + "?,\n"//ContactEmail 3
@@ -209,7 +213,11 @@ public class RecruitmentsDAO {
                     + "CAST(? as uniqueidentifier),\n"//SkillandTitleID 13 uuid
                     + "?,\n"//Gender 14
                     + "?,\n"//Degree 15    
-                    + "?\n"//JobDescription 16    
+                    + "?,\n"//JobDescription 16    
+                    + "?,\n"//nego 16  
+                    + "?,\n"//workplace 17    
+                    + "?,\n"//size 18    
+                    + "CAST(? as uniqueidentifier)\n"//create_by 19    
                     + ")";
             conn = new DBContext().getConnection();
             PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
@@ -228,7 +236,10 @@ public class RecruitmentsDAO {
             insertStatement.setString(13, rc.getGender());
             insertStatement.setString(14, rc.getDegree());
             insertStatement.setString(15, rc.getJobDescription());
-
+            insertStatement.setBoolean(16, rc.isNegotiable());
+            insertStatement.setString(17, rc.getWorkplace());
+            insertStatement.setString(18, rc.getCompanySize());
+            insertStatement.setString(19, rc.getCreatedBy().toString());
             lineAffected = insertStatement.executeUpdate();
             //release the resource
             insertStatement.close();
@@ -239,62 +250,60 @@ public class RecruitmentsDAO {
         //return true if suceeded
         return lineAffected == 1;
     }
-}
 
-//    public ArrayList<String> getRecruitmentsWithSearchFilter(Map<String, String> conditionMap) throws Exception {
-//        StringBuilder query = new StringBuilder();
-//        ArrayList<String> list = new ArrayList<>();
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        try {
-//            conn = new DBContext().getConnection();
-//            if (conditionMap.isEmpty()) {
-//                ArrayList<Recruitments> totalList = getListRecruitments();
-//                for (Recruitments recruitment : totalList) {
-//                    list.add(recruitment.getRecruitmentID().toString().toUpperCase());
-//                }
-//                return list;
-////                return getListRecruitments();
-//            }
-//            query.append("SELECT id FROM Recruitments WHERE");
-//            int conditionCount = 0;
-//
-//            for (Map.Entry<String, String> entry : conditionMap.entrySet()) {
-//                String column = entry.getKey();
-//                String value = entry.getValue();
-//
-//                if (conditionCount > 0) {
-//                    query.append(" AND");
-//                }
-//
-//                query.append(" ")
-//                        .append(column)
-//                        .append(" LIKE ?");
-//
-//                conditionCount++;
-//            }
-//
-//            ps = conn.prepareStatement(query.toString());
-//
-//            int paramIndex = 1;
-//            for (String value : conditionMap.values()) {
-//                ps.setString(paramIndex, "%" + value + "%");
-//                paramIndex++;
-//            }
-//
-//            ResultSet rs = ps.executeQuery();
-//            // Process the ResultSet as needed
-//            while (rs.next()) {
-//                list.add(rs.getString(1));
-//            }
-//            rs.close();
-//            ps.close();
-//            conn.close();
-//        } catch (Exception e) {
-//            throw(e);
-////            e.printStackTrace();
-//            // Handle the exception appropriately
-//        }
-//
-//        return list;
-//    }
+    public boolean updateRecruitment(Recruitments rc) throws Exception {
+        int lineAffected = 0;
+        try {
+            String updateQuery = "UPDATE Recruitments SET "
+                    + "ContactName = ?, "
+                    + "ContactEmail = ?, "
+                    + "ContactPhoneNumber = ?, "
+                    + "JobTitle = ?, "
+                    + "JobTypeID = ?, "
+                    + "FieldID = ?, "
+                    + "Location = ?, "
+                    + "Salaries = ?, "
+                    + "ExpirationDate = ?, "
+                    + "SkillandTitleID = CAST(? as uniqueidentifier), "
+                    + "Gender = ?, "
+                    + "Degree = ?, "
+                    + "JobDescription = ?, "
+                    + "negotiable = ?, "
+                    + "workplace = ?, "
+                    + "company_size = ? "
+                    + "WHERE ID like ?"; // Specify the condition for the update
+
+            conn = new DBContext().getConnection();
+            PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+            updateStatement.setString(1, rc.getContactName());
+            updateStatement.setString(2, rc.getContactEmail());
+            updateStatement.setString(3, rc.getContactPhoneNumber());
+            updateStatement.setString(4, rc.getJobTitle());
+            updateStatement.setInt(5, rc.getJobTypeID());
+//            updateStatement.setString(6, rc.getCompanyID().toString());
+            updateStatement.setInt(6, rc.getFieldID());
+            updateStatement.setString(7, rc.getLocation());
+            updateStatement.setString(8, rc.getSalaries());
+//            updateStatement.setDate(10, rc.getPostedDate());
+            updateStatement.setDate(9, rc.getExpDate());
+            updateStatement.setString(10, rc.getSkillAndTitleID().toString());
+            updateStatement.setString(11, rc.getGender());
+            updateStatement.setString(12, rc.getDegree());
+            updateStatement.setString(13, rc.getJobDescription());
+            updateStatement.setBoolean(14, rc.isNegotiable());
+            updateStatement.setString(15, rc.getWorkplace());
+            updateStatement.setString(16, rc.getCompanySize());
+//            updateStatement.setString(19, rc.getCreatedBy().toString());
+            updateStatement.setString(17, rc.getRecruitmentID().toString());
+
+            lineAffected = updateStatement.executeUpdate();
+            // Release the resource
+            updateStatement.close();
+            conn.close();
+        } catch (Exception e) {
+            throw (e);
+        }
+        // Return true if succeeded
+        return lineAffected == 1;
+    }
+}

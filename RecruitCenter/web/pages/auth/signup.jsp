@@ -28,7 +28,7 @@
             
             <div class="CTA-title text-center">Sign in to your online recruit center</div>
             <div id="form">
-                <form method="POST" action="../../SignUpServlet">
+                <form method="POST" action="../../SignUpServlet" novalidate>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input autocomplete="nope" id="email-input" type="email" class="form-control" name="email"
@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label for="pw">Password</label>
-                        <input autocomplete="nope" id="pw-input" type="password" name="password" class="form-control" value="Giang270903"
+                        <input autocomplete="nope" id="pw-input" type="password" name="password" class="form-control"
                                placeholder="Abc123">
                         <small class="valid-feedback">Look good!</small>
                         <small class="invalid-feedback">Please select a valid password! Try: length from

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>  
+        <filter-name>FilterUser</filter-name>  
+        <filter-class>filter.FilterUser</filter-class>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>FilterUser</filter-name>  
+        <url-pattern>/pages/user/*</url-pattern>  
+        <url-pattern>/pages/welcome/*</url-pattern>  
+    </filter-mapping> 
     <servlet>
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>controller.SignUpServlet</servlet-class>
@@ -28,6 +37,10 @@
         <servlet-name>JobSearchServlet</servlet-name>
         <servlet-class>controller.JobSearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JobApplyServlet</servlet-name>
+        <servlet-class>controller.JobApplyServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -55,6 +68,10 @@
     <servlet-mapping>
         <servlet-name>JobSearchServlet</servlet-name>
         <url-pattern>/JobSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JobApplyServlet</servlet-name>
+        <url-pattern>/JobApplyServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

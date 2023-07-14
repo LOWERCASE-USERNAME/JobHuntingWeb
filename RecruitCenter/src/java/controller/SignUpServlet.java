@@ -146,15 +146,19 @@ public class SignUpServlet extends HttpServlet {
                 response.setHeader("X-NextPage", "true"); 
             }
             userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
+            out.println(UUID.fromString(request.getServletContext().getAttribute("userid").toString()));
             Account acc = accDAO.getAccountWithID(userid);
             acc.setUsername(username);
+//            out.println(acc);
             request.getSession().setAttribute("account", acc);
             try{
                 successUpdateAccount = accDAO.updateAccount(acc);
             } catch(Exception e){
                 e.printStackTrace();
                 out.println(e);
+                throw(e);
             }
+//            response.sendRedirect("pages/welcome/welcome.html");
         }
        
     }

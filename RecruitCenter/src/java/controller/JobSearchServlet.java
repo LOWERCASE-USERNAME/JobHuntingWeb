@@ -12,16 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Degree;
-import model.Recruitments;
 import model.Workplace;
 
 /**
@@ -68,7 +64,7 @@ public class JobSearchServlet extends HttpServlet {
             String key = entry.getKey();
             String[] val = entry.getValue();
             if(count != 0) urlBuilder.append("&");
-            urlBuilder.append(key + "=" + URLEncoder.encode(val[0], "UTF-8"));
+            urlBuilder.append(key).append("=").append(URLEncoder.encode(val[0], "UTF-8"));
             count++;
         }
         //field filter
@@ -97,6 +93,7 @@ public class JobSearchServlet extends HttpServlet {
             list = intersection(list, tempList);
             tempList = rdao.getRecruitmentsWithLocationTerm(cityTerm, distTerm, wardTerm);
             list = intersection(list, tempList);
+            out.print(list);
             request.getSession().setAttribute("recruitmentSearchList", list);
             
             response.sendRedirect(urlBuilder.toString());
@@ -106,19 +103,20 @@ public class JobSearchServlet extends HttpServlet {
         }
 
         //testing
-//        out.println("jobTerm: " + jobTerm);
-//        out.println("cityTerm: " + cityTerm);
-//        out.println("distTerm: " + distTerm);
-//        out.println("wardTerm: " + wardTerm);
-//        out.println("datePostedFilter: " + datePostedFilter);
-//        out.println("salaryFilter: " + salaryFilter);
-////        out.println("salaryFilter: " + Integer.parseInt("Integer.MAX_VALUE"));
-//        out.println("experienceFilter: " + experienceFilter);
-//        out.println("fieldFilter: " + fieldFilter);
-//        out.println("jobTypeFilter: " + jobTypeFilter);
-//        out.println("educationFilter: " + educationFilter);
-//        out.println("workplaceFilter: " + workplaceFilter);
-//        out.println("languageFilter: " + languageFilter);
+        out.println("jobTerm: " + jobTerm);
+        out.println("cityTerm: " + cityTerm);
+        out.println("distTerm: " + distTerm);
+        out.println("wardTerm: " + wardTerm);
+        out.println("datePostedFilter: " + datePostedFilter);
+        out.println("salaryFilter: " + salaryFilter);
+//        out.println("salaryFilter: " + Integer.parseInt("Integer.MAX_VALUE"));
+        out.println("experienceFilter: " + experienceFilter);
+        out.println("fieldFilter: " + fieldFilter);
+        out.println("jobTypeFilter: " + jobTypeFilter);
+        out.println("educationFilter: " + educationFilter);
+        out.println("workplaceFilter: " + workplaceFilter);
+        out.println("languageFilter: " + languageFilter);
+        
     }
 
     public <T> List<T> intersection(List<T> list1, List<T> list2) {

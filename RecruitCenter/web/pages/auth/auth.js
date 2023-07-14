@@ -50,7 +50,7 @@ $(document).on("submit", 'form', function (e) {
             }
         },
         error: function (xhr, status, error) {
-            console.error("Request failed with status: " + xhr);
+            console.error("Request failed with status: " + error);
         }
     });
 

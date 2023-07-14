@@ -67,3 +67,23 @@ small{
     text-align: justify;
     font-size: 80%;
 }
+
+@media (max-width: 767px){
+    body{
+        overflow: auto;
+    }
+    .form-container{
+        width: 100vw;
+        flex-direction: column;
+        gap: 40px
+    }
+    .form {
+        width: 80vw;
+        max-height: unset;
+        overflow-y: unset;
+    }
+    .form-container .btn {
+        order: 2;
+    }
+}
+    
