@@ -29,7 +29,11 @@ public class UserDAO {
 		ResultSet rs = ps.executeQuery();
 		ArrayList<User> list = new ArrayList<>();
 		while(rs.next()) {
-                    User user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"));
+                    UUID companyid = null;
+                    if(rs.getString("CompanyID") != null){
+                        companyid = UUID.fromString(rs.getString("CompanyID"));
+                    }
+                    User user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
                     list.add(user);
             }
             return list;
@@ -48,8 +52,12 @@ public class UserDAO {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, ID.toString());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"));
+            while (rs.next()) {
+                UUID companyid = null;
+                    if(rs.getString("CompanyID") != null){
+                        companyid = UUID.fromString(rs.getString("CompanyID"));
+                    }
+                user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
             }
 
             rs.close();
@@ -68,20 +76,24 @@ public class UserDAO {
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"));
+                while (rs.next()) {
+                    UUID companyid = null;
+                    if(rs.getString("CompanyID") != null){
+                        companyid = UUID.fromString(rs.getString("CompanyID"));
+                    }
+                    user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
                 }
                 rs.close();
             }
             conn.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return user;
     }
     
     public boolean updateUser(User user){
-        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, CurrentCompany = ?, AccountType = ? WHERE ID = CAST(? AS uniqueidentifier)";
+        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, CompanyID = ?, AccountType = ? WHERE ID = CAST(? AS uniqueidentifier)";
 //        String query = "UPDATE Users SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ?, AccountType = ?";
         int line = 0;
         try {
@@ -92,7 +104,7 @@ public class UserDAO {
         ps.setString(3, user.getEmail());
         ps.setString(4, user.getPhonenum());
         ps.setString(5, user.getAddress());
-        ps.setString(6, user.getCurrentCompany());
+        ps.setString(6, user.getCompanyID().toString());
         ps.setInt(7, user.getAccType());
         ps.setString(8, user.getUserID().toString());
         line = ps.executeUpdate();
@@ -124,10 +136,9 @@ public class UserDAO {
     }
     
     public static void main(String[] args) {
-        UserDAO ud = new UserDAO();
-        ArrayList<User> us = ud.getListUser();
-        for (User u : us) {
-            System.out.println(u);
-        }
+        UserDAO userDB = new UserDAO();
+        userDB.initUserWithEmail("HI3");
+        User user = userDB.getUserWithEmail("HI3");
+        System.out.println(user.getUserID());
     }
 }

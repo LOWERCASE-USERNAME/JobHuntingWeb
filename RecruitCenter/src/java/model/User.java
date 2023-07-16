@@ -15,20 +15,21 @@ public class User {
         EMPLOYER,
         EMPLOYEE
     }
-    private UUID userID;
-    private String fname, lname, email, phonenum, address, currentCompany;
+    private UUID userID, companyID;
+    private String fname, lname, email, phonenum, address;
     private AccountType accType = AccountType.EMPLOYEE;
 
     public User() {
     }
     
-    public User(UUID userID, String fname, String lname, String email, String address, int accType) {
+    public User(UUID userID, String fname, String lname, String email, String address, int accType, UUID companyID) {
         this.userID = userID;
         this.fname = fname;
         this.lname = lname;
         this.email = email;
         this.address = address;
         setAccType(accType);
+        this.companyID = companyID;
     }
     
     public UUID getUserID() {
@@ -112,13 +113,15 @@ public class User {
         this.accType = t;
     }
 
-    public String getCurrentCompany() {
-        return currentCompany;
+    public UUID getCompanyID() {
+        return companyID;
     }
 
-    public void setCurrentCompany(String currentCompany) {
-        this.currentCompany = currentCompany;
+    public void setCompanyID(UUID companyID) {
+        this.companyID = companyID;
     }
+
+    
     
     @Override
     public String toString() {

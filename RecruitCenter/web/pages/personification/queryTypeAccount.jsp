@@ -1,16 +1,17 @@
+<sql:setDataSource var="dataSource"
+                   driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+                   url="jdbc:sqlserver://DESKTOP-TFONDGT\\GIANG:1433;databaseName=recruitCenter"
+                   user="giangthhe170978" password="123" />
+<sql:query dataSource="${dataSource}" var="resultCompany" style='display: none'>
+    SELECT * from Companies;
+</sql:query>
 <div class="CTA-title text-center">Choose your side</div>
 <div id="form">
     <form method="POST" action="../../SignUpServlet">
         <div class="form-group">
             <label for="company">Company/Organization</label>
             <input id="company" type="text" class="form-control" name="company" list="company-list">
-            <sql:setDataSource var="dataSource"
-                               driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-                               url="jdbc:sqlserver://DESKTOP-TFONDGT\\GIANG:1433;databaseName=recruitCenter"
-                               user="giangthhe170978" password="123" />
-            <sql:query dataSource="${dataSource}" var="resultCompany">
-                SELECT * from Companies;
-            </sql:query>
+
             <datalist id="company-list">
                 <c:forEach items="${resultCompany.rows}" var="item">
                     <option value="${item.company}">${item.company}</option>

@@ -23,17 +23,17 @@ public class FilterUser implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         PrintWriter out=resp.getWriter();  
-        out.println(request.getServletContext().getAttribute("userid"));
-        if(request.getServletContext().getAttribute("userid") != null){  
+        out.println(request.getSession().getAttribute("userid"));
+        if(request.getSession().getAttribute("userid") != null){  
             chain.doFilter(req, resp);//sends request to next resource  
         }  
         else{  
             response.sendError(404, "You are accessing without the role: user");
-//            out.print("username or password error!");  
+            out.print("username or password error!");  
         //RequestDispatcher rd=req.getRequestDispatcher("index.html");  
         //rd.include(req, resp);  
         }  
-
+//chain.doFilter(req, resp);
     }
 
     public void destroy() {

@@ -20,6 +20,6 @@
         <sql:update dataSource="${dataSource}" var="count">
             DELETE FROM Recruitments WHERE id LIKE '${jobid}'
         </sql:update>
-        <jsp:forward page="history.jsp"/>
+        <jsp:forward page="../dashboard.jsp"/>
     </body>
 </html>

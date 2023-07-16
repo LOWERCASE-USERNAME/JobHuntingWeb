@@ -109,7 +109,6 @@ public class JobServlet extends HttpServlet {
 //        out.println("job_workplace_param = " + job_workplace_param);
 //        out.println("job_desc_param = " + job_desc_param);
 //        out.println("comp_location_param = " + comp_location_param);
-
         Recruitments rc = new Recruitments();
         rc.setContactName(contact_name_param);
         rc.setContactEmail(contact_email_param);
@@ -189,6 +188,8 @@ public class JobServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+
         RecruitmentsDAO rcDAO = new RecruitmentsDAO();
         CompaniesDAO cdao = new CompaniesDAO();
         SkillAndTitleDAO satdao = new SkillAndTitleDAO();

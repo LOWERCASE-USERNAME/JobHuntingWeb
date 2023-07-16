@@ -10,7 +10,7 @@
         
         <style>
             body{
-                background-image: url('../../assets/cyberpunk-bg.webp');
+                background-image: url('../../../../assets/cyberpunk-bg.webp');
                 background-size: 100vw 100vh
             }
             #container{

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <filter>  
-        <filter-name>FilterUser</filter-name>  
-        <filter-class>filter.FilterUser</filter-class>  
-    </filter>  
-    <filter-mapping>  
-        <filter-name>FilterUser</filter-name>  
-        <url-pattern>/pages/user/*</url-pattern>  
-        <url-pattern>/pages/welcome/*</url-pattern>  
-    </filter-mapping> 
+    <filter>
+        <filter-name>FilterUser</filter-name>
+        <filter-class>filter.FilterUser</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterUser</filter-name>
+        <url-pattern>/pages/user/*</url-pattern>
+        <url-pattern>/pages/welcome/*</url-pattern>
+        <url-pattern>/JobApplyServlet</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>controller.SignUpServlet</servlet-class>
@@ -41,6 +42,14 @@
         <servlet-name>JobApplyServlet</servlet-name>
         <servlet-class>controller.JobApplyServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CompanyServlet</servlet-name>
+        <servlet-class>controller.CompanyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagingController</servlet-name>
+        <servlet-class>controller.PagingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/SignUpServlet</url-pattern>
@@ -72,6 +81,14 @@
     <servlet-mapping>
         <servlet-name>JobApplyServlet</servlet-name>
         <url-pattern>/JobApplyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompanyServlet</servlet-name>
+        <url-pattern>/CompanyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingController</servlet-name>
+        <url-pattern>/PagingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

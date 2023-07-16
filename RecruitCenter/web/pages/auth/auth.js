@@ -1,7 +1,7 @@
 
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-const personification = ['queryName', 'queryLocation', 'queryTypeAccount', 'queryUsername'];
+const personification = ['queryName.html', 'queryLocation.html', 'queryTypeAccount.jsp', 'queryUsername.html'];
 
 
 $(document).ready(function () {
@@ -72,16 +72,16 @@ function onFormSubmitSuccess(){
     if (URL === undefined) {
         
     } else { //load page in order
-        $.get(`../personification/${URL}.html`, function (data) {
+        $.get(`../personification/${URL}`, function (data) {
             setTimeout(function () {
                 //load the next page
                 $('main').html(data);
                 //special page action
-                if (URL === 'queryLocation') {
+                if (URL === 'queryLocation.html') {
                     //api to autocomplete user location
                     getLocation();
                 }
-                if (URL === 'queryTypeAccount') {
+                if (URL === 'queryTypeAccount.jsp') {
                     //change the submit button based on user action
                     $('#radio-type-acc label').on("click", function (e) {
                         const btnlabel = $(this);

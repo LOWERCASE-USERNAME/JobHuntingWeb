@@ -5,6 +5,7 @@
 package controller;
 
 import DAL.AccountDAO;
+import DAL.CompaniesDAO;
 import DAL.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import model.Account;
 import model.User;
+import model.Company;
 
 /**
  *
@@ -23,7 +25,6 @@ import model.User;
  */
 public class SignUpServlet extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UUID userid = null;
@@ -32,18 +33,19 @@ public class SignUpServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         AccountDAO accDAO = new AccountDAO();
         UserDAO uDAO = new UserDAO();
+        CompaniesDAO cdao = new CompaniesDAO();
         //get name of page is sending request to
         String page = request.getParameter("page");
-        
-        if(page == null){
+
+        if (page == null) {
             page = "";
         }
-        
+
         //request from page signup, change href to page queryname
-        if(page.equalsIgnoreCase("signup")){
+        if (page.equalsIgnoreCase("signup")) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            if(uDAO.getUserWithEmail(email) != null){//email already occupied
+            if (uDAO.getUserWithEmail(email) != null) {//email already occupied
                 //send toast
                 request.getSession().setAttribute("emailExisted", "true");
                 response.setHeader("X-NextPage", "false");
@@ -52,7 +54,7 @@ public class SignUpServlet extends HttpServlet {
                 request.getSession().setAttribute("emailExisted", "false");
                 response.setHeader("X-NextPage", "true");
             }
-            
+
             userid = signUpWithEmail(email);
             //set password to accountDB
             Account newAcc = new Account();
@@ -64,50 +66,50 @@ public class SignUpServlet extends HttpServlet {
                 out.println(e);
             }
             out.println(successUpdateAccount);
-            request.getServletContext().setAttribute("userid", userid);
+            request.getSession().setAttribute("userid", userid);
         }
         //request from page queryname, change href to page querylocation
-        if(page.equalsIgnoreCase("queryname")){
-            String fname = (String)request.getParameter("firstname");
-            String lname = (String)request.getParameter("lastname");
-            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
+        if (page.equalsIgnoreCase("queryname")) {
+            String fname = (String) request.getParameter("firstname");
+            String lname = (String) request.getParameter("lastname");
+            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             user.setFname(fname);
             user.setLname(lname);
-            try{
+            try {
                 successUpdateUser = uDAO.updateUser(user);
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 out.println(e);
             }
         }
-        
+
         //request from page querylocation, change href to page querytypeaccount
-        if(page.equalsIgnoreCase("querylocation")){
+        if (page.equalsIgnoreCase("querylocation")) {
             String country = request.getParameter("country");
             String city = request.getParameter("city");
             String district = request.getParameter("district");
-            String subdistrict = request.getParameter("sub-district");    
-            if(subdistrict == null){//if subdistrict input is null
+            String subdistrict = request.getParameter("sub-district");
+            if (subdistrict == null) {//if subdistrict input is null
                 subdistrict = "\b\b"; //backspace two character
             }
-            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
+            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
             user.setAddress(country + ", " + city + ", " + district + ", " + subdistrict);
-            try{
+            try {
                 successUpdateUser = uDAO.updateUser(user);
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 out.println(e);
             }
         }
-        
+
         //request from page querytypeaccount, change href to page queryusername
-        if(page.equalsIgnoreCase("querytypeaccount")){
+        if (page.equalsIgnoreCase("querytypeaccount")) {
             String company = request.getParameter("company");
             String typeaccount = request.getParameter("typeaccount"); //output to console to know
             User.AccountType accounttype = null;
-            switch(typeaccount){
+            switch (typeaccount) {
                 case "employees":
                     accounttype = User.AccountType.EMPLOYEE;
                     break;
@@ -115,52 +117,73 @@ public class SignUpServlet extends HttpServlet {
                     accounttype = User.AccountType.EMPLOYER;
                     break;
             }
-            out.println(accounttype);
-            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
+//            out.println(accounttype);
+            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
             User user = uDAO.getUserWithID(userid);
-            
+            Company comp = cdao.getCompanyWithName(company);
+            if (comp == null) {//not already exists
+                if (!company.equals("")) {
+                    comp = new Company();
+                    comp.setCompanyName(company);
+                    comp.setCompanyAddress("");
+                    comp.setCompanyNumOfRatings(0);
+                    comp.setCompanyRatings(5);
+                    comp.setCompanyReviews("");
+                    comp.setCompanyWebsite("");
+                    try {
+                        cdao.insertCompany(comp);
+                    } catch (Exception e) {
+                        e.printStackTrace(out);
+                    }
+                }
+            } else {
+                user.setCompanyID(comp.getCompanyID());
+                user.setAccType(accounttype);
+            }
+            Account a = accDAO.getAccountWithID(userid);
+            a.setRole(typeaccount);
             /*TODO: add to company*/
-            user.setCurrentCompany(company);
-            user.setAccType(accounttype);
-            try{
-                out.println(user.getAccType());
+            try {
+//                out.println(user.getAccType());
                 successUpdateUser = uDAO.updateUser(user);
-            } catch(Exception e){ //output to toast
-                e.printStackTrace();
+                successUpdateAccount = accDAO.updateAccount(a);
+
+            } catch (Exception e) { //output to toast
+                e.printStackTrace(out);
                 out.println(e);
             }
         }
-        
+
         //request from page queryusername, change href to page welcome
-        if(page.equalsIgnoreCase("queryusername")){
+        if (page.equalsIgnoreCase("queryusername")) {
             String username = request.getParameter("username");
             /*TODO: check if username is already occupied*/
-            if(accDAO.getAccountWithUsername(username)!= null){//username already occupied
+            if (accDAO.getAccountWithUsername(username) != null) {//username already occupied
                 //send toast
                 request.getSession().setAttribute("usernameExisted", "true");
                 response.setHeader("X-NextPage", "false");
                 return;
             } else {
                 request.getSession().setAttribute("usernameExisted", "false");
-                
-                response.setHeader("X-NextPage", "true"); 
+
+                response.setHeader("X-NextPage", "true");
             }
-            userid = UUID.fromString(request.getServletContext().getAttribute("userid").toString());
-            out.println(UUID.fromString(request.getServletContext().getAttribute("userid").toString()));
+            userid = UUID.fromString(request.getSession().getAttribute("userid").toString());
+            out.println(UUID.fromString(request.getSession().getAttribute("userid").toString()));
             Account acc = accDAO.getAccountWithID(userid);
             acc.setUsername(username);
 //            out.println(acc);
             request.getSession().setAttribute("account", acc);
-            try{
+            try {
                 successUpdateAccount = accDAO.updateAccount(acc);
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 out.println(e);
-                throw(e);
+                throw (e);
             }
 //            response.sendRedirect("pages/welcome/welcome.html");
         }
-       
+
     }
 
     public static void main(String[] args) {
@@ -170,15 +193,15 @@ public class SignUpServlet extends HttpServlet {
         user.setUserID(UUID.fromString("681cdf66-f4d1-4d7b-b034-4c788c92d299"));
         user.setFname("giang");
         user.setAddress("412");
-        try{
+        try {
             successUpdateUser = uDAO.updateUser(user);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         System.out.println(successUpdateUser);
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -198,7 +221,7 @@ public class SignUpServlet extends HttpServlet {
         User user = userDB.getUserWithEmail(email);
         return user.getUserID();
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

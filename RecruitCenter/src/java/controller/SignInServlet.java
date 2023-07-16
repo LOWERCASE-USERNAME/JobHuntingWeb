@@ -42,8 +42,8 @@ public class SignInServlet extends HttpServlet {
                 out.println("Hi");
                 request.getSession().setAttribute("loginSuccess", true);//login success
                 int maxAge = 30 * 24 * 60 * 60; // 30 days in seconds
-                request.getServletContext().setAttribute("userid", rtAccount.getId().toString());
-                out.println(request.getServletContext().getAttribute("userid"));
+                request.getSession().setAttribute("userid", rtAccount.getId().toString()); //set userid to scope
+//                out.println(request.getServletContext().getAttribute("userid"));
                 Cookie useridCookie = new Cookie("userid", rtAccount.getId().toString());
                 useridCookie.setMaxAge(maxAge);
                 response.addCookie(useridCookie);
@@ -58,9 +58,8 @@ public class SignInServlet extends HttpServlet {
                     //add Cookie to response
                     response.addCookie(usernameCookie);
                     response.addCookie(passwordCookie);
-                    
                 }
-                request.getSession().setAttribute("SignInAcc", rtAccount);
+                request.getSession().setAttribute("account", rtAccount);
                 
                 request.getSession().setMaxInactiveInterval(60*60); //inactivate session after 1 hour after no activity
             } else {

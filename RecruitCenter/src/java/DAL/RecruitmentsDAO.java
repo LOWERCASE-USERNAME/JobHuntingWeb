@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Recruitments;
 
@@ -60,6 +62,107 @@ public class RecruitmentsDAO {
             conn.close();
         } catch (Exception e) {
             throw (e);
+        }
+        return list;
+    }
+
+    public Recruitments getListRecruitments(UUID id) throws Exception {
+//        ArrayList<Recruitments> list = new ArrayList<>();
+        Recruitments a = new Recruitments();
+        try {
+            String query = "SELECT * FROM Recruitments WHERE id LIKE ?";
+            conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, id.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
+                a.setContactName(rs.getString("ContactName"));
+                a.setContactEmail(rs.getString("ContactEmail"));
+                a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
+                a.setJobTitle(rs.getString("JobTitle"));
+                a.setJobTypeID(rs.getInt("JobTypeID"));
+                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                a.setFieldID(rs.getInt("FieldID"));
+                a.setLocation(rs.getString("Location"));
+                a.setSalaries(rs.getString("Salaries"));
+                a.setPostedDate(rs.getDate("PostedDate"));
+                a.setExpDate(rs.getDate("ExpirationDate"));
+                a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
+                a.setGender(rs.getString("Gender"));
+                a.setDegree(rs.getString("Degree"));
+                a.setJobDescription(rs.getString("JobDescription"));
+                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                a.setWorkplace(rs.getString("workplace"));
+                a.setNegotiable(rs.getBoolean("negotiable"));
+                a.setCompanySize("company_size");
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            throw (e);
+        }
+        return a;
+    }
+
+    public static int count() {
+        String sql = "SELECT COUNT(*) as totalrow FROM Recruitments";
+        PreparedStatement statement;
+        try {
+            statement = new DBContext().getConnection().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("totalrow");
+            }
+        } catch (Exception ex) {
+        }
+        return 0;
+    }
+    //        int totalrow = count();
+//        int totalpage = (totalrow%PAGE_SIZE == 0) ? totalrow/PAGE_SIZE : totalrow/PAGE_SIZE + 1;
+
+    public ArrayList<Recruitments> getListRecruitmentsWithPagination(int pageNumber) {
+        ArrayList<Recruitments> list = new ArrayList<>();
+        int PAGE_SIZE = 5; // Number of records per page
+        int PAGE_NUMBER = pageNumber; // Desired page number
+        try {
+            conn = new DBContext().getConnection();
+            String sql = "SELECT * FROM Recruitments ORDER BY PostedDate OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            // Calculate the offset based on the page size and page number
+            int offset = (PAGE_NUMBER - 1) * PAGE_SIZE;
+
+            // Create the prepared statement with the pagination parameters
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, offset);
+            preparedStatement.setInt(2, PAGE_SIZE);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Recruitments a = new Recruitments();
+                a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
+                a.setContactName(rs.getString("ContactName"));
+                a.setContactEmail(rs.getString("ContactEmail"));
+                a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
+                a.setJobTitle(rs.getString("JobTitle"));
+                a.setJobTypeID(rs.getInt("JobTypeID"));
+                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                a.setFieldID(rs.getInt("FieldID"));
+                a.setLocation(rs.getString("Location"));
+                a.setSalaries(rs.getString("Salaries"));
+                a.setPostedDate(rs.getDate("PostedDate"));
+                a.setExpDate(rs.getDate("ExpirationDate"));
+                a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
+                a.setGender(rs.getString("Gender"));
+                a.setDegree(rs.getString("Degree"));
+                a.setJobDescription(rs.getString("JobDescription"));
+                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                a.setWorkplace(rs.getString("workplace"));
+                a.setNegotiable(rs.getBoolean("negotiable"));
+                a.setCompanySize("company_size");
+                list.add(a);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }

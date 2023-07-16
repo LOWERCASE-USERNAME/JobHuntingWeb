@@ -1,5 +1,5 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <!DOCTYPE html>
 <html lang="en">
     <div class="notifications">
@@ -13,7 +13,6 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="./signup.css">
-        <link rel="stylesheet" href="../../css/animate.css">
         <link rel="stylesheet" href="../../css/toast.css">
         <!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> -->
@@ -28,7 +27,7 @@
             
             <div class="CTA-title text-center">Sign in to your online recruit center</div>
             <div id="form">
-                <form method="POST" action="../../SignUpServlet" novalidate>
+                <form method="POST" action="../../SignUpServlet">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input autocomplete="nope" id="email-input" type="email" class="form-control" name="email"

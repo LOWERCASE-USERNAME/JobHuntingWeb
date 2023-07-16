@@ -26,6 +26,7 @@
     </head>
 
     <body>
+        <%--<c:out value="${sessionScope.account.role}" default="hi"/>--%>
         <!--        <div style="z-index: 1000">
         <%--<c:out value="${applicationScope.userid}"></c:out>--%>
         </div>
@@ -67,17 +68,27 @@
                     </button>
                     <ul class="dropdown-menu">
                         <c:choose>
-                            <c:when test="${applicationScope.userid == null and empty cookie['userid'].value}">
+                            <c:when test="${sessionScope.userid == null and empty cookie['userid'].value}">
                                 <a class="dropdown-item" href="./pages/auth/login.jsp">Login</a>
-                                <a class="dropdown-item" href="./pages/auth/signup.jsp">SignUp</a>
+                                <a class="dropdown-item" href="./pages/auth/signup.jsp">Sign Up</a>
                             </c:when>
                             <c:otherwise>
-                                <a class="dropdown-item" href="./pages/user/employer/JobPosting.jsp">Job Posting</a>
-                                <a class="dropdown-item" href="./pages/user/employee/CVbuilder.jsp">Create Resume</a>
+                                <c:choose>
+                                    <c:when test="${sessionScope.account.role == 'admin' || sessionScope.account.role == 'staff'}">
+                                        <a class="dropdown-item" href="./pages/user/employer/JobPosting.jsp">Job Posting</a>
+                                        <a class="dropdown-item" href="./pages/user/employee/CVbuilder.jsp">Create Resume</a>
+                                    </c:when>
+                                    <c:when test="${sessionScope.account.role == 'employees'}">
+                                        <a class="dropdown-item" href="./pages/user/employee/CVbuilder.jsp">Create Resume</a>
+                                    </c:when>
+                                    <c:when test="${sessionScope.account.role == 'employers'}">
+                                        <a class="dropdown-item" href="./pages/user/employer/JobPosting.jsp">Job Posting</a>
+                                    </c:when>
+                                </c:choose>
                             </c:otherwise>
                         </c:choose>
                         <div class="dropdown-divider"></div>
-                        <li ><a class="dropdown-item"href="./pages/user/history.jsp">History</a></li>
+                        <li ><a class="dropdown-item"href="./pages/user/dashboard/dashboard.jsp">Dashboard</a></li>
                         <li ><a class="dropdown-item" href="#">Setting</a></li>
                         <div class="dropdown-divider"></div>
                         <li ><a class="dropdown-item"  href="LogOutServlet">Logout</a></li>
@@ -123,7 +134,7 @@
                     </ul>
                     <c:choose>
                         <c:when
-                            test="${applicationScope.userid == null and empty cookie['userid'].value}">
+                            test="${sessionScope.userid == null and empty cookie['userid'].value}">
                             <div class="header-CTA order-2 order-lg-2 position-absolute" style="right: 20px">
                                 <button class="btn btn-warning"><a
                                         href="./pages/auth/login.jsp">Login</a></button>
@@ -138,14 +149,9 @@
                                     <div class="dropdown-toggle text-white" id="accountDropdown"
                                          role="button" data-bs-toggle="dropdown">
                                         <c:choose>
-                                            <c:when test="${SignInAcc != null}">
+                                            <c:when test="${sessionScope.account != null}">
                                                 <c:out
-                                                    value="${SignInAcc.username.substring(0, 1)}">
-                                                </c:out>
-                                            </c:when>
-                                            <c:when test="${account != null}">
-                                                <c:out
-                                                    value="${account.username.substring(0, 1)}">
+                                                    value="${sessionScope.account.username.substring(0, 1)}">
                                                 </c:out>
                                             </c:when>
                                             <c:when test="${not empty cookie['userid'].value}">
@@ -160,7 +166,7 @@
                                     </div>
                                     <ul class="dropdown-menu"
                                         aria-labelledby="accountDropdown">
-                                        <li ><a class="dropdown-item" href="./pages/user/history.jsp">History</a></li>
+                                        <li ><a class="dropdown-item"href="./pages/user/dashboard/dashboard.jsp">Dashboard</a></li>
                                         <li ><a class="dropdown-item" href="#">Setting</a></li>
                                         <div class="dropdown-divider"></div>
                                         <li ><a class="dropdown-item"  href="LogOutServlet">Logout</a></li>
@@ -169,12 +175,24 @@
                                 </div>
                             </div>
                             <div class="header-CTA order-2 order-lg-2">
-                                <button style="background-color: #6c63ff;"><a
+                                <c:choose>
+                                    <c:when test="${sessionScope.account.role == 'admin' || sessionScope.account.role == 'staff'}">
+                                        <a class="btn text-white" style="background-color: #6c63ff;" href="./pages/user/employer/JobPosting.jsp">Job Posting</a>
+                                        <a class="btn text-white" style="background-color: #ff6347;" href="./pages/user/employee/CVbuilder.jsp">Create Resume</a>
+                                    </c:when>
+                                    <c:when test="${sessionScope.account.role == 'employees'}">
+                                        <a class="btn text-white" style="background-color: #ff6347;" href="./pages/user/employee/CVbuilder.jsp">Create Resume</a>
+                                    </c:when>
+                                    <c:when test="${sessionScope.account.role == 'employers'}">
+                                        <a class="btn text-white" style="background-color: #6c63ff;" href="./pages/user/employer/JobPosting.jsp">Job Posting</a>
+                                    </c:when>
+                                </c:choose>
+<!--                                <button style="background-color: #6c63ff;"><a
                                         href="./pages/user/employer/JobPosting.jsp">Post a
                                         Job</a></button>
                                 <button style="background-color: #ff6347;"><a
                                         href="./pages/user/employee/CVbuilder.jsp">Make Resume</a></button>
-                                <!-- This is more of a post your cv type -->
+                                 This is more of a post your cv type -->
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -234,7 +252,7 @@
                     </div>
 
                 </div>
-                <div class="form-row" id="filter">
+                <div class="form-row" id="filter" style="display: none"> 
                     <select class="form-control" name="datePosted" value="1">
                         <option value="0" selected hidden>Date posted</option>
                         <option value="anytime">Anytime</option>
@@ -477,7 +495,7 @@
                                             <c:catch var="catchtheException">
                                                 <sql:query dataSource="${dataSource}"
                                                            var="resultUser">
-                                                    SELECT * from Users WHERE id LIKE '${applicationScope.userid}';
+                                                    SELECT * from Users WHERE id LIKE '${sessionScope.userid}';
                                                 </sql:query>
                                                 <c:set scope="page" var="user"
                                                        value="${resultUser.rows[0]}"></c:set>
@@ -488,37 +506,12 @@
                                                     There is an exception:
                                                     ${catchtheException.message}</p>
                                                 </c:if>
+                                                                                            <!--<a href="mailto:${item.ContactEmail}?subject=An%20bright%20potential%20applicant%20has%20seen%20and%20want%20to%20work%20with%20you%20on%20RecruitCenter&body=Dear%20${item.ContactName}%2C%0A%0AI%20was%20keenly%20interested%20in%20reading%20the%20job%20posting%20for%20the%20position%20of%20${item.JobTitle}%20at%20${company.Company}.%20I%20believe%20my%20experience%20is%20a%20strong%20match%20for%20the%20responsibilities%20pertaining%20to%20this%20role%2C%20and%20I%27m%20pleased%20to%20submit%20my%20application%20for%20the%20position.%0A%0A--YOUR%20EXPERIENCE%20HERE--%0A%0AI%20have%20attached%20my%20resume%20to%20this%20letter.%20Through%20it%2C%20I%20hope%20you%20will%20learn%20more%20about%20my%20background%2C%20education%2C%20achievements%2C%20and%20awards.%0A%0AIf%20I%20can%20provide%20you%20with%20any%20further%20information%2C%20please%20let%20me%20know.%20I%20look%20forward%20to%20hearing%20from%20you%20about%20this%20opportunity.%0A%0AThank%20you%20for%20your%20consideration.%0A%0A${user.LastName}%20${user.FirstName}%0A${user.Email}%0A${user.PhoneNumber}"-->
 
-                                            <%!
-                                                String encodeMailToRCF(String str){
-                                                    return str
-                                                            .replace("%", "%25")
-                                                            .replace(" ", "%20")
-                                                            .replace("!", "%21")
-                                                            .replace("\"", "%22")
-                                                            .replace("#", "%23")
-                                                            .replace("$", "%24")
-                                                            .replace("&", "%26")
-                                                            .replace("'", "%27")
-                                                            .replace("(", "%28")
-                                                            .replace(")", "%29")
-                                                            .replace("*", "%2A")
-                                                            .replace("+", "%2B")
-                                                            .replace(",", "%2C")
-                                                            .replace("/", "%2F")
-                                                            .replace(":", "%3A")
-                                                            .replace(";", "%3B")
-                                                            .replace("=", "%3D")
-                                                            .replace("?", "%3F")
-                                                            .replace("@", "%40")
-                                                            .replace("[", "%5B")
-                                                            .replace("]", "%5D");
-                                                }
-                                            %>
-                                            <a href="mailto:${item.ContactEmail}?subject=An%20bright%20potential%20applicant%20has%20seen%20and%20want%20to%20work%20with%20you%20on%20RecruitCenter&body=Dear%20${item.ContactName}%2C%0A%0AI%20was%20keenly%20interested%20in%20reading%20the%20job%20posting%20for%20the%20position%20of%20${item.JobTitle}%20at%20${company.Company}.%20I%20believe%20my%20experience%20is%20a%20strong%20match%20for%20the%20responsibilities%20pertaining%20to%20this%20role%2C%20and%20I%27m%20pleased%20to%20submit%20my%20application%20for%20the%20position.%0A%0A--YOUR%20EXPERIENCE%20HERE--%0A%0AI%20have%20attached%20my%20resume%20to%20this%20letter.%20Through%20it%2C%20I%20hope%20you%20will%20learn%20more%20about%20my%20background%2C%20education%2C%20achievements%2C%20and%20awards.%0A%0AIf%20I%20can%20provide%20you%20with%20any%20further%20information%2C%20please%20let%20me%20know.%20I%20look%20forward%20to%20hearing%20from%20you%20about%20this%20opportunity.%0A%0AThank%20you%20for%20your%20consideration.%0A%0A${user.LastName}%20${user.FirstName}%0A${user.Email}%0A${user.PhoneNumber}"
+                                            <a href="JobApplyServlet?itemid=${item.id}&userid=${user.id}&company=${company.company}"
                                                class="btn btn-outline-warning apply_btn"
                                                id="apply_${item.id}">APPLY NOW</a>
-                                            <c:set scope="application" var="emailContent" value="mailto:${item.ContactEmail}?subject=An%20bright%20potential%20applicant%20has%20seen%20and%20want%20to%20work%20with%20you%20on%20RecruitCenter&body=Dear%20${item.ContactName}%2C%0A%0AI%20was%20keenly%20interested%20in%20reading%20the%20job%20posting%20for%20the%20position%20of%20${item.JobTitle}%20at%20${company.Company}.%20I%20believe%20my%20experience%20is%20a%20strong%20match%20for%20the%20responsibilities%20pertaining%20to%20this%20role%2C%20and%20I%27m%20pleased%20to%20submit%20my%20application%20for%20the%20position.%0A%0A--YOUR%20EXPERIENCE%20HERE--%0A%0AI%20have%20attached%20my%20resume%20to%20this%20letter.%20Through%20it%2C%20I%20hope%20you%20will%20learn%20more%20about%20my%20background%2C%20education%2C%20achievements%2C%20and%20awards.%0A%0AIf%20I%20can%20provide%20you%20with%20any%20further%20information%2C%20please%20let%20me%20know.%20I%20look%20forward%20to%20hearing%20from%20you%20about%20this%20opportunity.%0A%0AThank%20you%20for%20your%20consideration.%0A%0A${user.LastName}%20${user.FirstName}%0A${user.Email}%0A${user.PhoneNumber}"/>
+                                            <c:set scope="application" var="emailContent" value="JobApplyServlet?itemid=${item.id}&userid=${user.id}&company=${company.company}"/>
                                         </div>
 
                                     </div>
@@ -532,10 +525,10 @@
                         <c:forEach items="${resultRec.rows}" var="item">
                             <c:if test="${searchList.contains(item.ID) && cont == true}">
                                 <c:set var="cont" value="false"/>
-                                <jsp:include page="./pages/user/read.jsp?id=${item.ID}&page=home"/>
+                                <jsp:include page="./pages/user/dashboard/crud/read.jsp?id=${item.ID}&page=home"/>
                             </c:if>
                         </c:forEach>
-                        
+
                     </section>
                 </div>
 
@@ -561,7 +554,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="mailto:${item.ContactEmail}?subject=An%20bright%20potential%20applicant%20has%20seen%20and%20want%20to%20work%20with%20you%20on%20RecruitCenter&body=Dear%20${item.ContactName}%2C%0A%0AI%20was%20keenly%20interested%20in%20reading%20the%20job%20posting%20for%20the%20position%20of%20${item.JobTitle}%20at%20${company.Company}.%20I%20believe%20my%20experience%20is%20a%20strong%20match%20for%20the%20responsibilities%20pertaining%20to%20this%20role%2C%20and%20I%27m%20pleased%20to%20submit%20my%20application%20for%20the%20position.%0A%0A--YOUR%20EXPERIENCE%20HERE--%0A%0AI%20have%20attached%20my%20resume%20to%20this%20letter.%20Through%20it%2C%20I%20hope%20you%20will%20learn%20more%20about%20my%20background%2C%20education%2C%20achievements%2C%20and%20awards.%0A%0AIf%20I%20can%20provide%20you%20with%20any%20further%20information%2C%20please%20let%20me%20know.%20I%20look%20forward%20to%20hearing%20from%20you%20about%20this%20opportunity.%0A%0AThank%20you%20for%20your%20consideration.%0A%0A${user.LastName}%20${user.FirstName}%0A${user.Email}%0A${user.PhoneNumber}&attach=${attachedFile}" 
+                        <!--<a href="mailto:${item.ContactEmail}?subject=An%20bright%20potential%20applicant%20has%20seen%20and%20want%20to%20work%20with%20you%20on%20RecruitCenter&body=Dear%20${item.ContactName}%2C%0A%0AI%20was%20keenly%20interested%20in%20reading%20the%20job%20posting%20for%20the%20position%20of%20${item.JobTitle}%20at%20${company.Company}.%20I%20believe%20my%20experience%20is%20a%20strong%20match%20for%20the%20responsibilities%20pertaining%20to%20this%20role%2C%20and%20I%27m%20pleased%20to%20submit%20my%20application%20for%20the%20position.%0A%0A--YOUR%20EXPERIENCE%20HERE--%0A%0AI%20have%20attached%20my%20resume%20to%20this%20letter.%20Through%20it%2C%20I%20hope%20you%20will%20learn%20more%20about%20my%20background%2C%20education%2C%20achievements%2C%20and%20awards.%0A%0AIf%20I%20can%20provide%20you%20with%20any%20further%20information%2C%20please%20let%20me%20know.%20I%20look%20forward%20to%20hearing%20from%20you%20about%20this%20opportunity.%0A%0AThank%20you%20for%20your%20consideration.%0A%0A${user.LastName}%20${user.FirstName}%0A${user.Email}%0A${user.PhoneNumber}&attach=${attachedFile}"--> 
+                        <a href="JobApplyServlet?itemid=${item.id}&userid=${user.id}&company=${company.company}"    
                            type="button" class="btn btn-primary" id="submit-modal">Save changes</a>
                     </div>
                 </div>
@@ -571,14 +565,6 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
         crossorigin="anonymous"></script>
-        <!--        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-                        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-                crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-                        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-                crossorigin="anonymous"></script>-->
-
-
 
         <!-- Latest compiled JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -601,6 +587,8 @@
             $('.apply_btn').on('click', function (e) {
                 e.preventDefault();
                 $('#modalbtn').click();
+                $('#submit-modal').attr('href', $(this).attr('href'));
+                
             })
             $('#submit-modal').on('click', function (e) {
                 $('#file-form').submit();
@@ -608,8 +596,11 @@
             $(document).ready(function () {
                 $(".seemore_btn").click(function () {
                     var productId = $(this).data("product-id");
-                    $("section").load("./pages/user/read.jsp?id=" + productId + "&page=home");
+                    $("section").load("./pages/user/dashboard/crud/read.jsp?id=" + productId + "&page=home");
                 });
+            });
+            $("#all-filter").click(function(){
+                $("#filter").toggle("slow");
             });
         </script>
     </body>

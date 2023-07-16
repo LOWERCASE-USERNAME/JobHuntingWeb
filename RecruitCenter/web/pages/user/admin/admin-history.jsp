@@ -18,13 +18,13 @@
     <body>
         <a href="../../home.jsp">Back To Home</a>
         <sql:query dataSource="${dataSource}" var="resultRecord">
-                SELECT * from Recruitments WHERE createdby LIKE '${cookie['userid'].value}';
+                SELECT * from Recruitments;
         </sql:query>
         <sql:query dataSource="${dataSource}" var="resultAcc">
                 SELECT * from Accounts WHERE userid LIKE '${cookie['userid'].value}';
         </sql:query>        
         <table class="table caption-top table-hover table-bordered">
-            <caption>List Of Past Recruitments of ${resultAcc.rows[0].role} ${resultAcc.rows[0].username}</caption>
+            <caption>List Of Past Recruitments of admin ${resultAcc.rows[0].username}</caption>
             <thead class="table-dark">
                 <tr>
                     <th scope="col">Job Title</th>
@@ -71,13 +71,13 @@
                     <td>${record.contactemail}</td>
                     <td>${record.contactphonenumber}</td>  
                     <td class="d-flex flex-column gap-4">
-                        <a href="read.jsp?id=${record.id}" class="btn btn-primary">
+                        <a href="../read.jsp?id=${record.id}" class="btn btn-primary">
                             <i class="fa-regular fa-folder-open"></i>
                         </a>
-                        <a href="update.jsp?id=${record.id}" class="btn btn-warning">
+                        <a href="../update.jsp?id=${record.id}" class="btn btn-warning">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
-                        <a href="delete.jsp?id=${record.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
+                        <a href="../delete.jsp?id=${record.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </td>
