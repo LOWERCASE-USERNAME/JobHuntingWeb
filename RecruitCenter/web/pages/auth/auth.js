@@ -18,7 +18,7 @@ $(document).on("submit", 'form', function (e) {
     e.preventDefault();
     //submit the data to SignUpServlet.
     const form = document.querySelector('form');
-    var formData = $(this).serialize();
+    const formData = $(this).serialize();
     console.log(formData);
     $.ajax({
         url: form.action,
@@ -53,25 +53,16 @@ $(document).on("submit", 'form', function (e) {
             console.error("Request failed with status: " + error);
         }
     });
-
-    // window.history.pushState({}, '', `../personification/${URL}.html`);
 });
-
-function handleSubmitForm(){
-    
-}
 
 function onFormSubmitSuccess(){
     //get next page url
     const URL = personification[$('.progress').attr('data-next-page')];
 
-
     //animation for the progress bar
     $('.progress .progress-bar:last-child').css('width', $('.progress .progress-bar:last-child').attr('data-width'));
 
-    if (URL === undefined) {
-        
-    } else { //load page in order
+    if (URL !== undefined) { //load page in order
         $.get(`../personification/${URL}`, function (data) {
             setTimeout(function () {
                 //load the next page
@@ -144,6 +135,6 @@ function showPosition(position) {
 }
 
 function notAllow() {
-
+    console.log("User not allow Geolocation")
 }
 

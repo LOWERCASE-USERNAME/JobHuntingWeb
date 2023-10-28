@@ -4,7 +4,7 @@ let cityCode;
 let distCode;
 $(document).ready(function () {
   $('#job-search').on('focus', function () {
-    var searchTerm = $(this).val();
+    const searchTerm = $(this).val();
     $.ajax({
       url: 'SearchJobTerm',
       type: 'GET',

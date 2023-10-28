@@ -1,24 +1,22 @@
 $(document).ready(function(){
     deserializeUrlParams();
-    console.log('hi')
-    console.log(decodeURIComponent('Th%E0nh%20ph?%20H%E0%20N?i'));
 })
 
 function deserializeUrlParams() {
-    var queryString = window.location.search.substring(1);
-    var params = queryString.split('&');
+    const queryString = window.location.search.substring(1);
+    const params = queryString.split('&');
   
-    for (var i = 0; i < params.length; i++) {
-      var param = params[i].split('=');
-      var paramName = decodeURIComponent(param[0]);
-      var paramValue = decodeURIComponent(param[1].replace(/\+/g, ' '));
+    for (let i = 0; i < params.length; i++) {
+      const param = params[i].split('=');
+      const paramName = decodeURIComponent(param[0]);
+      const paramValue = decodeURIComponent(param[1].replace(/\+/g, ' '));
   
       // Find the corresponding input field or select element and set its value
-      var inputField = $('input[name="' + paramName + '"]');
+      const inputField = $('input[name="' + paramName + '"]');
       if (inputField.length > 0) {
         inputField.val(paramValue);
       } else {
-        var selectField = $('select[name="' + paramName + '"]');
+        const selectField = $('select[name="' + paramName + '"]');
         if (selectField.length > 0) {
           selectField.val(paramValue);
         }

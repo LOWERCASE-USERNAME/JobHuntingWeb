@@ -3,7 +3,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.SortedMap" %>
-<html>
+<html lang="en">
 
     <head>
         <title>RecruitCenter</title>

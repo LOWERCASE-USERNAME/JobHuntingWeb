@@ -1,3 +1,7 @@
 /RecruitCenter/nbproject/private/
 /RecruitCenter/dist/
 /RecruitCenter/build/
+/RecruitCenter/.scannerwork
+/RecruitCenter/node_modules
+/RecruitCenter/.eslintrc.*
+RecruitCenter/sonar-project.properties

@@ -90,9 +90,4 @@
 .nav-item:hover a{
     color: blue;
 }
-@media(max-width: 767px){
-    #accountDropdown{
-        
-    }
-}
 

@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.UUID;
-import model.Account;
 import model.Company;
 
 /**
@@ -25,21 +24,19 @@ public class CompaniesDAO {
         try {
             String query = "SELECT * FROM Companies";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Company a = new Company();
-                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
-                a.setCompanyName(rs.getString("Company"));
-                a.setCompanyWebsite(rs.getString("Website"));
-                a.setCompanyAddress(rs.getString("Address"));
-                a.setCompanyReviews(rs.getString("Reviews"));
-                a.setCompanyRatings(rs.getFloat("Ratings"));
-                a.setCompanyNumOfRatings(rs.getInt("NumOfRating"));
-                list.add(a);
+            try (PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Company a = new Company();
+                    a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                    a.setCompanyName(rs.getString("Company"));
+                    a.setCompanyWebsite(rs.getString("Website"));
+                    a.setCompanyAddress(rs.getString("Address"));
+                    a.setCompanyReviews(rs.getString("Reviews"));
+                    a.setCompanyRatings(rs.getFloat("Ratings"));
+                    a.setCompanyNumOfRatings(rs.getInt("NumOfRating"));
+                    list.add(a);
+                }
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
         }
@@ -53,11 +50,11 @@ public class CompaniesDAO {
             conn = new DBContext().getConnection();
             try ( PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, companyName);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    c = new Company(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getFloat(6), rs.getInt(7));
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        c = new Company(UUID.fromString(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getFloat(6), rs.getInt(7));
+                    }
                 }
-                rs.close();
             }
             conn.close();
         } catch (Exception e) {
@@ -72,16 +69,16 @@ public class CompaniesDAO {
             //insert
             String insertQuery = "INSERT INTO Companies(Company, Website, Address, Reviews, Ratings, NumOfRating) VALUES(?, ?, ?, ?, ?, ?)";
             conn = new DBContext().getConnection();
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-            insertStatement.setString(1, comp.getCompanyName());
-            insertStatement.setString(2, comp.getCompanyWebsite());
-            insertStatement.setString(3, comp.getCompanyAddress());
-            insertStatement.setString(4, comp.getCompanyReviews());
-            insertStatement.setFloat(5, comp.getCompanyRatings());
-            insertStatement.setInt(6, comp.getCompanyNumOfRatings());
-            lineAffected = insertStatement.executeUpdate();
-            //release the resource
-            insertStatement.close();
+            try (PreparedStatement insertStatement = conn.prepareStatement(insertQuery)) {
+                insertStatement.setString(1, comp.getCompanyName());
+                insertStatement.setString(2, comp.getCompanyWebsite());
+                insertStatement.setString(3, comp.getCompanyAddress());
+                insertStatement.setString(4, comp.getCompanyReviews());
+                insertStatement.setFloat(5, comp.getCompanyRatings());
+                insertStatement.setInt(6, comp.getCompanyNumOfRatings());
+                lineAffected = insertStatement.executeUpdate();
+                //release the resource
+            }
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -103,20 +100,19 @@ public class CompaniesDAO {
                     + "WHERE companyid LIKE ?"; // Specify the condition for the update
 
             conn = new DBContext().getConnection();
-            PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
-            updateStatement.setString(1, comp.getCompanyName());
-            updateStatement.setString(2, comp.getCompanyWebsite());
-            updateStatement.setString(3, comp.getCompanyAddress());
-            updateStatement.setString(4, comp.getCompanyReviews());
-            updateStatement.setFloat(5, comp.getCompanyRatings());
-            updateStatement.setInt(6, comp.getCompanyNumOfRatings());
-            updateStatement.setString(7, comp.getCompanyID().toString());
-            // Set the condition parameter(s) for the update
-            // For example: updateStatement.setInt(7, comp.getId());
-
-            lineAffected = updateStatement.executeUpdate();
-            // Release the resource
-            updateStatement.close();
+            try (PreparedStatement updateStatement = conn.prepareStatement(updateQuery)) {
+                updateStatement.setString(1, comp.getCompanyName());
+                updateStatement.setString(2, comp.getCompanyWebsite());
+                updateStatement.setString(3, comp.getCompanyAddress());
+                updateStatement.setString(4, comp.getCompanyReviews());
+                updateStatement.setFloat(5, comp.getCompanyRatings());
+                updateStatement.setInt(6, comp.getCompanyNumOfRatings());
+                updateStatement.setString(7, comp.getCompanyID().toString());
+                // Set the condition parameter(s) for the update
+                // For example: updateStatement.setInt(7, comp.getId());
+                lineAffected = updateStatement.executeUpdate();
+                // Release the resource
+            }
             conn.close();
         } catch (Exception e) {
             throw (e);

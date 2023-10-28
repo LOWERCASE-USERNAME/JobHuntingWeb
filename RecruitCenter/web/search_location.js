@@ -12,8 +12,8 @@ $(document).ready(function () {
     $('#job_location').val($('#house-search').val() + ", " + $('#ward-search').val() + ", " + $('#dist-search').val() + ", " + $('#city-search').val());
   });
   $('.location-search').on('focus', function (e) {
-    var searchTerm = $(this).val();
-    var type = $(this).attr('data-type');
+    const searchTerm = $(this).val();
+    const type = $(this).attr('data-type');
     const container = $(this).next();
     autocompleteLocation(searchTerm, type, container);
   })
@@ -24,7 +24,7 @@ $(document).ready(function () {
     })
     if (selectedCity) {
       cityCode = selectedCity.code;
-      autocompleteLocation('', 'd', $('#distList'), false, true);
+      autocompleteLocation('', 'd', $('#distList'), false);
       $('#dist-search').focus();
     }
   })
@@ -35,7 +35,7 @@ $(document).ready(function () {
     })
     if (selectedDist) {
       distCode = selectedDist.code;
-      autocompleteLocation('', 'w', $('#wardList'), false, true);
+      autocompleteLocation('', 'w', $('#wardList'), false);
       $('#ward-search').focus();
     }
   })
@@ -67,19 +67,14 @@ function autocompleteLocation(searchTerm, type, container, render = true) { //I 
             return district['province_code'] === cityCode;
           })
         }
-        
-        // renderLocationList(data, container);
       }
-      if (type === 'p') {
-        // renderLocationList(data, container);
-      }
+      
       if (type === 'w') {
         if(eventSource === 'listdist-search'){
           data = data.filter(function (ward) {
             return ward['district_code'] === distCode;
           })
         }
-        // renderLocationList(data, container);
       }
       if(render){
         renderLocationList(data, container);

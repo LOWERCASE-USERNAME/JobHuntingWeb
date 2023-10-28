@@ -9,7 +9,7 @@
                    driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
                    url="jdbc:sqlserver://DESKTOP-TFONDGT\\GIANG:1433;databaseName=recruitCenter"
                    user="giangthhe170978" password="123" />
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>RecruitCenter History</title>

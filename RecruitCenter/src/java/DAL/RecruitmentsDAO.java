@@ -8,14 +8,11 @@ import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Account;
 import model.Recruitments;
 
 /**
@@ -31,34 +28,34 @@ public class RecruitmentsDAO {
         try {
             String query = "SELECT * FROM Recruitments";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Recruitments a = new Recruitments();
-                a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
-                a.setContactName(rs.getString("ContactName"));
-                a.setContactEmail(rs.getString("ContactEmail"));
-                a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
-                a.setJobTitle(rs.getString("JobTitle"));
-                a.setJobTypeID(rs.getInt("JobTypeID"));
-                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
-                a.setFieldID(rs.getInt("FieldID"));
-                a.setLocation(rs.getString("Location"));
-                a.setSalaries(rs.getString("Salaries"));
-                a.setPostedDate(rs.getDate("PostedDate"));
-                a.setExpDate(rs.getDate("ExpirationDate"));
-                a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
-                a.setGender(rs.getString("Gender"));
-                a.setDegree(rs.getString("Degree"));
-                a.setJobDescription(rs.getString("JobDescription"));
-                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
-                a.setWorkplace(rs.getString("workplace"));
-                a.setNegotiable(rs.getBoolean("negotiable"));
-                a.setCompanySize("company_size");
-                list.add(a);
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Recruitments a = new Recruitments();
+                    a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
+                    a.setContactName(rs.getString("ContactName"));
+                    a.setContactEmail(rs.getString("ContactEmail"));
+                    a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
+                    a.setJobTitle(rs.getString("JobTitle"));
+                    a.setJobTypeID(rs.getInt("JobTypeID"));
+                    a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                    a.setFieldID(rs.getInt("FieldID"));
+                    a.setLocation(rs.getString("Location"));
+                    a.setSalaries(rs.getString("Salaries"));
+                    a.setPostedDate(rs.getDate("PostedDate"));
+                    a.setExpDate(rs.getDate("ExpirationDate"));
+                    a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
+                    a.setGender(rs.getString("Gender"));
+                    a.setDegree(rs.getString("Degree"));
+                    a.setJobDescription(rs.getString("JobDescription"));
+                    a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                    a.setWorkplace(rs.getString("workplace"));
+                    a.setNegotiable(rs.getBoolean("negotiable"));
+                    a.setCompanySize("company_size");
+                    list.add(a);
+                }
+                rs.close();
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -72,33 +69,33 @@ public class RecruitmentsDAO {
         try {
             String query = "SELECT * FROM Recruitments WHERE id LIKE ?";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, id.toString());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
-                a.setContactName(rs.getString("ContactName"));
-                a.setContactEmail(rs.getString("ContactEmail"));
-                a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
-                a.setJobTitle(rs.getString("JobTitle"));
-                a.setJobTypeID(rs.getInt("JobTypeID"));
-                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
-                a.setFieldID(rs.getInt("FieldID"));
-                a.setLocation(rs.getString("Location"));
-                a.setSalaries(rs.getString("Salaries"));
-                a.setPostedDate(rs.getDate("PostedDate"));
-                a.setExpDate(rs.getDate("ExpirationDate"));
-                a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
-                a.setGender(rs.getString("Gender"));
-                a.setDegree(rs.getString("Degree"));
-                a.setJobDescription(rs.getString("JobDescription"));
-                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
-                a.setWorkplace(rs.getString("workplace"));
-                a.setNegotiable(rs.getBoolean("negotiable"));
-                a.setCompanySize("company_size");
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, id.toString());
+                try ( ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
+                        a.setContactName(rs.getString("ContactName"));
+                        a.setContactEmail(rs.getString("ContactEmail"));
+                        a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
+                        a.setJobTitle(rs.getString("JobTitle"));
+                        a.setJobTypeID(rs.getInt("JobTypeID"));
+                        a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                        a.setFieldID(rs.getInt("FieldID"));
+                        a.setLocation(rs.getString("Location"));
+                        a.setSalaries(rs.getString("Salaries"));
+                        a.setPostedDate(rs.getDate("PostedDate"));
+                        a.setExpDate(rs.getDate("ExpirationDate"));
+                        a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
+                        a.setGender(rs.getString("Gender"));
+                        a.setDegree(rs.getString("Degree"));
+                        a.setJobDescription(rs.getString("JobDescription"));
+                        a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                        a.setWorkplace(rs.getString("workplace"));
+                        a.setNegotiable(rs.getBoolean("negotiable"));
+                        a.setCompanySize("company_size");
+                    }
+                }
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -170,7 +167,7 @@ public class RecruitmentsDAO {
     public <T> ArrayList<String> getRecruitmentsWithFilter(Map<String, T> conditionMap) throws Exception {
         ArrayList<String> list = new ArrayList<>();
         StringBuilder query = new StringBuilder();
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement ps = null;
         try {
             conn = new DBContext().getConnection();
@@ -235,12 +232,13 @@ public class RecruitmentsDAO {
                 }
             }
 
-            ResultSet rs = ps.executeQuery();
 //            // Process the ResultSet as needed
-            while (rs.next()) {
-                list.add(rs.getString(1));
+            try ( ResultSet rs = ps.executeQuery()) {
+                //            // Process the ResultSet as needed
+                while (rs.next()) {
+                    list.add(rs.getString(1));
+                }
             }
-            rs.close();
             ps.close();
             conn.close();
 
@@ -256,17 +254,17 @@ public class RecruitmentsDAO {
         try {
             String query = "SELECT ID FROM Recruitments R WHERE JobTitle LIKE ? OR JobDescription LIKE ? OR R.SkillandTitleID IN (SELECT id FROM SkillandTitle WHERE SkillandTitle LIKE ?)";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + searchTerm + "%");
-            ps.setString(2, "%" + searchTerm + "%");
-            ps.setString(3, "%" + searchTerm + "%");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                list.add(id);
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, "%" + searchTerm + "%");
+                ps.setString(2, "%" + searchTerm + "%");
+                ps.setString(3, "%" + searchTerm + "%");
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String id = rs.getString(1);
+                        list.add(id);
+                    }
+                }
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -279,17 +277,17 @@ public class RecruitmentsDAO {
         try {
             String query = "SELECT ID FROM Recruitments WHERE Location LIKE ?";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + wardTerm + "%" + distTerm + "%" + cityTerm + "%");
-//            ps.setString(2, "%" + distTerm);
-//            ps.setString(3, "%" + cityTerm + "%");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                list.add(id);
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, "%" + wardTerm + "%" + distTerm + "%" + cityTerm + "%");
+                //            ps.setString(2, "%" + distTerm);
+                //            ps.setString(3, "%" + cityTerm + "%");
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String id = rs.getString(1);
+                        list.add(id);
+                    }
+                }
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -323,29 +321,29 @@ public class RecruitmentsDAO {
                     + "CAST(? as uniqueidentifier)\n"//create_by 19    
                     + ")";
             conn = new DBContext().getConnection();
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-            insertStatement.setString(1, rc.getContactName());
-            insertStatement.setString(2, rc.getContactEmail());
-            insertStatement.setString(3, rc.getContactPhoneNumber());
-            insertStatement.setString(4, rc.getJobTitle());
-            insertStatement.setInt(5, rc.getJobTypeID());
-            insertStatement.setString(6, rc.getCompanyID().toString());
-            insertStatement.setInt(7, rc.getFieldID());
-            insertStatement.setString(8, rc.getLocation());
-            insertStatement.setString(9, rc.getSalaries());
-            insertStatement.setDate(10, rc.getPostedDate());
-            insertStatement.setDate(11, rc.getExpDate());
-            insertStatement.setString(12, rc.getSkillAndTitleID().toString());
-            insertStatement.setString(13, rc.getGender());
-            insertStatement.setString(14, rc.getDegree());
-            insertStatement.setString(15, rc.getJobDescription());
-            insertStatement.setBoolean(16, rc.isNegotiable());
-            insertStatement.setString(17, rc.getWorkplace());
-            insertStatement.setString(18, rc.getCompanySize());
-            insertStatement.setString(19, rc.getCreatedBy().toString());
-            lineAffected = insertStatement.executeUpdate();
-            //release the resource
-            insertStatement.close();
+            try (PreparedStatement insertStatement = conn.prepareStatement(insertQuery)) {
+                insertStatement.setString(1, rc.getContactName());
+                insertStatement.setString(2, rc.getContactEmail());
+                insertStatement.setString(3, rc.getContactPhoneNumber());
+                insertStatement.setString(4, rc.getJobTitle());
+                insertStatement.setInt(5, rc.getJobTypeID());
+                insertStatement.setString(6, rc.getCompanyID().toString());
+                insertStatement.setInt(7, rc.getFieldID());
+                insertStatement.setString(8, rc.getLocation());
+                insertStatement.setString(9, rc.getSalaries());
+                insertStatement.setDate(10, rc.getPostedDate());
+                insertStatement.setDate(11, rc.getExpDate());
+                insertStatement.setString(12, rc.getSkillAndTitleID().toString());
+                insertStatement.setString(13, rc.getGender());
+                insertStatement.setString(14, rc.getDegree());
+                insertStatement.setString(15, rc.getJobDescription());
+                insertStatement.setBoolean(16, rc.isNegotiable());
+                insertStatement.setString(17, rc.getWorkplace());
+                insertStatement.setString(18, rc.getCompanySize());
+                insertStatement.setString(19, rc.getCreatedBy().toString());
+                lineAffected = insertStatement.executeUpdate();
+                //release the resource
+            }
             conn.close();
         } catch (Exception e) {
             throw (e);
@@ -377,31 +375,30 @@ public class RecruitmentsDAO {
                     + "WHERE ID like ?"; // Specify the condition for the update
 
             conn = new DBContext().getConnection();
-            PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
-            updateStatement.setString(1, rc.getContactName());
-            updateStatement.setString(2, rc.getContactEmail());
-            updateStatement.setString(3, rc.getContactPhoneNumber());
-            updateStatement.setString(4, rc.getJobTitle());
-            updateStatement.setInt(5, rc.getJobTypeID());
-//            updateStatement.setString(6, rc.getCompanyID().toString());
-            updateStatement.setInt(6, rc.getFieldID());
-            updateStatement.setString(7, rc.getLocation());
-            updateStatement.setString(8, rc.getSalaries());
-//            updateStatement.setDate(10, rc.getPostedDate());
-            updateStatement.setDate(9, rc.getExpDate());
-            updateStatement.setString(10, rc.getSkillAndTitleID().toString());
-            updateStatement.setString(11, rc.getGender());
-            updateStatement.setString(12, rc.getDegree());
-            updateStatement.setString(13, rc.getJobDescription());
-            updateStatement.setBoolean(14, rc.isNegotiable());
-            updateStatement.setString(15, rc.getWorkplace());
-            updateStatement.setString(16, rc.getCompanySize());
-//            updateStatement.setString(19, rc.getCreatedBy().toString());
-            updateStatement.setString(17, rc.getRecruitmentID().toString());
-
-            lineAffected = updateStatement.executeUpdate();
-            // Release the resource
-            updateStatement.close();
+            try (PreparedStatement updateStatement = conn.prepareStatement(updateQuery)) {
+                updateStatement.setString(1, rc.getContactName());
+                updateStatement.setString(2, rc.getContactEmail());
+                updateStatement.setString(3, rc.getContactPhoneNumber());
+                updateStatement.setString(4, rc.getJobTitle());
+                updateStatement.setInt(5, rc.getJobTypeID());
+                //            updateStatement.setString(6, rc.getCompanyID().toString());
+                updateStatement.setInt(6, rc.getFieldID());
+                updateStatement.setString(7, rc.getLocation());
+                updateStatement.setString(8, rc.getSalaries());
+                //            updateStatement.setDate(10, rc.getPostedDate());
+                updateStatement.setDate(9, rc.getExpDate());
+                updateStatement.setString(10, rc.getSkillAndTitleID().toString());
+                updateStatement.setString(11, rc.getGender());
+                updateStatement.setString(12, rc.getDegree());
+                updateStatement.setString(13, rc.getJobDescription());
+                updateStatement.setBoolean(14, rc.isNegotiable());
+                updateStatement.setString(15, rc.getWorkplace());
+                updateStatement.setString(16, rc.getCompanySize());
+                //            updateStatement.setString(19, rc.getCreatedBy().toString());
+                updateStatement.setString(17, rc.getRecruitmentID().toString());
+                lineAffected = updateStatement.executeUpdate();
+                // Release the resource
+            }
             conn.close();
         } catch (Exception e) {
             throw (e);

@@ -24,14 +24,12 @@ public class AppliedDAO {
         try {
             String query = "SELECT * FROM AppliedHistory";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Applied acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3)) ;
-                list.add(acc);
+            try (PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Applied acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3)) ;
+                    list.add(acc);
+                }
             }
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
         }
@@ -44,20 +42,19 @@ public class AppliedDAO {
             //insert
             String insertQuery = "INSERT INTO AppliedHistory VALUES(CAST(? as uniqueidentifier), CAST(? as uniqueidentifier), ?)";
             conn = new DBContext().getConnection();
-            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
-            insertStatement.setString(1, acc.getUserid().toString());
-            insertStatement.setString(2, acc.getRecruitmentid().toString());
-            insertStatement.setDate(3, acc.getApplyDate());
-            lineAffected = insertStatement.executeUpdate();
-            //release the resource
-            insertStatement.close();
+            try (PreparedStatement insertStatement = conn.prepareStatement(insertQuery)) {
+                insertStatement.setString(1, acc.getUserid().toString());
+                insertStatement.setString(2, acc.getRecruitmentid().toString());
+                insertStatement.setDate(3, acc.getApplyDate());
+                lineAffected = insertStatement.executeUpdate();
+                //release the resource
+            }
             conn.close();
         } catch (Exception e) {
             throw(e);
         } 
         //return true if suceeded
-        if(lineAffected == 1) return true;
-        return false;
+        return lineAffected == 1;
     }
     
     public Applied getAppliedWithUserID(UUID ID) {
@@ -65,14 +62,14 @@ public class AppliedDAO {
         try {
             String selectQuery = "SELECT * FROM AppliedHistory WHERE userID = CAST (? AS uniqueidentifier)";
             conn = new DBContext().getConnection();
-            PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
-            selectStatement.setString(1, ID.toString());
-            ResultSet rs = selectStatement.executeQuery();
-            while (rs.next()) {
-                acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3)) ;
+            try (PreparedStatement selectStatement = conn.prepareStatement(selectQuery)) {
+                selectStatement.setString(1, ID.toString());
+                try (ResultSet rs = selectStatement.executeQuery()) {
+                    while (rs.next()) {
+                        acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3)) ;
+                    }
+                }
             }
-            rs.close();
-            selectStatement.close();
             conn.close();
         } catch (Exception e) {
         }
@@ -83,14 +80,14 @@ public class AppliedDAO {
         try {
             String selectQuery = "SELECT * FROM AppliedHistory WHERE recruitmentID IN (SELECT id FROM Recruitments WHERE companyID = CAST (? AS uniqueidentifier))";
             conn = new DBContext().getConnection();
-            PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
-            selectStatement.setString(1, ID.toString());
-            ResultSet rs = selectStatement.executeQuery();
-            while (rs.next()) {
-                acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3));
+            try (PreparedStatement selectStatement = conn.prepareStatement(selectQuery)) {
+                selectStatement.setString(1, ID.toString());
+                try (ResultSet rs = selectStatement.executeQuery()) {
+                    while (rs.next()) {
+                        acc = new Applied(UUID.fromString(rs.getString(1)), UUID.fromString(rs.getString(2)), rs.getDate(3));
+                    }
+                }
             }
-            rs.close();
-            selectStatement.close();
             conn.close();
         } catch (Exception e) {
             System.out.println(e);

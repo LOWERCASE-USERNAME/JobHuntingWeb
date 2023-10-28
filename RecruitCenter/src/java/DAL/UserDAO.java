@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import model.Account;
 import model.User;
 import java.lang.Exception;
 /**
@@ -49,19 +47,19 @@ public class UserDAO {
         try {
             String query = "SELECT * FROM Users WHERE ID = CAST(? AS uniqueidentifier)";
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, ID.toString());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                UUID companyid = null;
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, ID.toString());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    UUID companyid = null;
                     if(rs.getString("CompanyID") != null){
                         companyid = UUID.fromString(rs.getString("CompanyID"));
                     }
-                user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
+                    user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
+                }
+                
+                rs.close();
             }
-
-            rs.close();
-            ps.close();
             conn.close();
         } catch (Exception e) {
         }
@@ -75,19 +73,18 @@ public class UserDAO {
             conn = new DBContext().getConnection();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, email);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    UUID companyid = null;
-                    if(rs.getString("CompanyID") != null){
-                        companyid = UUID.fromString(rs.getString("CompanyID"));
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID companyid = null;
+                        if(rs.getString("CompanyID") != null){
+                            companyid = UUID.fromString(rs.getString("CompanyID"));
+                        }
+                        user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
                     }
-                    user = new User(UUID.fromString(rs.getString("ID")), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("Address"), rs.getInt("AccountType"), companyid);
                 }
-                rs.close();
             }
             conn.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return user;
     }
@@ -98,17 +95,17 @@ public class UserDAO {
         int line = 0;
         try {
         conn = new DBContext().getConnection();
-        PreparedStatement ps = conn.prepareStatement(query);
-        ps.setString(1, user.getFname());
-        ps.setString(2, user.getLname());
-        ps.setString(3, user.getEmail());
-        ps.setString(4, user.getPhonenum());
-        ps.setString(5, user.getAddress());
-        ps.setString(6, user.getCompanyID().toString());
-        ps.setInt(7, user.getAccType());
-        ps.setString(8, user.getUserID().toString());
-        line = ps.executeUpdate();
-        ps.close();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, user.getFname());
+                ps.setString(2, user.getLname());
+                ps.setString(3, user.getEmail());
+                ps.setString(4, user.getPhonenum());
+                ps.setString(5, user.getAddress());
+                ps.setString(6, user.getCompanyID().toString());
+                ps.setInt(7, user.getAccType());
+                ps.setString(8, user.getUserID().toString());
+                line = ps.executeUpdate();
+            }
         conn.close();
         } catch (Exception e) {
             
@@ -130,7 +127,6 @@ public class UserDAO {
             }
             conn.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return line == 1;
     }
