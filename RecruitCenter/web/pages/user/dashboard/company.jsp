@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     </head>
     <body>
         <!--${sessionScope.userid}-->
@@ -89,11 +89,12 @@
                              id="review" role="tabpanel">
                             <form>
                                 <table id="rating">
-                                    <tr><td>Work-Life balance:</td><td><input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px;" name="r1"> <span class="ratingVal">5</span></td></tr>
-                                    <tr><td>Pay and Benefits balance:</td><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r2"> <span class="ratingVal">5</span> </td></tr>
-                                    <tr><td>Job security and Advancement:</td><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r3"> <span class="ratingVal">5</span></td></tr>
-                                    <tr><td>Management:</td><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r4"> <span class="ratingVal">5</span></td></tr>
-                                    <tr><td>Culture:</td><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r5"> <span class="ratingVal">5</span> </td></tr>
+                                    <tr><th>Work-Life balance:</th><td><input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px;" name="r1"> <span class="ratingVal">5</span></td></tr>
+                                    <tr><th>Pay and Benefits balance:</th><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r2"> <span class="ratingVal">5</span> </td></tr>
+                                    <tr><th>Job security and Advancement:</th><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r3"> <span class="ratingVal">5</span></td></tr>
+                                    <tr><th>Management:</th><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r4"> <span class="ratingVal">5</span></td></tr>
+                                    <tr><th>Culture:</th><td> <input type="range" step="0.5" min="0" max="5" value="5" style="width: 200px" name="r5"> <span class="ratingVal">5</span> </td></tr>
+                                    <caption>Rating the company</caption>
                                 </table>
                                 <div id="comment">
                                     <textarea style="width: 50%" name="comment" rows="5" name="comment"></textarea>
@@ -107,7 +108,7 @@
             <script src="https://code.jquery.com/jquery-3.3.1.min.js"
                     integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
             crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
             <script>
                 $("input[type='range']").on('change input', function () {
 //                    console.log($(this).siblings('.ratingVal'))

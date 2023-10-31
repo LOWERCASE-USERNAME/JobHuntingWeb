@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Degree;
 import model.Workplace;
 
@@ -99,7 +101,7 @@ public class JobSearchServlet extends HttpServlet {
             response.sendRedirect(urlBuilder.toString());
 //            request.getRequestDispatcher("home.jsp").include(request, response);
         } catch (Exception ex) {
-            ex.printStackTrace(out);
+            Logger.getLogger(JobSearchServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //testing

@@ -28,8 +28,7 @@ public class RecruitmentsDAO {
         try {
             String query = "SELECT * FROM Recruitments";
             conn = new DBContext().getConnection();
-            try ( PreparedStatement ps = conn.prepareStatement(query)) {
-                ResultSet rs = ps.executeQuery();
+            try ( PreparedStatement ps = conn.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Recruitments a = new Recruitments();
                     a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
@@ -54,11 +53,10 @@ public class RecruitmentsDAO {
                     a.setCompanySize("company_size");
                     list.add(a);
                 }
-                rs.close();
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -97,22 +95,24 @@ public class RecruitmentsDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return a;
     }
 
     public static int count() {
         String sql = "SELECT COUNT(*) as totalrow FROM Recruitments";
-        PreparedStatement statement;
         try {
-            statement = new DBContext().getConnection().prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("totalrow");
-            }
+            Connection conn = new DBContext().getConnection();
+            try ( PreparedStatement statement = conn.prepareStatement(sql);  ResultSet rs = statement.executeQuery();) {
+                if (rs.next()) {
+                    return rs.getInt("totalrow");
+                }
+            };
+
         } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
@@ -130,33 +130,35 @@ public class RecruitmentsDAO {
             int offset = (PAGE_NUMBER - 1) * PAGE_SIZE;
 
             // Create the prepared statement with the pagination parameters
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, offset);
-            preparedStatement.setInt(2, PAGE_SIZE);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                Recruitments a = new Recruitments();
-                a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
-                a.setContactName(rs.getString("ContactName"));
-                a.setContactEmail(rs.getString("ContactEmail"));
-                a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
-                a.setJobTitle(rs.getString("JobTitle"));
-                a.setJobTypeID(rs.getInt("JobTypeID"));
-                a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
-                a.setFieldID(rs.getInt("FieldID"));
-                a.setLocation(rs.getString("Location"));
-                a.setSalaries(rs.getString("Salaries"));
-                a.setPostedDate(rs.getDate("PostedDate"));
-                a.setExpDate(rs.getDate("ExpirationDate"));
-                a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
-                a.setGender(rs.getString("Gender"));
-                a.setDegree(rs.getString("Degree"));
-                a.setJobDescription(rs.getString("JobDescription"));
-                a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
-                a.setWorkplace(rs.getString("workplace"));
-                a.setNegotiable(rs.getBoolean("negotiable"));
-                a.setCompanySize("company_size");
-                list.add(a);
+            try ( PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setInt(1, offset);
+                preparedStatement.setInt(2, PAGE_SIZE);
+                try ( ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        Recruitments a = new Recruitments();
+                        a.setRecruitmentID(UUID.fromString(rs.getString("ID")));
+                        a.setContactName(rs.getString("ContactName"));
+                        a.setContactEmail(rs.getString("ContactEmail"));
+                        a.setContactPhoneNumber(rs.getString("ContactPhoneNumber"));
+                        a.setJobTitle(rs.getString("JobTitle"));
+                        a.setJobTypeID(rs.getInt("JobTypeID"));
+                        a.setCompanyID(UUID.fromString(rs.getString("CompanyID")));
+                        a.setFieldID(rs.getInt("FieldID"));
+                        a.setLocation(rs.getString("Location"));
+                        a.setSalaries(rs.getString("Salaries"));
+                        a.setPostedDate(rs.getDate("PostedDate"));
+                        a.setExpDate(rs.getDate("ExpirationDate"));
+                        a.setSkillAndTitleID(UUID.fromString(rs.getString("SkillandTitleID")));
+                        a.setGender(rs.getString("Gender"));
+                        a.setDegree(rs.getString("Degree"));
+                        a.setJobDescription(rs.getString("JobDescription"));
+                        a.setCreatedBy(UUID.fromString(rs.getString("createdby")));
+                        a.setWorkplace(rs.getString("workplace"));
+                        a.setNegotiable(rs.getBoolean("negotiable"));
+                        a.setCompanySize("company_size");
+                        list.add(a);
+                    }
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,8 +169,6 @@ public class RecruitmentsDAO {
     public <T> ArrayList<String> getRecruitmentsWithFilter(Map<String, T> conditionMap) throws Exception {
         ArrayList<String> list = new ArrayList<>();
         StringBuilder query = new StringBuilder();
-//        Connection conn = null;
-        PreparedStatement ps = null;
         try {
             conn = new DBContext().getConnection();
             if (conditionMap.isEmpty()) {
@@ -212,38 +212,36 @@ public class RecruitmentsDAO {
                 conditionCount++;
             }
 
-            ps = conn.prepareStatement(query.toString());
-
-            int paramIndex = 1;
-            for (Map.Entry<String, T> entry : conditionMap.entrySet()) {
-                String column = entry.getKey();
-                T value = entry.getValue();
-
-                if (value.getClass().isArray()) {
-                    int length = Array.getLength(value);
-                    for (int i = 0; i < length; i++) {
-                        Object element = Array.get(value, i);
-                        ps.setObject(paramIndex, "%" + element + "%");
+            try ( PreparedStatement ps = conn.prepareStatement(query.toString())) {
+                int paramIndex = 1;
+                for (Map.Entry<String, T> entry : conditionMap.entrySet()) {
+                    String column = entry.getKey();
+                    T value = entry.getValue();
+                    
+                    if (value.getClass().isArray()) {
+                        int length = Array.getLength(value);
+                        for (int i = 0; i < length; i++) {
+                            Object element = Array.get(value, i);
+                            ps.setObject(paramIndex, "%" + element + "%");
+                            paramIndex++;
+                        }
+                    } else {
+                        ps.setObject(paramIndex, "%" + value + "%");
                         paramIndex++;
                     }
-                } else {
-                    ps.setObject(paramIndex, "%" + value + "%");
-                    paramIndex++;
                 }
-            }
-
-//            // Process the ResultSet as needed
-            try ( ResultSet rs = ps.executeQuery()) {
                 //            // Process the ResultSet as needed
-                while (rs.next()) {
-                    list.add(rs.getString(1));
+                try ( ResultSet rs = ps.executeQuery()) {
+                    //            // Process the ResultSet as needed
+                    while (rs.next()) {
+                        list.add(rs.getString(1));
+                    }
                 }
             }
-            ps.close();
             conn.close();
 
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
             // Handle the exception appropriately
         }
         return list;
@@ -258,7 +256,7 @@ public class RecruitmentsDAO {
                 ps.setString(1, "%" + searchTerm + "%");
                 ps.setString(2, "%" + searchTerm + "%");
                 ps.setString(3, "%" + searchTerm + "%");
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         String id = rs.getString(1);
                         list.add(id);
@@ -281,7 +279,7 @@ public class RecruitmentsDAO {
                 ps.setString(1, "%" + wardTerm + "%" + distTerm + "%" + cityTerm + "%");
                 //            ps.setString(2, "%" + distTerm);
                 //            ps.setString(3, "%" + cityTerm + "%");
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         String id = rs.getString(1);
                         list.add(id);
@@ -289,8 +287,8 @@ public class RecruitmentsDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -321,7 +319,7 @@ public class RecruitmentsDAO {
                     + "CAST(? as uniqueidentifier)\n"//create_by 19    
                     + ")";
             conn = new DBContext().getConnection();
-            try (PreparedStatement insertStatement = conn.prepareStatement(insertQuery)) {
+            try ( PreparedStatement insertStatement = conn.prepareStatement(insertQuery)) {
                 insertStatement.setString(1, rc.getContactName());
                 insertStatement.setString(2, rc.getContactEmail());
                 insertStatement.setString(3, rc.getContactPhoneNumber());
@@ -345,8 +343,8 @@ public class RecruitmentsDAO {
                 //release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         //return true if suceeded
         return lineAffected == 1;
@@ -375,7 +373,7 @@ public class RecruitmentsDAO {
                     + "WHERE ID like ?"; // Specify the condition for the update
 
             conn = new DBContext().getConnection();
-            try (PreparedStatement updateStatement = conn.prepareStatement(updateQuery)) {
+            try ( PreparedStatement updateStatement = conn.prepareStatement(updateQuery)) {
                 updateStatement.setString(1, rc.getContactName());
                 updateStatement.setString(2, rc.getContactEmail());
                 updateStatement.setString(3, rc.getContactPhoneNumber());
@@ -400,8 +398,8 @@ public class RecruitmentsDAO {
                 // Release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitmentsDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Return true if succeeded
         return lineAffected == 1;

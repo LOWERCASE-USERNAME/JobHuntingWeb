@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Company;
 
 /**
@@ -38,7 +40,8 @@ public class CompaniesDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            Logger.getLogger(CompaniesDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -57,8 +60,8 @@ public class CompaniesDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            Logger.getLogger(CompaniesDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return c;
     }
@@ -80,8 +83,8 @@ public class CompaniesDAO {
                 //release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(CompaniesDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         //return true if suceeded
         return lineAffected == 1;
@@ -114,8 +117,8 @@ public class CompaniesDAO {
                 // Release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception ex) {
+            Logger.getLogger(CompaniesDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Return true if succeeded
         return lineAffected == 1;

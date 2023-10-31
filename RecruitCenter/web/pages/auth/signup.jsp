@@ -14,9 +14,6 @@
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="./signup.css">
         <link rel="stylesheet" href="../../css/toast.css">
-        <!-- <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script> -->
-        
     </head>
 
     <body>
@@ -71,8 +68,8 @@
         crossorigin="anonymous"></script>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="https://kit.fontawesome.com/1d7268affb.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" integrity="sha384-VekiXfVDZuqx75T/YaGfn7/p6+e+D0f/G8UoZ5GBOCMZ89kMW4wTo8PSn6GSzOEl" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1d7268affb.js" integrity="sha384-gSr0WJ3yDy5Un8K6/rE72Bfj6apLHmacM6XF7B4xXLrP1sS0R+DPCvQzsyi5uxCc" crossorigin="anonymous"></script>
         <script src="auth.js"></script>
         <script src="../../js/toast.js"></script>
     </body>

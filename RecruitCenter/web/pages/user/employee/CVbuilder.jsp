@@ -48,7 +48,7 @@
     <div class="template">
         <div style="width: 100%;">
             <div class="text-center w-100" id="thumbnail">
-                <img src="../../../assets/unknown-man.png" class="img-thumbnail img-circle">
+                <img src="../../../assets/unknown-man.png" class="img-thumbnail img-circle" alt="unknown man">
             </div>
             <div contenteditable="true" id="name" class="text-center">Tran Hoang Giang</div>
             <div contenteditable="true" id="headline" class="text-center">Your headline or current title</div>
@@ -224,11 +224,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js" integrity="sha384-nnVOr5/FzHTBIbkd2P1OjPZ8BMKYqZi+ZP5DxNiQ5Yrpju3F6G4rf0eCGsahefa/" crossorigin="anonymous"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js" integrity="sha384-q0KsXOmCeCEoVzvj91Xfq+Z9A/MA9/K7PhfVXTTZHQiZ+snp/JlaXl08LNAT7mrM" crossorigin="anonymous"></script>
     <script src="./CVbuilderScript.js"></script>
     
-    <script src="https://kit.fontawesome.com/1d7268affb.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/1d7268affb.js" integrity="sha384-gSr0WJ3yDy5Un8K6/rE72Bfj6apLHmacM6XF7B4xXLrP1sS0R+DPCvQzsyi5uxCc" crossorigin="anonymous"></script>
 </body>
 
 </html>

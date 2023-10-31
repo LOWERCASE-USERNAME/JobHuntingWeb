@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>RecruitCenter History</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     </head>
 
     <body>
@@ -26,21 +26,31 @@
             <c:set var="totalpage" value="${requestScope.totalpage}"/>
             <c:set var="list" value="${requestScope.list}"/>
         /<!-- if is employer show past recruitment, if employee show past apply -->
-        <%--<%= HtmlHelper.pager(5, pageindex, totalpage)%>--%>
+        <%--<%= HtmlHelper.pager(5, pageind //ex, totalpage)%>--%>
         <table class="table caption-top table-hover table-bordered">
             <c:if test="${resultAcc.rows[0].role == 'employers'}">
                 <sql:query dataSource="${dataSource}" var="resultRecord">
                     SELECT * from Recruitments WHERE createdby LIKE '${cookie['userid'].value}';
                 </sql:query>
-                <caption>List Of Recruitments of employer ${resultAcc.rows[0].username}</caption>
-
             </c:if>
             <c:if test="${resultAcc.rows[0].role == 'admin' || resultAcc.rows[0].role == 'staff'}">
                 <sql:query dataSource="${dataSource}" var="resultRecord">
                     SELECT * from Recruitments;
                 </sql:query>
-                <caption>List Of Recruitments for ${resultAcc.rows[0].role} ${resultAcc.rows[0].username}</caption>
             </c:if>
+            <caption>List Of Recruitments 
+                <c:choose>
+                    <c:when test="${resultAcc.rows[0].role == 'employers'}">
+                        of employer ${resultAcc.rows[0].username}
+                    </c:when>
+                    <c:when test="${resultAcc.rows[0].role == 'admin' || resultAcc.rows[0].role == 'staff'}">
+                        for ${resultAcc.rows[0].role} ${resultAcc.rows[0].username}
+                    </c:when>
+                    <c:otherwise>
+                        null
+                    </c:otherwise>
+                </c:choose>
+            </caption>
             <thead class="table-dark">
                 <tr>
                     <th scope="col">No</th>
@@ -98,7 +108,7 @@
                 </tr>
             </c:forEach>
         </table>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://kit.fontawesome.com/1d7268affb.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1d7268affb.js" integrity="sha384-gSr0WJ3yDy5Un8K6/rE72Bfj6apLHmacM6XF7B4xXLrP1sS0R+DPCvQzsyi5uxCc" crossorigin="anonymous"></script>
     </body>
 </html>

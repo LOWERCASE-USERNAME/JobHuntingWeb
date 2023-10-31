@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Applied;
 import model.Company;
 import model.Recruitments;
@@ -71,26 +73,26 @@ public class JobApplyServlet extends HttpServlet {
             item = rdao.getListRecruitments(UUID.fromString(itemid));
             // out.println(item);
         } catch (Exception ex) {
-            ex.printStackTrace(out);
+            Logger.getLogger(JobApplyServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             user = udao.getUserWithID(UUID.fromString(userid));
             // out.println(user);
         } catch (Exception ex) {
-            ex.printStackTrace(out);
+            Logger.getLogger(JobApplyServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             company = cdao.getCompanyWithName(companyname);
             // out.println(company);
         } catch (Exception ex) {
-            ex.printStackTrace(out);
+            Logger.getLogger(JobApplyServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             Applied apply = new Applied(UUID.fromString(userid), UUID.fromString(itemid),
                     new Date(System.currentTimeMillis()));
             adao.insertApplied(apply);
-        } catch (Exception e) {
-            e.printStackTrace(out);
+        } catch (Exception ex) {
+            Logger.getLogger(JobApplyServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         StringBuilder url = new StringBuilder();
         url.append("mailto:").append(item.getContactEmail()).append(

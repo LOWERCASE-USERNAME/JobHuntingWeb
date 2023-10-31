@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Applied;
 
@@ -31,7 +33,8 @@ public class AppliedDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            Logger.getLogger(AppliedDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -50,8 +53,8 @@ public class AppliedDAO {
                 //release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw(e);
+        } catch (Exception ex) {
+            Logger.getLogger(AppliedDAO.class.getName()).log(Level.SEVERE, null, ex);
         } 
         //return true if suceeded
         return lineAffected == 1;
@@ -71,7 +74,8 @@ public class AppliedDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            Logger.getLogger(AppliedDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return acc;
     }
@@ -89,8 +93,8 @@ public class AppliedDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            Logger.getLogger(AppliedDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return acc;
     }

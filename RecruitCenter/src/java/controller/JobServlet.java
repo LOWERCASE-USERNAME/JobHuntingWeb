@@ -128,8 +128,8 @@ public class JobServlet extends HttpServlet {
             try {
                 cdao.insertCompany(comp);
                 rc.setCompanyID(cdao.getCompanyWithName(company_param).getCompanyID());
-            } catch (Exception e) {
-                e.printStackTrace(out);
+            } catch (Exception ex) {
+                Logger.getLogger(JobServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             out.println(comp.toString());
         } else {
@@ -161,9 +161,9 @@ public class JobServlet extends HttpServlet {
             java.util.Date utilDate = null;
             try {
                 utilDate = format.parse(job_expire_param);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 // Handle the parse exception appropriately
-                e.printStackTrace(out);
+                Logger.getLogger(JobServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             Date expireSQLDate = new Date(utilDate.getTime());
             rc.setExpDate(expireSQLDate);
@@ -259,8 +259,8 @@ public class JobServlet extends HttpServlet {
             try {
                 cdao.insertCompany(comp);
                 rc.setCompanyID(cdao.getCompanyWithName(company_param).getCompanyID());
-            } catch (Exception e) {
-                e.printStackTrace(out);
+            } catch (Exception ex) {
+                Logger.getLogger(JobServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             out.println(comp.toString());
         } else {
@@ -283,9 +283,9 @@ public class JobServlet extends HttpServlet {
             java.util.Date utilDate = null;
             try {
                 utilDate = format.parse(job_expire_param);
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 // Handle the parse exception appropriately
-                e.printStackTrace(out);
+                Logger.getLogger(JobServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             Date expireSQLDate = new Date(utilDate.getTime());
 
@@ -319,7 +319,7 @@ public class JobServlet extends HttpServlet {
         try {
             rcDAO.insertRecruitment(rc);
         } catch (Exception ex) {
-            ex.printStackTrace(out);
+            Logger.getLogger(JobServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         response.sendRedirect("home.jsp");
     }

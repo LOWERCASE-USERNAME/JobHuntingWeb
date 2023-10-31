@@ -7,7 +7,7 @@
 <%@page import="model.Recruitments" %>
 <%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
     <head>
         <title>RecruitCenter</title>
@@ -18,7 +18,7 @@
                       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
                       crossorigin="anonymous">-->
         <!-- Latest compiled and minified CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <link rel="stylesheet" href="css/styleheader.css">
         <link rel="stylesheet" href="css/stylesearch.css">
         <link rel="stylesheet" href="css/styleresult.css">
@@ -567,11 +567,10 @@
         crossorigin="anonymous"></script>
 
         <!-- Latest compiled JavaScript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="https://kit.fontawesome.com/1d7268affb.js"
-        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" integrity="sha384-VekiXfVDZuqx75T/YaGfn7/p6+e+D0f/G8UoZ5GBOCMZ89kMW4wTo8PSn6GSzOEl" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1d7268affb.js" integrity="sha384-gSr0WJ3yDy5Un8K6/rE72Bfj6apLHmacM6XF7B4xXLrP1sS0R+DPCvQzsyi5uxCc" crossorigin="anonymous"></script>
         <script src="./search_term.js" type="module"></script>
         <script src="./search_location.js" type="module"></script>
         <script src="./js/toast.js" type="text/javascript"></script>

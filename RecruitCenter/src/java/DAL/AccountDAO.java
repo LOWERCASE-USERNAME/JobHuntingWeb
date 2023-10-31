@@ -7,18 +7,19 @@ package DAL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import model.Account;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author dell
  */
 public class AccountDAO {
     Connection conn = null;
-    public ArrayList<Account> getListAccount() {
+    public List<Account> getListAccount() {
         ArrayList<Account> list = new ArrayList<>();
         try {
             String query = "SELECT * FROM Accounts";
@@ -30,7 +31,8 @@ public class AccountDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -50,8 +52,8 @@ public class AccountDAO {
                 //release the resource
             }
             conn.close();
-        } catch (Exception e) {
-            throw(e);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         } 
         //return true if suceeded
         return lineAffected == 1;
@@ -69,8 +71,8 @@ public class AccountDAO {
                 line = ps.executeUpdate();
             }
             conn.close();
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return line == 1; //succeded or not
     }
@@ -89,8 +91,8 @@ public class AccountDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return acc;
     }
@@ -109,8 +111,8 @@ public class AccountDAO {
                 }
             }
             conn.close();
-        } catch (Exception e) {
-
+        } catch (Exception ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return acc;
     }

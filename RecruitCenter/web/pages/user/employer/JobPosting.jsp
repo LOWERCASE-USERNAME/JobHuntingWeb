@@ -3,8 +3,8 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.SortedMap" %>
+<!<!doctype html>
 <html lang="en">
-
     <head>
         <title>RecruitCenter</title>
         <meta charset="UTF-8">
@@ -242,7 +242,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" integrity="sha384-VekiXfVDZuqx75T/YaGfn7/p6+e+D0f/G8UoZ5GBOCMZ89kMW4wTo8PSn6GSzOEl" crossorigin="anonymous"></script>
         <script src="../../../search_location.js"></script>
     </body>
 

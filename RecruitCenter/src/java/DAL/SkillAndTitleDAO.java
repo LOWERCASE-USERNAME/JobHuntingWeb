@@ -16,41 +16,43 @@ import java.util.logging.Logger;
  * @author dell
  */
 public class SkillAndTitleDAO {
+
     Connection conn = null;
-    
-    
-    public ArrayList<String> searchJobwithTerm(String term){
+
+    public ArrayList<String> searchJobwithTerm(String term) {
         ArrayList<String> sList = new ArrayList<>();
         //chinh sua thanh JobTitle
         String query = "SELECT DISTINCT SkillandTitle FROM SkillandTitle WHERE SkillandTitle LIKE ?";
         try {
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + term + "%");
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                String title = rs.getString(1);
-                sList.add(title);
+            try ( PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, "%" + term + "%");
+                try(ResultSet rs = ps.executeQuery()){
+                    while (rs.next()) {
+                        String title = rs.getString(1);
+                        sList.add(title);
+                    }
+                }
             }
-            
         } catch (Exception ex) {
             Logger.getLogger(SkillAndTitleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sList;
     }
-    
-    public String getSkillIDwithName(String skillName){
+
+    public String getSkillIDwithName(String skillName) {
         String id = "";
         String query = "SELECT DISTINCT ID FROM SkillandTitle WHERE SkillandTitle LIKE ?";
         try {
             conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, skillName);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                id = rs.getString(1);
+            try(PreparedStatement ps = conn.prepareStatement(query)){
+                ps.setString(1, skillName);
+                try(ResultSet rs = ps.executeQuery()){
+                    while (rs.next()) {
+                        id = rs.getString(1);
+                    }
+                }
             }
-            
         } catch (Exception ex) {
             Logger.getLogger(SkillAndTitleDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.User;
 import model.Company;
@@ -62,8 +64,8 @@ public class SignUpServlet extends HttpServlet {
             newAcc.setPassword(password);
             try {
                 successUpdateAccount = accDAO.insertAccount(newAcc);
-            } catch (Exception e) {
-                out.println(e);
+            } catch (Exception ex) {
+                Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             out.println(successUpdateAccount);
             request.getSession().setAttribute("userid", userid);
@@ -78,9 +80,8 @@ public class SignUpServlet extends HttpServlet {
             user.setLname(lname);
             try {
                 successUpdateUser = uDAO.updateUser(user);
-            } catch (Exception e) {
-                e.printStackTrace();
-                out.println(e);
+            } catch (Exception ex) {
+                Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -98,9 +99,8 @@ public class SignUpServlet extends HttpServlet {
             user.setAddress(country + ", " + city + ", " + district + ", " + subdistrict);
             try {
                 successUpdateUser = uDAO.updateUser(user);
-            } catch (Exception e) {
-                e.printStackTrace();
-                out.println(e);
+            } catch (Exception ex) {
+                Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -132,8 +132,8 @@ public class SignUpServlet extends HttpServlet {
                     comp.setCompanyWebsite("");
                     try {
                         cdao.insertCompany(comp);
-                    } catch (Exception e) {
-                        e.printStackTrace(out);
+                    } catch (Exception ex) {
+                        Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } else {
@@ -148,9 +148,8 @@ public class SignUpServlet extends HttpServlet {
                 successUpdateUser = uDAO.updateUser(user);
                 successUpdateAccount = accDAO.updateAccount(a);
 
-            } catch (Exception e) { //output to toast
-                e.printStackTrace(out);
-                out.println(e);
+            } catch (Exception ex) { //output to toast
+                Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -176,10 +175,8 @@ public class SignUpServlet extends HttpServlet {
             request.getSession().setAttribute("account", acc);
             try {
                 successUpdateAccount = accDAO.updateAccount(acc);
-            } catch (Exception e) {
-                e.printStackTrace();
-                out.println(e);
-                throw (e);
+            } catch (Exception ex) {
+                Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 //            response.sendRedirect("pages/welcome/welcome.html");
         }
@@ -195,8 +192,8 @@ public class SignUpServlet extends HttpServlet {
         user.setAddress("412");
         try {
             successUpdateUser = uDAO.updateUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         System.out.println(successUpdateUser);
